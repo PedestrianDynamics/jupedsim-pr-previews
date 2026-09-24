@@ -97,8 +97,8 @@ argument gives you access to all required data:
       - Time step length in seconds
 
     * - ``simulation.get_geometry()``
-      - The simulation geometry; ``.polygon()`` provides the 2D polygon
-        or ``None`` unless the geometry was built from exactly one region
+      - The simulation geometry; ``.polygon(region_id=...)`` provides the 2D polygon
+        of a region.
 
 Each :class:`~jupedsim.agent.Agent` exposes:
 
