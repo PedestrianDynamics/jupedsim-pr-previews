@@ -521,16 +521,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__simulation</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">set_agent_target</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__id</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">next_target</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""Current next target of the agent.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">route_orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Unit vector along the route to the agent's final target.</span>
 
-<span class="sd">        Next destination is the next waypoint of the current stage of the agent's journey.</span>
 <span class="sd">        It is used by the operational model to compute the next state of the agent.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Current next destination of the agent.</span>
+<span class="sd">        Zero when the agent has already reached its final target.</span>
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__resolve</span><span class="p">()</span><span class="o">.</span><span class="n">next_destination</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__resolve</span><span class="p">()</span><span class="o">.</span><span class="n">route_orientation</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>

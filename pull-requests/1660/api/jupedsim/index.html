@@ -358,8 +358,8 @@
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.Agent.id"><code class="docutils literal notranslate"><span class="pre">Agent.id</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.Agent.journey_id"><code class="docutils literal notranslate"><span class="pre">Agent.journey_id</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.Agent.location"><code class="docutils literal notranslate"><span class="pre">Agent.location</span></code></a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.Agent.next_target"><code class="docutils literal notranslate"><span class="pre">Agent.next_target</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.Agent.position"><code class="docutils literal notranslate"><span class="pre">Agent.position</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.Agent.route_orientation"><code class="docutils literal notranslate"><span class="pre">Agent.route_orientation</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.Agent.stage_id"><code class="docutils literal notranslate"><span class="pre">Agent.stage_id</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.Agent.state"><code class="docutils literal notranslate"><span class="pre">Agent.state</span></code></a></li>
 </ul>
@@ -367,7 +367,7 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.AgentStep"><code class="docutils literal notranslate"><span class="pre">AgentStep</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.AgentStep.with_neighbor_state_mapping"><code class="docutils literal notranslate"><span class="pre">AgentStep.with_neighbor_state_mapping()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.AgentStep.dt"><code class="docutils literal notranslate"><span class="pre">AgentStep.dt</span></code></a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.AgentStep.orientation_to_next_target"><code class="docutils literal notranslate"><span class="pre">AgentStep.orientation_to_next_target</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.AgentStep.route_orientation"><code class="docutils literal notranslate"><span class="pre">AgentStep.route_orientation</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.AgentView"><code class="docutils literal notranslate"><span class="pre">AgentView</span></code></a><ul class="nav section-nav flex-column">
@@ -875,22 +875,17 @@ simulation, e.g. as another agent’s
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="jupedsim.Agent.next_target">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">next_target</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#jupedsim.Agent.next_target" title="Link to this definition">#</a></dt>
-<dd><p>Current next target of the agent.</p>
-<p>Next destination is the next waypoint of the current stage of the agent’s journey.
-It is used by the operational model to compute the next state of the agent.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Current next destination of the agent.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
 <dt class="sig sig-object py" id="jupedsim.Agent.position">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">position</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#jupedsim.Agent.position" title="Link to this definition">#</a></dt>
 <dd><p>Position of the agent.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="jupedsim.Agent.route_orientation">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">route_orientation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#jupedsim.Agent.route_orientation" title="Link to this definition">#</a></dt>
+<dd><p>Unit vector along the route to the agent’s final target.</p>
+<p>It is used by the operational model to compute the next state of the agent.
+Zero when the agent has already reached its final target.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -949,9 +944,9 @@ neighbor per query. It has to return a built-in model state.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="jupedsim.AgentStep.orientation_to_next_target">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">orientation_to_next_target</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#jupedsim.AgentStep.orientation_to_next_target" title="Link to this definition">#</a></dt>
-<dd><p>Unit vector pointing at the agent’s next target.</p>
+<dt class="sig sig-object py" id="jupedsim.AgentStep.route_orientation">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">route_orientation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#jupedsim.AgentStep.route_orientation" title="Link to this definition">#</a></dt>
+<dd><p>Unit vector along the route to the agent’s final target.</p>
 <p>Zero when the agent has already reached it.</p>
 </dd></dl>
 
@@ -2711,8 +2706,8 @@ custom-model callback.</p>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.Agent.id"><code class="docutils literal notranslate"><span class="pre">Agent.id</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.Agent.journey_id"><code class="docutils literal notranslate"><span class="pre">Agent.journey_id</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.Agent.location"><code class="docutils literal notranslate"><span class="pre">Agent.location</span></code></a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.Agent.next_target"><code class="docutils literal notranslate"><span class="pre">Agent.next_target</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.Agent.position"><code class="docutils literal notranslate"><span class="pre">Agent.position</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.Agent.route_orientation"><code class="docutils literal notranslate"><span class="pre">Agent.route_orientation</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.Agent.stage_id"><code class="docutils literal notranslate"><span class="pre">Agent.stage_id</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.Agent.state"><code class="docutils literal notranslate"><span class="pre">Agent.state</span></code></a></li>
 </ul>
@@ -2720,7 +2715,7 @@ custom-model callback.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.AgentStep"><code class="docutils literal notranslate"><span class="pre">AgentStep</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.AgentStep.with_neighbor_state_mapping"><code class="docutils literal notranslate"><span class="pre">AgentStep.with_neighbor_state_mapping()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.AgentStep.dt"><code class="docutils literal notranslate"><span class="pre">AgentStep.dt</span></code></a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.AgentStep.orientation_to_next_target"><code class="docutils literal notranslate"><span class="pre">AgentStep.orientation_to_next_target</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.AgentStep.route_orientation"><code class="docutils literal notranslate"><span class="pre">AgentStep.route_orientation</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#jupedsim.AgentView"><code class="docutils literal notranslate"><span class="pre">AgentView</span></code></a><ul class="nav section-nav flex-column">
