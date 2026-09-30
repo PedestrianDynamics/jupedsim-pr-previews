@@ -221,23 +221,21 @@ Attributes
       another agent's :attr:`final_target`.
 
 
-   .. py:property:: next_target
-      :type: tuple[float, float]
-
-
-      Current next target of the agent.
-
-      Next destination is the next waypoint of the current stage of the agent's journey.
-      It is used by the operational model to compute the next state of the agent.
-
-      :returns: Current next destination of the agent.
-
-
    .. py:property:: position
       :type: tuple[float, float]
 
 
       Position of the agent.
+
+
+   .. py:property:: route_orientation
+      :type: tuple[float, float]
+
+
+      Unit vector along the route to the agent's final target.
+
+      It is used by the operational model to compute the next state of the agent.
+      Zero when the agent has already reached its final target.
 
 
    .. py:property:: stage_id
@@ -298,11 +296,11 @@ Attributes
       Duration of this simulation step in seconds.
 
 
-   .. py:property:: orientation_to_next_target
+   .. py:property:: route_orientation
       :type: tuple[float, float]
 
 
-      Unit vector pointing at the agent's next target.
+      Unit vector along the route to the agent's final target.
 
       Zero when the agent has already reached it.
 
