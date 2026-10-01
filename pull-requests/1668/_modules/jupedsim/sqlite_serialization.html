@@ -493,7 +493,7 @@
                 <span class="n">frame_data</span><span class="p">,</span>
             <span class="p">)</span>
 
-            <span class="n">geo_wkt</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span><span class="o">.</span><span class="n">as_wkt</span><span class="p">()</span>
+            <span class="n">geo_wkt</span> <span class="o">=</span> <span class="n">walkable_area_as_wkt</span><span class="p">(</span><span class="n">simulation</span><span class="p">)</span>
             <span class="n">geo_hash</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">geo_wkt</span><span class="p">)</span>
             <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
                 <span class="s2">"INSERT OR IGNORE INTO geometry(hash, wkt) VALUES(?,?)"</span><span class="p">,</span>

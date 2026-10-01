@@ -18,7 +18,6 @@ Classes
    jupedsim.BuildInfo
    jupedsim.CustomOperationalModel
    jupedsim.ExitStage
-   jupedsim.Geometry
    jupedsim.JourneyDescription
    jupedsim.Location
    jupedsim.NeighborView
@@ -524,42 +523,6 @@ Attributes
 
 
 
-.. py:class:: Geometry(obj: jupedsim.native.Geometry)
-
-   Geometry object representing the area agents can move on.
-
-   Gain access to the simulation's walkable area by calling:
-
-   .. code :: python
-
-       sim.get_geometry()
-
-
-   .. py:method:: as_wkt() -> str
-
-      _summary_
-
-      :returns: _description_
-      :rtype: String
-
-
-
-   .. py:method:: boundary() -> list[tuple[float, float]]
-
-      Access the boundary polygon of the walkable area.
-
-      :returns: List of 2d points describing the polygon.
-
-
-
-   .. py:method:: holes() -> list[list[tuple[float, float]]]
-
-      Access holes (inner boundaries) of the walkable area.
-
-      :returns: A list of polygons forming holes inside the boundary.
-
-
-
 .. py:class:: JourneyDescription(stage_ids: Optional[list[int]] = None)
 
    Used to describe a journey for construction by the :class:`~jupedsim.simulation.Simulation`.
@@ -846,7 +809,7 @@ Attributes
 
 
 
-.. py:class:: Simulation(*, model: jupedsim.models.collision_free_speed.CollisionFreeSpeedModel | jupedsim.models.collision_free_speed_v2.CollisionFreeSpeedModelV2 | jupedsim.models.collision_free_speed_v3.CollisionFreeSpeedModelV3 | jupedsim.models.generalized_centrifugal_force.GeneralizedCentrifugalForceModel | jupedsim.models.social_force.SocialForceModel | jupedsim.models.anticipation_velocity_model.AnticipationVelocityModel | jupedsim.models.warp_driver.WarpDriverModel | jupedsim.models.custom_model.CustomOperationalModel, geometry: str | os.PathLike | shapely.GeometryCollection | shapely.Polygon | shapely.MultiPolygon | shapely.MultiPoint | list[tuple[float, float]], dt: float = 0.01, trajectory_writer: jupedsim.serialization.TrajectoryWriter | None = None, timer_log_level: int = 1, **kwargs: Any)
+.. py:class:: Simulation(*, model: jupedsim.models.collision_free_speed.CollisionFreeSpeedModel | jupedsim.models.collision_free_speed_v2.CollisionFreeSpeedModelV2 | jupedsim.models.collision_free_speed_v3.CollisionFreeSpeedModelV3 | jupedsim.models.generalized_centrifugal_force.GeneralizedCentrifugalForceModel | jupedsim.models.social_force.SocialForceModel | jupedsim.models.anticipation_velocity_model.AnticipationVelocityModel | jupedsim.models.warp_driver.WarpDriverModel | jupedsim.models.custom_model.CustomOperationalModel, geometry: str | os.PathLike | jupedsim.native.WalkableSurface | shapely.GeometryCollection | shapely.Polygon | shapely.MultiPolygon | shapely.MultiPoint | list[tuple[float, float]], dt: float = 0.01, trajectory_writer: jupedsim.serialization.TrajectoryWriter | None = None, timer_log_level: int = 1, **kwargs: Any)
 
    Defines a simulation of pedestrian movement over a continuous walkable area.
 
@@ -1060,14 +1023,11 @@ Attributes
 
 
 
-   .. py:method:: get_geometry() -> jupedsim.geometry.Geometry
+   .. py:method:: get_geometry() -> jupedsim.native.Geometry
 
       Current geometry of the simulation.
 
       :returns: The geometry of the simulation.
-
-      :raises SimulationError: if this simulation was built from a surface mesh.
-          A surface has no polygon underneath to hand out.
 
 
 
