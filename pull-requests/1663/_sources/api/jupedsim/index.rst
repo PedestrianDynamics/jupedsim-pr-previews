@@ -817,7 +817,7 @@ Attributes
    simulation.
 
 
-   .. py:method:: add_agent(*, journey_id: int, stage_id: int, position: tuple[float, float], state: jupedsim.models.generalized_centrifugal_force.GeneralizedCentrifugalForceModelState | jupedsim.models.collision_free_speed.CollisionFreeSpeedModelState | jupedsim.models.collision_free_speed_v2.CollisionFreeSpeedModelV2State | jupedsim.models.collision_free_speed_v3.CollisionFreeSpeedModelV3State | jupedsim.models.anticipation_velocity_model.AnticipationVelocityModelState | jupedsim.models.social_force.SocialForceModelState | jupedsim.models.warp_driver.WarpDriverModelState | Any, region_id: int | None = None) -> int
+   .. py:method:: add_agent(*, journey_id: int, stage_id: int, position: tuple[float, float], state: jupedsim.models.generalized_centrifugal_force.GeneralizedCentrifugalForceModelState | jupedsim.models.collision_free_speed.CollisionFreeSpeedModelState | jupedsim.models.collision_free_speed_v2.CollisionFreeSpeedModelV2State | jupedsim.models.collision_free_speed_v3.CollisionFreeSpeedModelV3State | jupedsim.models.anticipation_velocity_model.AnticipationVelocityModelState | jupedsim.models.social_force.SocialForceModelState | jupedsim.models.warp_driver.WarpDriverModelState | Any, region_id: int = 0) -> int
 
       Add an agent to the simulation.
 
@@ -826,10 +826,7 @@ Attributes
       :param position: Position to spawn the agent at, as ``(x, y)`` in metres.
       :param region_id: Region the agent stands in, as returned by
                         :meth:`~jupedsim.WalkableSurface.add_region` or
-                        :meth:`~jupedsim.WalkableSurface.connect_regions`. Only needed
-                        where regions lie on top of each other at ``position``; without
-                        it, the region containing ``position`` is used. On a seam,
-                        where regions meet, that is the one with the lowest id.
+                        :meth:`~jupedsim.WalkableSurface.connect_regions`.
       :param state: Initial per-agent model state. For built-in models this is
                     the matching ``XModelState`` instance, e.g.
                     :class:`~jupedsim.CollisionFreeSpeedModelState`. For custom
@@ -859,7 +856,7 @@ Attributes
 
 
 
-   .. py:method:: add_exit_stage(polygon: str | shapely.GeometryCollection | shapely.Polygon | shapely.MultiPolygon | shapely.MultiPoint | list[tuple[float, float]], region_id: int | None = None) -> int
+   .. py:method:: add_exit_stage(polygon: str | shapely.GeometryCollection | shapely.Polygon | shapely.MultiPolygon | shapely.MultiPoint | list[tuple[float, float]], region_id: int = 0) -> int
 
       Add an exit stage to the simulation.
 
@@ -892,7 +889,7 @@ Attributes
 
 
 
-   .. py:method:: add_queue_stage(positions: list[tuple[float, float]], region_id: int | None = None) -> int
+   .. py:method:: add_queue_stage(positions: list[tuple[float, float]], region_id: int = 0) -> int
 
       Add a new queue state to this simulation.
 
@@ -906,7 +903,7 @@ Attributes
 
 
 
-   .. py:method:: add_waiting_set_stage(positions: list[tuple[float, float]], region_id: int | None = None) -> int
+   .. py:method:: add_waiting_set_stage(positions: list[tuple[float, float]], region_id: int = 0) -> int
 
       Add a new waiting set stage to this simulation.
 
@@ -920,7 +917,7 @@ Attributes
 
 
 
-   .. py:method:: add_waypoint_stage(position: tuple[float, float], distance, region_id: int | None = None) -> int
+   .. py:method:: add_waypoint_stage(position: tuple[float, float], distance, region_id: int = 0) -> int
 
       Add a new waypoint stage to this simulation.
 
@@ -1026,7 +1023,7 @@ Attributes
 
 
 
-   .. py:method:: get_location(x: float, y: float, region_id: int | None = None) -> jupedsim.location.Location
+   .. py:method:: get_location(x: float, y: float, region_id: int = 0) -> jupedsim.location.Location
 
       Get the location at ``(x, y)`` in region ``region_id``.
 
@@ -1038,9 +1035,8 @@ Attributes
 
       :returns: The location.
 
-      :raises SimulationError: if ``(x, y)`` is not on the walkable surface (not
-          in region ``region_id``, if given), or if ``region_id`` is
-          missing where regions lie on top of each other.
+      :raises SimulationError: if ``region_id`` does not exist or ``(x, y)`` is
+          not in it.
 
 
 

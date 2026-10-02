@@ -521,7 +521,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">position</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
         <span class="n">distance</span><span class="p">,</span>
-        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Add a new waypoint stage to this simulation.</span>
 
@@ -542,7 +542,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">add_queue_stage</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
-        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Add a new queue state to this simulation.</span>
 
@@ -564,7 +564,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">add_waiting_set_stage</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
-        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Add a new waiting set stage to this simulation.</span>
 
@@ -593,7 +593,7 @@
             <span class="o">|</span> <span class="n">shapely</span><span class="o">.</span><span class="n">MultiPoint</span>
             <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
         <span class="p">),</span>
-        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Add an exit stage to the simulation.</span>
 
@@ -678,7 +678,7 @@
             <span class="o">|</span> <span class="n">WarpDriverModelState</span>
             <span class="o">|</span> <span class="n">Any</span>
         <span class="p">),</span>
-        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Add an agent to the simulation.</span>
 
@@ -688,10 +688,7 @@
 <span class="sd">            position: Position to spawn the agent at, as ``(x, y)`` in metres.</span>
 <span class="sd">            region_id: Region the agent stands in, as returned by</span>
 <span class="sd">                :meth:`~jupedsim.WalkableSurface.add_region` or</span>
-<span class="sd">                :meth:`~jupedsim.WalkableSurface.connect_regions`. Only needed</span>
-<span class="sd">                where regions lie on top of each other at ``position``; without</span>
-<span class="sd">                it, the region containing ``position`` is used. On a seam,</span>
-<span class="sd">                where regions meet, that is the one with the lowest id.</span>
+<span class="sd">                :meth:`~jupedsim.WalkableSurface.connect_regions`.</span>
 <span class="sd">            state: Initial per-agent model state. For built-in models this is</span>
 <span class="sd">                the matching ``XModelState`` instance, e.g.</span>
 <span class="sd">                :class:`~jupedsim.CollisionFreeSpeedModelState`. For custom</span>
@@ -723,9 +720,7 @@
 
 <div class="viewcode-block" id="Simulation.get_location">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.get_location">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_location</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Location</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Location</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Get the location at ``(x, y)`` in region ``region_id``.</span>
 
 <span class="sd">        The location stays valid as long as this simulation exists.</span>
@@ -739,9 +734,8 @@
 <span class="sd">            The location.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            SimulationError: if ``(x, y)`` is not on the walkable surface (not</span>
-<span class="sd">                in region ``region_id``, if given), or if ``region_id`` is</span>
-<span class="sd">                missing where regions lie on top of each other.</span>
+<span class="sd">            SimulationError: if ``region_id`` does not exist or ``(x, y)`` is</span>
+<span class="sd">                not in it.</span>
 <span class="sd">        """</span>
         <span class="k">return</span> <span class="n">Location</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">get_location</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">region_id</span><span class="p">))</span></div>
 
