@@ -20,7 +20,7 @@
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script defer="defer" src="_static/theme.js?v=07cb4702"></script>
-    <script defer="defer" src="_static/search.js?v=69a8cd9f"></script>
+    <script defer="defer" src="_static/search.js?v=322617c8"></script>
     <script defer="defer" src="_static/switcher.js?v=bc5f7bca"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
@@ -132,7 +132,7 @@
 <p>JuPedSim 2.0 is a clean break: the model builder classes and the
 <code class="docutils literal notranslate"><span class="pre">XModelAgentParameters</span></code> dataclasses have been <strong>removed without deprecation
 shims</strong>. This guide maps every 1.x construct to its 2.0 replacement.</p>
-<p>The three changes you will encounter in every script:</p>
+<p>The four changes you will encounter in every script:</p>
 <ol class="arabic simple">
 <li><p><strong>Simulation construction</strong> — every model is passed as a <em>configured
 instance</em> carrying its model-level parameters (e.g.
@@ -144,6 +144,9 @@ instantiated per-model state object such as
 <a class="reference internal" href="api/jupedsim/index.html#jupedsim.CollisionFreeSpeedModelState" title="jupedsim.CollisionFreeSpeedModelState"><code class="xref py py-class docutils literal notranslate"><span class="pre">CollisionFreeSpeedModelState</span></code></a>.</p></li>
 <li><p><strong>Agent access</strong> — <a class="reference internal" href="api/jupedsim/index.html#jupedsim.Agent" title="jupedsim.Agent"><code class="xref py py-class docutils literal notranslate"><span class="pre">Agent</span></code></a> objects are lightweight
 <em>handles by id</em> that resolve the agent freshly on every attribute access.</p></li>
+<li><p><strong>Regions</strong> — everything placed in the walkable area (agents and stages)
+takes a required <code class="docutils literal notranslate"><span class="pre">region_id</span></code>. A walkable area given as a polygon is a
+single region with id <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
 </ol>
 <section id="constructing-a-simulation">
 <h2>Constructing a Simulation<a class="headerlink" href="#constructing-a-simulation" title="Link to this heading">#</a></h2>
@@ -231,6 +234,7 @@ the model instance and are <em>not</em> part of the state.</p>
     <span class="n">stage_id</span><span class="o">=</span><span class="n">stage_id</span><span class="p">,</span>
     <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
     <span class="n">state</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModelState</span><span class="p">(</span><span class="n">desired_speed</span><span class="o">=</span><span class="mf">1.4</span><span class="p">),</span>
+    <span class="n">region_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -239,9 +243,47 @@ the model instance and are <em>not</em> part of the state.</p>
 <p>For custom models the state is your own object, of whatever type your
 <a class="reference internal" href="api/jupedsim/index.html#jupedsim.CustomOperationalModel" title="jupedsim.CustomOperationalModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">CustomOperationalModel</span></code></a> expects (a frozen dataclass is
 recommended):</p>
-<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">sim</span><span class="o">.</span><span class="n">add_agent</span><span class="p">(</span><span class="n">journey_id</span><span class="o">=</span><span class="n">journey_id</span><span class="p">,</span> <span class="n">stage_id</span><span class="o">=</span><span class="n">stage_id</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">state</span><span class="o">=</span><span class="n">MyState</span><span class="p">())</span>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">sim</span><span class="o">.</span><span class="n">add_agent</span><span class="p">(</span>
+    <span class="n">journey_id</span><span class="o">=</span><span class="n">journey_id</span><span class="p">,</span>
+    <span class="n">stage_id</span><span class="o">=</span><span class="n">stage_id</span><span class="p">,</span>
+    <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+    <span class="n">state</span><span class="o">=</span><span class="n">MyState</span><span class="p">(),</span>
+    <span class="n">region_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
+</section>
+<section id="regions">
+<h2>Regions<a class="headerlink" href="#regions" title="Link to this heading">#</a></h2>
+<p>The walkable area consists of regions, and regions may lie on top of each
+other, e.g. the floors of a building. An <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> alone therefore does not
+say where a place is: <code class="docutils literal notranslate"><span class="pre">add_agent</span></code>, <code class="docutils literal notranslate"><span class="pre">add_waypoint_stage</span></code>, <code class="docutils literal notranslate"><span class="pre">add_queue_stage</span></code>,
+<code class="docutils literal notranslate"><span class="pre">add_waiting_set_stage</span></code>, <code class="docutils literal notranslate"><span class="pre">add_exit_stage</span></code> and <code class="docutils literal notranslate"><span class="pre">get_location</span></code> take a
+<strong>required keyword argument <code class="docutils literal notranslate"><span class="pre">region_id</span></code></strong>.</p>
+<p>A walkable area given as a polygon (WKT, shapely or a list of points) is a
+single region with id <code class="docutils literal notranslate"><span class="pre">0</span></code>:</p>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="c1"># 1.x</span>
+<span class="n">exit_id</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">add_exit_stage</span><span class="p">(</span><span class="n">exit_polygon</span><span class="p">)</span>
+
+<span class="c1"># 2.0</span>
+<span class="n">exit_id</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">add_exit_stage</span><span class="p">(</span><span class="n">exit_polygon</span><span class="p">,</span> <span class="n">region_id</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>With a <code class="xref py py-class docutils literal notranslate"><span class="pre">WalkableSurface</span></code>, <code class="docutils literal notranslate"><span class="pre">add_region</span></code> and <code class="docutils literal notranslate"><span class="pre">connect_regions</span></code>
+return the region ids:</p>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">surface</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">WalkableSurface</span><span class="p">()</span>
+<span class="n">ground</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">add_region</span><span class="p">(</span><span class="n">exterior</span><span class="o">=</span><span class="n">ground_outline</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">upper</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">add_region</span><span class="p">(</span><span class="n">exterior</span><span class="o">=</span><span class="n">upper_outline</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mf">3.0</span><span class="p">)</span>
+<span class="n">surface</span><span class="o">.</span><span class="n">connect_regions</span><span class="p">(</span>
+    <span class="n">from_region</span><span class="o">=</span><span class="n">ground</span><span class="p">,</span> <span class="n">from_edge</span><span class="o">=</span><span class="n">foot_of_stairs</span><span class="p">,</span>
+    <span class="n">to_region</span><span class="o">=</span><span class="n">upper</span><span class="p">,</span> <span class="n">to_edge</span><span class="o">=</span><span class="n">head_of_stairs</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">sim</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModel</span><span class="p">(),</span> <span class="n">geometry</span><span class="o">=</span><span class="n">surface</span><span class="p">)</span>
+<span class="n">exit_id</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">add_exit_stage</span><span class="p">(</span><span class="n">exit_polygon</span><span class="p">,</span> <span class="n">region_id</span><span class="o">=</span><span class="n">upper</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>An unknown region id, or a point outside the given region, raises
+<a class="reference internal" href="api/jupedsim/index.html#jupedsim.SimulationError" title="jupedsim.SimulationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimulationError</span></code></a>.</p>
 </section>
 <section id="old-new-mapping-per-model">
 <h2>Old → new mapping per model<a class="headerlink" href="#old-new-mapping-per-model" title="Link to this heading">#</a></h2>
@@ -354,6 +396,7 @@ configured instance (e.g.
 <li><a class="reference internal" href="#">Migrating to JuPedSim 2.0</a><ul>
 <li><a class="reference internal" href="#constructing-a-simulation">Constructing a Simulation</a></li>
 <li><a class="reference internal" href="#adding-agents">Adding agents</a></li>
+<li><a class="reference internal" href="#regions">Regions</a></li>
 <li><a class="reference internal" href="#old-new-mapping-per-model">Old → new mapping per model</a></li>
 <li><a class="reference internal" href="#agent-handles">Agent handles</a></li>
 <li><a class="reference internal" href="#mutation-during-iterate-is-now-an-error">Mutation during iterate() is now an error</a></li>

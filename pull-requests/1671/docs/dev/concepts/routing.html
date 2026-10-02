@@ -20,7 +20,7 @@
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script defer="defer" src="../_static/theme.js?v=07cb4702"></script>
-    <script defer="defer" src="../_static/search.js?v=69a8cd9f"></script>
+    <script defer="defer" src="../_static/search.js?v=322617c8"></script>
     <script defer="defer" src="../_static/switcher.js?v=bc5f7bca"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
@@ -192,7 +192,7 @@ The figure below shows how a Waypoint is used in the simulation. Here the center
 </figcaption>
 </figure>
 <p>A Waypoint at <span class="math notranslate nohighlight">\((0.6, -1.4)\)</span> with an accepted distance of 2m can be added to the simulation via:</p>
-<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">waypoint_id</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_waypoint_stage</span><span class="p">([</span><span class="mf">0.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.4</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">waypoint_id</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_waypoint_stage</span><span class="p">([</span><span class="mf">0.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.4</span><span class="p">],</span> <span class="mi">2</span><span class="p">,</span> <span class="n">region_id</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -215,11 +215,11 @@ As a target the agents will aim for the center of the exit polygon.</p>
 </figure>
 <p>An exit located in the polygon <span class="math notranslate nohighlight">\((-0.2, -1.9), (0.2, -1.9), (0.2, -1.7), (-0.2, -1.7)\)</span> can be added to the simulation via:</p>
 <div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="c1"># create exit from coordinates</span>
-<span class="n">exit_id</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_exit_stage</span><span class="p">([(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.7</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.7</span><span class="p">)])</span>
+<span class="n">exit_id</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_exit_stage</span><span class="p">([(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.7</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.7</span><span class="p">)],</span> <span class="n">region_id</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1"># create exit from shapely.Polygon</span>
 <span class="n">exit_polygon</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.7</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.7</span><span class="p">)])</span>
-<span class="n">exit_id</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_exit_stage</span><span class="p">(</span><span class="n">exit_polygon</span><span class="p">)</span>
+<span class="n">exit_id</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_exit_stage</span><span class="p">(</span><span class="n">exit_polygon</span><span class="p">,</span> <span class="n">region_id</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -264,6 +264,8 @@ Afterwards, it retrieves the Queue object from the simulation and then releases 
         <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
         <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>
         <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">region_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="c1"># retrieve queue from the simulation</span>
 <span class="n">queue</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">get_stage</span><span class="p">(</span><span class="n">queue_id</span><span class="p">)</span>
@@ -303,7 +305,8 @@ The first (colored orange) and last defined position (colored blue) are highligh
         <span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span>
         <span class="p">(</span><span class="mi">59</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span>
         <span class="p">(</span><span class="mi">58</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span>
-    <span class="p">]</span>
+    <span class="p">],</span>
+    <span class="n">region_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="c1"># retrieve waiting set from the simulation</span>
 <span class="n">waiting_set</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">get_stage</span><span class="p">(</span><span class="n">waiting_set_id</span><span class="p">)</span>

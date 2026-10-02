@@ -19,7 +19,7 @@
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script defer="defer" src="../../_static/theme.js?v=07cb4702"></script>
-    <script defer="defer" src="../../_static/search.js?v=69a8cd9f"></script>
+    <script defer="defer" src="../../_static/search.js?v=322617c8"></script>
     <script defer="defer" src="../../_static/switcher.js?v=bc5f7bca"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -261,13 +261,11 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Location</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Place the agent stands at, as a</span>
-<span class="sd">        :class:`~jupedsim.location.Location`.</span>
+<span class="w">        </span><span class="sd">"""Current location of the agent.</span>
 
-<span class="sd">        The same position :attr:`position` reports, plus the height of the</span>
-<span class="sd">        floor it is on -- and in a form that can be handed back to the</span>
-<span class="sd">        simulation, e.g. as another agent's</span>
-<span class="sd">        :attr:`final_target`.</span>
+<span class="sd">        Same as :attr:`position`, plus the region and the height of the surface.</span>
+<span class="sd">        Can be used wherever the simulation accepts a location, e.g. to set</span>
+<span class="sd">        another agent's :attr:`final_target`.</span>
 <span class="sd">        """</span>
         <span class="k">return</span> <span class="n">Location</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__resolve</span><span class="p">()</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
 
@@ -289,9 +287,10 @@
 <span class="sd">            When setting the target, the given coordinates must lie within the</span>
 <span class="sd">            walkable area. Otherwise, an error will be thrown immediately.</span>
 
-<span class="sd">        Accepts a :class:`~jupedsim.location.Location` as well as an</span>
-<span class="sd">        ``(x, y)`` tuple. Over stacked floors only the location says which</span>
-<span class="sd">        floor is meant; the tuple is located around the agent's own height.</span>
+<span class="sd">        Accepts a :class:`~jupedsim.location.Location` or an ``(x, y)`` tuple. A</span>
+<span class="sd">        tuple is placed on the surface closest to the agent's own height; to</span>
+<span class="sd">        target another floor, pass a location from</span>
+<span class="sd">        :meth:`~jupedsim.simulation.Simulation.get_location`.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Current final target of the agent, as ``(x, y)``.</span>

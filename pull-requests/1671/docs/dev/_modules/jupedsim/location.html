@@ -19,7 +19,7 @@
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script defer="defer" src="../../_static/theme.js?v=07cb4702"></script>
-    <script defer="defer" src="../../_static/search.js?v=69a8cd9f"></script>
+    <script defer="defer" src="../../_static/search.js?v=322617c8"></script>
     <script defer="defer" src="../../_static/switcher.js?v=bc5f7bca"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -130,26 +130,19 @@
 <div class="viewcode-block" id="Location">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Location">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Location</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">"""A place on the walkable surface.</span>
+<span class="w">    </span><span class="sd">"""A point on the walkable surface, together with the region it lies in.</span>
 
-<span class="sd">    Locations are always obtained from the simulation and never built</span>
-<span class="sd">    directly:</span>
+<span class="sd">    Locations cannot be created directly, get them from the simulation:</span>
 
 <span class="sd">    .. code:: python</span>
 
-<span class="sd">        sim.get_location(x, y, z_hint=3.0)</span>
-<span class="sd">        sim.agent(id).location</span>
+<span class="sd">        sim.get_location(x, y, region_id=upper_floor)</span>
+<span class="sd">        sim.agent(agent_id).location</span>
 
-<span class="sd">    Raw coordinates become a place exactly once, in</span>
-<span class="sd">    :meth:`~jupedsim.simulation.Simulation.get_location`: the geometry has to</span>
-<span class="sd">    stand for a location, and on stacked floors an ``(x, y)`` on its own does</span>
-<span class="sd">    not say which floor is meant. Afterwards the location travels -- pass it</span>
-<span class="sd">    wherever a place is wanted instead of coordinates.</span>
-
-<span class="sd">    A location is read-only and reads only what a caller can act on. It stays</span>
-<span class="sd">    valid as long as the simulation it came from exists, and it does not</span>
-<span class="sd">    follow an agent: reading :attr:`~jupedsim.agent.Agent.location` again</span>
-<span class="sd">    gives where the agent stands now.</span>
+<span class="sd">    A location is read-only and stays valid as long as its simulation exists.</span>
+<span class="sd">    It does not move with an agent: read</span>
+<span class="sd">    :attr:`~jupedsim.agent.Agent.location` again to get the agent's current</span>
+<span class="sd">    location.</span>
 <span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">Location</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -171,11 +164,13 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">z</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Height of the surface here, in metres.</span>
-
-<span class="sd">        Zero throughout a simulation built from a polygon.</span>
-<span class="sd">        """</span>
+<span class="w">        </span><span class="sd">"""Height of the surface here, in metres."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">z</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">region_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Region this location lies in."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">region_id</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">"Location(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="si">}</span><span class="s2">)"</span></div>

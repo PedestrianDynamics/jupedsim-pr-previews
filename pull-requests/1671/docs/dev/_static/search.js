@@ -25,6 +25,11 @@
     if (!loading) {
       loading = import(input.dataset.pagefind)
         .then(async (pf) => {
+          // Result URLs are relative to the index's site root: derive it
+          // from the pagefind.js URL ("/" on jupedsim.org, the preview
+          // folder on PR previews).
+          const pfUrl = new URL(input.dataset.pagefind, window.location.href);
+          await pf.options({ baseUrl: new URL("..", pfUrl).pathname });
           await pf.init();
           pagefind = pf;
           return pf;

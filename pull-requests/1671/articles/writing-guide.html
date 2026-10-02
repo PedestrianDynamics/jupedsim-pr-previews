@@ -19,7 +19,7 @@
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script defer="defer" src="../_static/theme.js?v=07cb4702"></script>
-    <script defer="defer" src="../_static/search.js?v=69a8cd9f"></script>
+    <script defer="defer" src="../_static/search.js?v=322617c8"></script>
     <script defer="defer" src="../_static/switcher.js?v=bc5f7bca"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
@@ -74,7 +74,7 @@
 <p class="report-kicker">Article</p>
 <h1 class="report-title">Writing for jupedsim.org</h1>
 <p class="report-subtitle">How to write articles and notes for jupedsim.org, and a live reference of the markup the site supports.</p>
-<p class="report-meta"><span class="meta-item">JuPedSim team</span><span class="meta-item"><time datetime="2026-09-28" data-pagefind-meta="date[datetime]">2026-09-28</time></span><span class="meta-item">738 words</span><span class="meta-item">4 min read</span>
+<p class="report-meta"><span class="meta-item">JuPedSim team</span><span class="meta-item"><time datetime="2026-09-28" data-pagefind-meta="date[datetime]">2026-09-28</time></span><span class="meta-item">736 words</span><span class="meta-item">4 min read</span>
 </p>
 </header>
 <div class="report-body" data-pagefind-body>
@@ -190,9 +190,7 @@ Something the reader should know.
 <span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
 
 <span class="n">area</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)])</span>
-<span class="n">simulation</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span>
-    <span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModel</span><span class="p">(),</span> <span class="n">geometry</span><span class="o">=</span><span class="n">area</span>
-<span class="p">)</span>
+<span class="n">simulation</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModel</span><span class="p">(),</span> <span class="n">geometry</span><span class="o">=</span><span class="n">area</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-bash notranslate" data-lang="bash"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>jupedsim

@@ -19,7 +19,7 @@
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script defer="defer" src="../../_static/theme.js?v=07cb4702"></script>
-    <script defer="defer" src="../../_static/search.js?v=69a8cd9f"></script>
+    <script defer="defer" src="../../_static/search.js?v=322617c8"></script>
     <script defer="defer" src="../../_static/switcher.js?v=bc5f7bca"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -277,6 +277,8 @@
 
 <span class="sd">                * :class:`~pathlib.Path` (or a str ending in ``.obj``) naming an OBJ file holding a walkable surface. The world is then a surface: agents walk on it and are routed over it, floors may be stacked, and there is no polygon underneath -- :func:`get_geometry` has no answer for such a simulation.</span>
 
+<span class="sd">                A walkable area given as a polygon (all forms but the OBJ file) is a single region with id ``0``.</span>
+
 <span class="sd">            dt: Iteration step size in seconds. It is recommended to</span>
 <span class="sd">                leave this at its default value.</span>
 <span class="sd">            trajectory_writer: Any object implementing the</span>
@@ -307,27 +309,33 @@
 <div class="viewcode-block" id="Simulation.add_waypoint_stage">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.add_waypoint_stage">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_waypoint_stage</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">distance</span><span class="p">,</span> <span class="n">z_hint</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">position</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">distance</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Add a new waypoint stage to this simulation.</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            position: Position of the waypoint</span>
 <span class="sd">            distance: Minimum distance required to reach this waypoint</span>
-<span class="sd">            z_hint: Height the waypoint is meant to sit at. On stacked floors</span>
-<span class="sd">                this picks the one, see :func:`add_agent`.</span>
+<span class="sd">            region_id: Region the waypoint lies in, see :func:`add_agent`.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Id of the new stage.</span>
 
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_waypoint_stage</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">z_hint</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_waypoint_stage</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">region_id</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Simulation.add_queue_stage">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.add_queue_stage">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_queue_stage</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span> <span class="n">z_hint</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Add a new queue state to this simulation.</span>
 
@@ -335,20 +343,22 @@
 <span class="sd">            positions: Ordered list of the waiting</span>
 <span class="sd">                points of this queue. The first one in the list is the head of</span>
 <span class="sd">                the queue while the last one is the back of the queue.</span>
-<span class="sd">            z_hint: Height the queue is meant to sit at. On stacked floors</span>
-<span class="sd">                this picks the one, see :func:`add_agent`.</span>
-
+<span class="sd">            region_id: Region the waiting points lie in, see</span>
+<span class="sd">                :func:`add_agent`.</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            Id of the new stage.</span>
 
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_queue_stage</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">z_hint</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_queue_stage</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">region_id</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Simulation.add_waiting_set_stage">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.add_waiting_set_stage">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_waiting_set_stage</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span> <span class="n">z_hint</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Add a new waiting set stage to this simulation.</span>
 
@@ -356,13 +366,13 @@
 <span class="sd">            positions: Ordered list of the waiting points of this waiting set.</span>
 <span class="sd">                The agents will fill the waiting points in the given order. If more agents</span>
 <span class="sd">                are targeting the waiting, the remaining will wait at the last given point.</span>
-<span class="sd">            z_hint: Height the waiting set is meant to sit at. On stacked floors</span>
-<span class="sd">                this picks the one, see :func:`add_agent`.</span>
+<span class="sd">            region_id: Region the waiting points lie in, see</span>
+<span class="sd">                :func:`add_agent`.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Id of the new stage.</span>
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_waiting_set_stage</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">z_hint</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_waiting_set_stage</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">region_id</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Simulation.add_exit_stage">
@@ -377,13 +387,12 @@
             <span class="o">|</span> <span class="n">shapely</span><span class="o">.</span><span class="n">MultiPoint</span>
             <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
         <span class="p">),</span>
-        <span class="n">z_hint</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Add an exit stage to the simulation.</span>
 
 <span class="sd">        Arguments:</span>
-<span class="sd">            z_hint: Height the exit is meant to sit at. On stacked floors this</span>
-<span class="sd">                picks the one, see :func:`add_agent`.</span>
 <span class="sd">            polygon:</span>
 <span class="sd">                Polygon without holes representing the exit stage. Polygon can be passed as:</span>
 
@@ -399,12 +408,14 @@
 
 <span class="sd">                * str with a valid Well Known Text. In this format the same WKT types as mentioned for the shapely types are supported: GEOMETRYCOLLETION, MULTIPOLYGON, POLYGON, MULTIPOINT. The same restrictions as mentioned for the shapely types apply.</span>
 
+<span class="sd">            region_id: Region the exit lies in, see :func:`add_agent`.</span>
+
 <span class="sd">        Returns:</span>
 <span class="sd">            Id of the added exit stage.</span>
 
 <span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_exit_stage</span><span class="p">(</span>
-            <span class="n">build_polygon</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span><span class="o">.</span><span class="n">boundary</span><span class="p">(),</span> <span class="n">z_hint</span>
+            <span class="n">build_polygon</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span><span class="o">.</span><span class="n">boundary</span><span class="p">(),</span> <span class="n">region_id</span>
         <span class="p">)</span></div>
 
 
@@ -462,7 +473,7 @@
             <span class="o">|</span> <span class="n">WarpDriverModelState</span>
             <span class="o">|</span> <span class="n">Any</span>
         <span class="p">),</span>
-        <span class="n">z_hint</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Add an agent to the simulation.</span>
 
@@ -470,12 +481,9 @@
 <span class="sd">            journey_id: Id of the journey the agent follows.</span>
 <span class="sd">            stage_id: Id of the stage the agent initially targets.</span>
 <span class="sd">            position: Position to spawn the agent at, as ``(x, y)`` in metres.</span>
-<span class="sd">            z_hint: Height the agent is meant to stand at, in metres. On a</span>
-<span class="sd">                surface with stacked floors one ``(x, y)`` carries several of</span>
-<span class="sd">                them, and this says which. The agent lands on the floor whose</span>
-<span class="sd">                height comes closest, and that floor has to come within</span>
-<span class="sd">                0.1 m -- so the hint is a floor level, not a measurement. On a</span>
-<span class="sd">                single-floor world it does not matter.</span>
+<span class="sd">            region_id: Region the agent stands in, as returned by</span>
+<span class="sd">                :meth:`~jupedsim.WalkableSurface.add_region` or</span>
+<span class="sd">                :meth:`~jupedsim.WalkableSurface.connect_regions`.</span>
 <span class="sd">            state: Initial per-agent model state. For built-in models this is</span>
 <span class="sd">                the matching ``XModelState`` instance, e.g.</span>
 <span class="sd">                :class:`~jupedsim.CollisionFreeSpeedModelState`. For custom</span>
@@ -494,40 +502,37 @@
                 <span class="n">stage_id</span><span class="o">=</span><span class="n">stage_id</span><span class="p">,</span>
                 <span class="n">position</span><span class="o">=</span><span class="n">position</span><span class="p">,</span>
                 <span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">,</span>
-                <span class="n">z_hint</span><span class="o">=</span><span class="n">z_hint</span><span class="p">,</span>
+                <span class="n">region_id</span><span class="o">=</span><span class="n">region_id</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_agent</span><span class="p">(</span>
             <span class="n">journey_id</span><span class="o">=</span><span class="n">journey_id</span><span class="p">,</span>
             <span class="n">stage_id</span><span class="o">=</span><span class="n">stage_id</span><span class="p">,</span>
             <span class="n">position</span><span class="o">=</span><span class="n">position</span><span class="p">,</span>
             <span class="n">state</span><span class="o">=</span><span class="n">py_jps</span><span class="o">.</span><span class="n">_CustomModelState</span><span class="p">(</span><span class="n">state</span><span class="p">),</span>
-            <span class="n">z_hint</span><span class="o">=</span><span class="n">z_hint</span><span class="p">,</span>
+            <span class="n">region_id</span><span class="o">=</span><span class="n">region_id</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Simulation.get_location">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.get_location">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">z_hint</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Location</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""The place at ``(x, y)`` on the floor closest to ``z_hint``.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Location</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Get the location at ``(x, y)`` in region ``region_id``.</span>
 
-<span class="sd">        This is where raw coordinates become a place. On a surface with</span>
-<span class="sd">        stacked floors one ``(x, y)`` carries several of them and the hint</span>
-<span class="sd">        says which; the floor found has to come within 0.1 m of it. Pass the</span>
-<span class="sd">        returned location on wherever a place is wanted -- it stays valid as</span>
-<span class="sd">        long as this simulation does.</span>
+<span class="sd">        The location stays valid as long as this simulation exists.</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            x: x coordinate in metres.</span>
 <span class="sd">            y: y coordinate in metres.</span>
-<span class="sd">            z_hint: Height the place is meant to sit at, in metres.</span>
+<span class="sd">            region_id: Region the place lies in, see :func:`add_agent`.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The location.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            SimulationError: if no walkable floor lies there.</span>
+<span class="sd">            SimulationError: if ``region_id`` does not exist or ``(x, y)`` is</span>
+<span class="sd">                not in it.</span>
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="n">Location</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">get_location</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z_hint</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">Location</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">get_location</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">region_id</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="Simulation.mark_agent_for_removal">
