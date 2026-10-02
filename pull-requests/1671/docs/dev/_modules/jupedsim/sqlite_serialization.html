@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>jupedsim.sqlite_serialization &#8212; JuPedSim  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=29da98fa" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupedsim-style.css?v=df79899f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/chroma-dark.css?v=9526b014" />
+    <link rel="stylesheet" type="text/css" href="../../_static/book.css?v=7f8b60bd" />
+    <link rel="stylesheet" type="text/css" href="../../_static/site.css?v=b770cc28" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx.css?v=164699b4" />
+    <script src="../../_static/documentation_options.js?v=7f41d439"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer="defer" src="../../_static/theme.js?v=07cb4702"></script>
+    <script defer="defer" src="../../_static/search.js?v=69a8cd9f"></script>
+    <script defer="defer" src="../../_static/switcher.js?v=bc5f7bca"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="canonical" href="https://www.jupedsim.org/docs/stable/_modules/jupedsim/sqlite_serialization.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+ 
+<script>(function(){var s=null;try{s=localStorage.getItem('theme')}catch(e){}var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var r=document.documentElement;r.dataset.theme=(s==='light'||s==='dark')?s:(d?'dark':'light');r.dataset.themeMode=(s==='light'||s==='dark')?s:'auto';})();</script>
+  </head><body>
+<input type="checkbox" class="book-control" id="menu-control" aria-label="Toggle navigation" aria-controls="book-menu">
+<input type="checkbox" class="book-control" id="search-control" aria-label="Show search">
+<label for="menu-control" class="book-overlay book-overlay-menu" aria-hidden="true"></label>
+<header class="site-bar">
+<div class="site-bar-inner">
+<label for="menu-control" class="site-bar-btn site-bar-menu" aria-label="Open navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></label>
+<a class="book-brand" href="/" aria-label="JuPedSim"><img class="book-logo book-logo-light" src="../../_static/jupedsim-mark-light.svg" alt="JuPedSim" width="737" height="200"><img class="book-logo book-logo-dark" src="../../_static/jupedsim-mark-dark.svg" alt="" aria-hidden="true" width="737" height="200"></a>
+<nav class="site-nav" aria-label="Site">
+<ul>
+<li><a class="bracket-label" href="/articles/">[Articles]</a></li>
+<li><a class="bracket-label" href="/notes/">[Notes]</a></li>
+<li><a class="bracket-label" href="/docs/stable/" aria-current="page">[Docs]</a></li>
+<li><a class="bracket-label" href="/docs/v1x/v1.4.2/">[Docs v1&nbsp;<span aria-hidden="true">↗</span>]</a></li>
+</ul>
+</nav>
+<label for="search-control" class="site-bar-btn site-bar-search-btn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></label>
+<form class="book-search" action="../../search.html" method="get" role="search">
+<input type="search" id="book-search-input" name="q" data-pagefind="/pagefind/pagefind.js" placeholder="Search  /" aria-label="Search" autocomplete="off" spellcheck="false">
+<ul class="book-search-results" id="book-search-results" hidden></ul>
+</form>
+<button type="button" id="book-theme-toggle" class="book-theme-toggle bracket-label" aria-live="polite">Theme: auto</button>
+</div>
+</header>
+<main class="book">
+<aside class="book-menu" id="book-menu"><nav class="site-nav-drawer" aria-label="Site (menu)">
+<ul>
+<li><a class="bracket-label" href="/articles/">[Articles]</a></li>
+<li><a class="bracket-label" href="/notes/">[Notes]</a></li>
+<li><a class="bracket-label" href="/docs/stable/" aria-current="page">[Docs]</a></li>
+<li><a class="bracket-label" href="/docs/v1x/v1.4.2/">[Docs v1&nbsp;<span aria-hidden="true">↗</span>]</a></li>
+</ul>
+</nav>
+<select id="book-version-switcher" class="book-version-switcher" aria-label="Documentation version" data-json="/docs/versions.json" data-match="v2.0.0" data-page="_modules/jupedsim/sqlite_serialization.html" hidden></select>
+<nav class="book-tree" aria-label="Documentation">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration_2_0.html">Migrating to 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/geometry.html">Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/routing.html">Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/custom_serialization.html">Custom Serialization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pedestrian_models/index.html">Pedestrian Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../pedestrian_models/collision_free_speed_model_v3.html">CollisionFreeSpeedModelV3 (Rotational Steering)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pedestrian_models/warp_driver_model.html">WarpDriver Model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/index.html">Notebooks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/model-comparison.html">Comparative Analysis of Pedestrian Dynamics Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/corner.html">Movement around Corners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/corner.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/double-bottleneck.html">Movement through Bottlenecks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/double-bottleneck.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/journey.html">How to work with Journeys</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/journey.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/lane-formation.html">Lane formation in bi-directional flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/lane-formation.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/motivation.html">Modelling Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/motivation.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/queues_waiting.html">Waiting in Queues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/queues_waiting.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/routing.html">How Route Choice can Impact Evacuation Times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/routing.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/direct_steering.html">Leader–Follower Dynamics with Direct Steering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/single-file.html">Simulating Single-File Movement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/single-file.html#download">Download</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../debugging/index.html">Debugging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../debugging/profiling_and_timing.html">Profiling and Timing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../disclaimer.html">Disclaimer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/jupedsim/index.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/jupedsim/models/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">jupedsim.models</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../citation/citation.html">Cite JuPedSim</a></li>
+</ul>
+
+</nav>
+</aside>
+<div class="book-page">
+<article class="report" data-pagefind-filter="section:Docs" data-pagefind-meta="title:jupedsim.sqlite_serialization">
+<header class="report-header">
+<p class="report-kicker">Docs</p>
+<h1 class="report-title">jupedsim.sqlite_serialization</h1>
+</header>
+<div class="report-body">
+<h1>Source code for jupedsim.sqlite_serialization</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: LGPL-3.0-or-later</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Final</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapely</span><span class="w"> </span><span class="kn">import</span> <span class="n">from_wkt</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.serialization</span><span class="w"> </span><span class="kn">import</span> <span class="n">TrajectoryWriter</span><span class="p">,</span> <span class="n">walkable_area_as_wkt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.simulation</span><span class="w"> </span><span class="kn">import</span> <span class="n">Simulation</span>
+
+<span class="n">DATABASE_VERSION</span><span class="p">:</span> <span class="n">Final</span> <span class="o">=</span> <span class="mi">3</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_database_version</span><span class="p">(</span><span class="n">connection</span><span class="p">:</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">cur</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">"SELECT value FROM metadata WHERE key = ?"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"version"</span><span class="p">,)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">uses_latest_database_version</span><span class="p">(</span><span class="n">connection</span><span class="p">:</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">version</span> <span class="o">=</span> <span class="n">get_database_version</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">version</span> <span class="o">==</span> <span class="n">DATABASE_VERSION</span>
+
+
+<div class="viewcode-block" id="SqliteTrajectoryWriter">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.SqliteTrajectoryWriter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SqliteTrajectoryWriter</span><span class="p">(</span><span class="n">TrajectoryWriter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Write trajectory data into a sqlite db"""</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">output_file</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+        <span class="n">every_nth_frame</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="n">commit_every_nth_write</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""SqliteTrajectoryWriter constructor</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            output_file : pathlib.Path</span>
+<span class="sd">                name of the output file.</span>
+<span class="sd">                Note: the file will not be written until the first call to :func:`begin_writing`</span>
+<span class="sd">            every_nth_frame: int</span>
+<span class="sd">                indicates interval between writes, 1 means every frame, 5 every 5th</span>
+<span class="sd">            commit_every_nth_write: int</span>
+<span class="sd">                number of frames to keep in RAM before writing them to disk.</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_output_file</span> <span class="o">=</span> <span class="n">output_file</span>
+        <span class="k">if</span> <span class="n">every_nth_frame</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TrajectoryWriter</span><span class="o">.</span><span class="n">Exception</span><span class="p">(</span><span class="s2">"'every_nth_frame' has to be &gt; 0"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_every_nth_frame</span> <span class="o">=</span> <span class="n">every_nth_frame</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_con</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_output_file</span><span class="p">)</span>
+        <span class="c1"># Don't wait for the OS to persist data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA synchronous=OFF;"</span><span class="p">)</span>
+        <span class="c1"># Don't allow rollbacks (we don't have need for it)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA journal_mode=OFF;"</span><span class="p">)</span>
+
+        <span class="c1"># Buffering checks</span>
+        <span class="k">if</span> <span class="n">commit_every_nth_write</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TrajectoryWriter</span><span class="o">.</span><span class="n">Exception</span><span class="p">(</span>
+                <span class="s2">"'commit_every_nth_write' has to be &gt; 0"</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_commit_every_nth_write</span> <span class="o">=</span> <span class="n">commit_every_nth_write</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_buffered_frame_count</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="SqliteTrajectoryWriter.begin_writing">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.SqliteTrajectoryWriter.begin_writing">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">begin_writing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simulation</span><span class="p">:</span> <span class="n">Simulation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Begin writing trajectory data.</span>
+
+<span class="sd">        This method is intended to handle all data writing that has to be done</span>
+<span class="sd">        once before the trajectory data can be written. E.g. Meta information</span>
+<span class="sd">        such as framerate etc...</span>
+<span class="sd">        """</span>
+        <span class="n">fps</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">simulation</span><span class="o">.</span><span class="n">delta_time</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_every_nth_frame</span>
+        <span class="n">geo</span> <span class="o">=</span> <span class="n">walkable_area_as_wkt</span><span class="p">(</span><span class="n">simulation</span><span class="p">)</span>
+
+        <span class="n">cur</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_con</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"BEGIN"</span><span class="p">)</span>
+            <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"DROP TABLE IF EXISTS trajectory_data"</span><span class="p">)</span>
+            <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="s2">"CREATE TABLE trajectory_data ("</span>
+                <span class="s2">"   frame INTEGER NOT NULL,"</span>
+                <span class="s2">"   id INTEGER NOT NULL,"</span>
+                <span class="s2">"   pos_x REAL NOT NULL,"</span>
+                <span class="s2">"   pos_y REAL NOT NULL)"</span>
+            <span class="p">)</span>
+            <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"DROP TABLE IF EXISTS metadata"</span><span class="p">)</span>
+            <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="s2">"CREATE TABLE metadata(key TEXT NOT NULL UNIQUE PRIMARY KEY, value TEXT NOT NULL)"</span>
+            <span class="p">)</span>
+            <span class="n">cur</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span>
+                <span class="s2">"INSERT INTO metadata VALUES(?, ?)"</span><span class="p">,</span>
+                <span class="p">((</span><span class="s2">"version"</span><span class="p">,</span> <span class="n">DATABASE_VERSION</span><span class="p">),</span> <span class="p">(</span><span class="s2">"fps"</span><span class="p">,</span> <span class="n">fps</span><span class="p">)),</span>
+            <span class="p">)</span>
+            <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"DROP TABLE IF EXISTS geometry"</span><span class="p">)</span>
+            <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="s2">"CREATE TABLE geometry("</span>
+                <span class="s2">"   hash INTEGER NOT NULL, "</span>
+                <span class="s2">"   wkt TEXT NOT NULL)"</span>
+            <span class="p">)</span>
+            <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"CREATE UNIQUE INDEX geometry_hash on geometry( hash)"</span><span class="p">)</span>
+            <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="s2">"INSERT INTO geometry VALUES(?, ?)"</span><span class="p">,</span>
+                <span class="p">(</span><span class="nb">hash</span><span class="p">(</span><span class="n">geo</span><span class="p">),</span> <span class="n">geo</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"DROP TABLE IF EXISTS frame_data"</span><span class="p">)</span>
+            <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="s2">"CREATE TABLE frame_data("</span>
+                <span class="s2">"   frame INTEGER NOT NULL,"</span>
+                <span class="s2">"   geometry_hash INTEGER NOT NULL)"</span>
+            <span class="p">)</span>
+
+            <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="s2">"CREATE INDEX frame_id_idx ON trajectory_data(frame, id)"</span>
+            <span class="p">)</span>
+            <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"COMMIT"</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TrajectoryWriter</span><span class="o">.</span><span class="n">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Error creating database: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SqliteTrajectoryWriter.write_iteration_state">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.SqliteTrajectoryWriter.write_iteration_state">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">write_iteration_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simulation</span><span class="p">:</span> <span class="n">Simulation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Write trajectory data of one simulation iteration.</span>
+
+<span class="sd">        This method is intended to handle serialization of the trajectory data</span>
+<span class="sd">        of a single iteration. The default behaviour is to buffer frames in memory</span>
+<span class="sd">        and only writing to disk when the buffer is full or close() is called.</span>
+<span class="sd">        """</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_con</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TrajectoryWriter</span><span class="o">.</span><span class="n">Exception</span><span class="p">(</span><span class="s2">"Database not opened."</span><span class="p">)</span>
+
+        <span class="n">iteration</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">iteration_count</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">iteration</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">every_nth_frame</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">iteration</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">every_nth_frame</span><span class="p">()</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_con</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">frame_data</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">(</span>
+                    <span class="n">frame</span><span class="p">,</span>
+                    <span class="n">agent</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                    <span class="n">agent</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">agent</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">agent</span> <span class="ow">in</span> <span class="n">simulation</span><span class="o">.</span><span class="n">agents</span><span class="p">()</span>
+            <span class="p">]</span>
+            <span class="n">cur</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span>
+                <span class="s2">"INSERT INTO trajectory_data VALUES(?, ?, ?, ?)"</span><span class="p">,</span>
+                <span class="n">frame_data</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">geo_wkt</span> <span class="o">=</span> <span class="n">walkable_area_as_wkt</span><span class="p">(</span><span class="n">simulation</span><span class="p">)</span>
+            <span class="n">geo_hash</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">geo_wkt</span><span class="p">)</span>
+            <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="s2">"INSERT OR IGNORE INTO geometry(hash, wkt) VALUES(?,?)"</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">geo_hash</span><span class="p">,</span> <span class="n">geo_wkt</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="s2">"INSERT INTO frame_data VALUES(?, ?)"</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">geo_hash</span><span class="p">),</span>
+            <span class="p">)</span>
+
+            <span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">from_wkt</span><span class="p">(</span><span class="n">geo_wkt</span><span class="p">)</span><span class="o">.</span><span class="n">bounds</span>
+
+            <span class="n">old_xmin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x_min</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
+            <span class="n">old_xmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x_max</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
+            <span class="n">old_ymin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_min</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
+            <span class="n">old_ymax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_max</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
+
+            <span class="n">cur</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span>
+                <span class="s2">"INSERT OR REPLACE INTO metadata(key, value) VALUES(?,?)"</span><span class="p">,</span>
+                <span class="p">[</span>
+                    <span class="p">(</span><span class="s2">"xmin"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">old_xmin</span><span class="p">)))),</span>
+                    <span class="p">(</span><span class="s2">"xmax"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">xmax</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">old_xmax</span><span class="p">)))),</span>
+                    <span class="p">(</span><span class="s2">"ymin"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">ymin</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">old_ymin</span><span class="p">)))),</span>
+                    <span class="p">(</span><span class="s2">"ymax"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">ymax</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">old_ymax</span><span class="p">)))),</span>
+                <span class="p">],</span>
+            <span class="p">)</span>
+            <span class="c1"># Trigger flush if buffer full</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_buffered_frame_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffered_frame_count</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commit_every_nth_write</span><span class="p">:</span>
+                <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"COMMIT"</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_buffered_frame_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TrajectoryWriter</span><span class="o">.</span><span class="n">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Error writing to database: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SqliteTrajectoryWriter.close">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.SqliteTrajectoryWriter.close">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Flush buffer and close DB connection. Call at simulation end."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffered_frame_count</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_con</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+            <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"COMMIT"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_con</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_con</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_con</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: ignore[assignment]</span></div>
+
+
+<div class="viewcode-block" id="SqliteTrajectoryWriter.every_nth_frame">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.SqliteTrajectoryWriter.every_nth_frame">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">every_nth_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_every_nth_frame</span></div>
+
+
+<div class="viewcode-block" id="SqliteTrajectoryWriter.connection">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.SqliteTrajectoryWriter.connection">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_con</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_value_or_default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cur</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">"SELECT value FROM metadata WHERE key = ?"</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">default</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="n">default</span><span class="p">)(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_x_min</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cur</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value_or_default</span><span class="p">(</span><span class="n">cur</span><span class="p">,</span> <span class="s2">"xmin"</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_x_max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cur</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value_or_default</span><span class="p">(</span><span class="n">cur</span><span class="p">,</span> <span class="s2">"xmax"</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"-inf"</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_y_min</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cur</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value_or_default</span><span class="p">(</span><span class="n">cur</span><span class="p">,</span> <span class="s2">"ymin"</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_y_max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cur</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value_or_default</span><span class="p">(</span><span class="n">cur</span><span class="p">,</span> <span class="s2">"ymax"</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"-inf"</span><span class="p">))</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">update_database_to_latest_version</span><span class="p">(</span><span class="n">connection</span><span class="p">:</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">):</span>
+    <span class="n">version</span> <span class="o">=</span> <span class="n">get_database_version</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">version</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">convert_database_v1_to_v2</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+        <span class="n">version</span> <span class="o">=</span> <span class="mi">2</span>
+
+    <span class="k">if</span> <span class="n">version</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">convert_database_v2_to_v3</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+        <span class="n">version</span> <span class="o">=</span> <span class="mi">3</span>
+
+    <span class="c1"># ... for future versions</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_database_v1_to_v2</span><span class="p">(</span><span class="n">connection</span><span class="p">:</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">):</span>
+    <span class="n">cur</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"BEGIN"</span><span class="p">)</span>
+
+        <span class="n">version</span> <span class="o">=</span> <span class="n">get_database_version</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">version</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Internal Error: When converting from database version 1 to 2, encountered database version </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">."</span>
+            <span class="p">)</span>
+
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">"UPDATE metadata SET value = ? WHERE key = ?"</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">"version"</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">"CREATE TABLE frame_data("</span>
+            <span class="s2">"   frame INTEGER NOT NULL,"</span>
+            <span class="s2">"   geometry_hash INTEGER NOT NULL)"</span>
+        <span class="p">)</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT wkt FROM geometry"</span><span class="p">)</span>
+        <span class="n">wkt_str</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">wkt_hash</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">wkt_str</span><span class="p">)</span>
+
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"ALTER TABLE geometry ADD hash INTEGER NOT NULL DEFAULT 0"</span><span class="p">)</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"UPDATE geometry SET hash = ?"</span><span class="p">,</span> <span class="p">(</span><span class="n">wkt_hash</span><span class="p">,))</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT max(frame) FROM trajectory_data"</span><span class="p">)</span>
+        <span class="n">frame_limit</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="n">cur</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span>
+            <span class="s2">"INSERT INTO frame_data VALUES(?, ?)"</span><span class="p">,</span>
+            <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">frame_limit</span><span class="p">),</span> <span class="n">itertools</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">wkt_hash</span><span class="p">)),</span>
+        <span class="p">)</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"COMMIT"</span><span class="p">)</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"VACUUM"</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">TrajectoryWriter</span><span class="o">.</span><span class="n">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Error writing to database: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_database_v2_to_v3</span><span class="p">(</span><span class="n">connection</span><span class="p">:</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">):</span>
+    <span class="n">cur</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"BEGIN"</span><span class="p">)</span>
+
+        <span class="n">version</span> <span class="o">=</span> <span class="n">get_database_version</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">version</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Internal Error: When converting from database version 2 to 3, encountered database version </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">."</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Orientation (ori_x, ori_y) does no longer exist. Only change</span>
+        <span class="c1"># the version in-place as v2 only has additional data we just ignore.</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">"UPDATE metadata SET value = ? WHERE key = ?"</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">"version"</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"COMMIT"</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">TrajectoryWriter</span><span class="o">.</span><span class="n">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Error writing to database: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+<footer class="report-footer">Last updated 2026-10-02</footer>
+</article>
+</div>
+</main><footer class="site-footer"><div class="site-footer-inner">
+<p class="site-footer-text">© JuPedSim contributors · LGPL-3.0</p>
+<ul class="site-footer-links"><li><a href="https://github.com/PedestrianDynamics/jupedsim">GitHub</a></li><li><a href="/notes/feed.xml">RSS</a></li><li><a href="/docs/v1x/v1.4.2/">1.x docs</a></li></ul>
+</div></footer>
+  </body>
+</html>

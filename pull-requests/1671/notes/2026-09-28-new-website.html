@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../_static/logo.png" sizes="482x536" rel="icon" type="image/png">
+    <title>A new jupedsim.org &#8212; JuPedSim  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=29da98fa" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupedsim-style.css?v=df79899f" />
+    <link rel="stylesheet" type="text/css" href="../_static/chroma-dark.css?v=9526b014" />
+    <link rel="stylesheet" type="text/css" href="../_static/book.css?v=7f8b60bd" />
+    <link rel="stylesheet" type="text/css" href="../_static/site.css?v=b770cc28" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx.css?v=164699b4" />
+    <script src="../_static/documentation_options.js?v=7f41d439"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer="defer" src="../_static/theme.js?v=07cb4702"></script>
+    <script defer="defer" src="../_static/search.js?v=69a8cd9f"></script>
+    <script defer="defer" src="../_static/switcher.js?v=bc5f7bca"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <link rel="canonical" href="https://www.jupedsim.org/notes/2026-09-28-new-website.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Notes" href="index.html" />
+ 
+<script>(function(){var s=null;try{s=localStorage.getItem('theme')}catch(e){}var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var r=document.documentElement;r.dataset.theme=(s==='light'||s==='dark')?s:(d?'dark':'light');r.dataset.themeMode=(s==='light'||s==='dark')?s:'auto';})();</script>
+<link rel="alternate" type="application/rss+xml" href="/notes/feed.xml" title="JuPedSim">
+  </head><body>
+<input type="checkbox" class="book-control" id="menu-control" aria-label="Toggle navigation" aria-controls="book-menu">
+<input type="checkbox" class="book-control" id="search-control" aria-label="Show search">
+<input type="checkbox" class="book-control" id="toc-control" aria-label="Toggle table of contents" aria-controls="book-toc">
+<label for="menu-control" class="book-overlay book-overlay-menu" aria-hidden="true"></label>
+<label for="toc-control" class="book-overlay book-overlay-toc" aria-hidden="true"></label>
+<header class="site-bar">
+<div class="site-bar-inner">
+<label for="menu-control" class="site-bar-btn site-bar-menu" aria-label="Open navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></label>
+<a class="book-brand" href="/" aria-label="JuPedSim"><img class="book-logo book-logo-light" src="../_static/jupedsim-mark-light.svg" alt="JuPedSim" width="737" height="200"><img class="book-logo book-logo-dark" src="../_static/jupedsim-mark-dark.svg" alt="" aria-hidden="true" width="737" height="200"></a>
+<nav class="site-nav" aria-label="Site">
+<ul>
+<li><a class="bracket-label" href="/articles/">[Articles]</a></li>
+<li><a class="bracket-label" href="/notes/" aria-current="page">[Notes]</a></li>
+<li><a class="bracket-label" href="/docs/stable/">[Docs]</a></li>
+<li><a class="bracket-label" href="/docs/v1x/v1.4.2/">[Docs v1&nbsp;<span aria-hidden="true">↗</span>]</a></li>
+</ul>
+</nav>
+<label for="search-control" class="site-bar-btn site-bar-search-btn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></label>
+<form class="book-search" action="../search.html" method="get" role="search">
+<input type="search" id="book-search-input" name="q" data-pagefind="/pagefind/pagefind.js" placeholder="Search  /" aria-label="Search" autocomplete="off" spellcheck="false">
+<ul class="book-search-results" id="book-search-results" hidden></ul>
+</form>
+<button type="button" id="book-theme-toggle" class="book-theme-toggle bracket-label" aria-live="polite">Theme: auto</button>
+<label for="toc-control" class="site-bar-btn site-bar-toc" aria-label="On this page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></label>
+</div>
+</header>
+<main class="book book--no-tree">
+<aside class="book-menu" id="book-menu"><nav class="site-nav-drawer" aria-label="Site (menu)">
+<ul>
+<li><a class="bracket-label" href="/articles/">[Articles]</a></li>
+<li><a class="bracket-label" href="/notes/" aria-current="page">[Notes]</a></li>
+<li><a class="bracket-label" href="/docs/stable/">[Docs]</a></li>
+<li><a class="bracket-label" href="/docs/v1x/v1.4.2/">[Docs v1&nbsp;<span aria-hidden="true">↗</span>]</a></li>
+</ul>
+</nav>
+</aside>
+<div class="book-page">
+<article class="report" data-pagefind-filter="section:Note" data-pagefind-meta="title:A new jupedsim.org">
+<header class="report-header">
+<p class="report-kicker">Note</p>
+<h1 class="report-title">A new jupedsim.org</h1>
+<p class="report-subtitle">jupedsim.org now has articles and notes; the documentation moves to /docs/ and the 1.x docs are archived.</p>
+<p class="report-meta"><span class="meta-item">JuPedSim team</span><span class="meta-item"><time datetime="2026-09-28" data-pagefind-meta="date[datetime]">2026-09-28</time></span>
+</p>
+</header>
+<div class="report-body" data-pagefind-body>
+<!-- SPDX-License-Identifier: LGPL-3.0-or-later -->
+<section class="tex2jax_ignore mathjax_ignore" id="a-new-jupedsim-org">
+<h1>A new jupedsim.org<a class="headerlink" href="#a-new-jupedsim-org" title="Link to this heading">#</a></h1>
+<p>jupedsim.org used to be the versioned documentation and nothing else. The site
+now has a home for content that does not change with every release:
+<a class="reference internal" href="../articles/index.html"><span class="std std-doc">articles</span></a> and notes like this one, with an
+<a href="/notes/feed.xml">RSS feed</a>.</p>
+<section id="what-moved-where">
+<h2>What moved where<a class="headerlink" href="#what-moved-where" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Landing page, articles and notes</strong> are at the root: <code class="docutils literal notranslate"><span class="pre">/</span></code>, <code class="docutils literal notranslate"><span class="pre">/articles/</span></code>,
+<code class="docutils literal notranslate"><span class="pre">/notes/</span></code>. They are built from the <code class="docutils literal notranslate"><span class="pre">master</span></code> branch.</p></li>
+<li><p><strong>Documentation</strong> of the 2.x releases is published under
+<code class="docutils literal notranslate"><span class="pre">/docs/&lt;version&gt;/</span></code>; <a href="/docs/stable/">/docs/stable/</a> always points to the
+latest release. Until 2.0.0 is released, <code class="docutils literal notranslate"><span class="pre">/docs/stable/</span></code> forwards to the
+archived 1.x documentation.</p></li>
+<li><p><strong>The 1.x documentation</strong> (v1.0.0 to v1.4.2) is frozen and archived
+unchanged at <a href="/docs/v1x/v1.4.2/">/docs/v1x/v1.4.2/</a>. Old links to pages
+such as <code class="docutils literal notranslate"><span class="pre">/stable/...</span></code> or <code class="docutils literal notranslate"><span class="pre">/v1.4.2/...</span></code> keep working and redirect there.</p></li>
+</ul>
+</section>
+<section id="intersphinx-users">
+<h2>Intersphinx users<a class="headerlink" href="#intersphinx-users" title="Link to this heading">#</a></h2>
+<p>If your project links to the 1.x API with <code class="docutils literal notranslate"><span class="pre">sphinx.ext.intersphinx</span></code>, point the
+mapping to the archive:</p>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">intersphinx_mapping</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"jupedsim"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"https://www.jupedsim.org/docs/v1x/v1.4.2/"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Once 2.0.0 is released, projects using the 2.x API map <code class="docutils literal notranslate"><span class="pre">jupedsim</span></code> to
+<code class="docutils literal notranslate"><span class="pre">https://www.jupedsim.org/docs/stable/</span></code> instead.</p>
+</section>
+</section>
+
+</div>
+</article>
+<nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="index.html" rel="prev"><small>Previous</small>Notes</a>
+</nav>
+</div>
+<aside class="book-toc" id="book-toc">
+<p class="book-toc-title">On this page</p>
+<nav id="TableOfContents">
+<ul>
+<li><a class="reference internal" href="#">A new jupedsim.org</a><ul>
+<li><a class="reference internal" href="#what-moved-where">What moved where</a></li>
+<li><a class="reference internal" href="#intersphinx-users">Intersphinx users</a></li>
+</ul>
+</li>
+</ul>
+
+</nav>
+</aside>
+</main><footer class="site-footer"><div class="site-footer-inner">
+<p class="site-footer-text">© JuPedSim contributors · LGPL-3.0</p>
+<ul class="site-footer-links"><li><a href="https://github.com/PedestrianDynamics/jupedsim">GitHub</a></li><li><a href="/notes/feed.xml">RSS</a></li><li><a href="/docs/v1x/v1.4.2/">1.x docs</a></li></ul>
+</div></footer>
+  </body>
+</html>
