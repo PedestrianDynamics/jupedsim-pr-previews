@@ -817,7 +817,7 @@ Attributes
    simulation.
 
 
-   .. py:method:: add_agent(*, journey_id: int, stage_id: int, position: tuple[float, float], state: jupedsim.models.generalized_centrifugal_force.GeneralizedCentrifugalForceModelState | jupedsim.models.collision_free_speed.CollisionFreeSpeedModelState | jupedsim.models.collision_free_speed_v2.CollisionFreeSpeedModelV2State | jupedsim.models.collision_free_speed_v3.CollisionFreeSpeedModelV3State | jupedsim.models.anticipation_velocity_model.AnticipationVelocityModelState | jupedsim.models.social_force.SocialForceModelState | jupedsim.models.warp_driver.WarpDriverModelState | Any, region_id: int = 0) -> int
+   .. py:method:: add_agent(*, journey_id: int, stage_id: int, position: tuple[float, float], state: jupedsim.models.generalized_centrifugal_force.GeneralizedCentrifugalForceModelState | jupedsim.models.collision_free_speed.CollisionFreeSpeedModelState | jupedsim.models.collision_free_speed_v2.CollisionFreeSpeedModelV2State | jupedsim.models.collision_free_speed_v3.CollisionFreeSpeedModelV3State | jupedsim.models.anticipation_velocity_model.AnticipationVelocityModelState | jupedsim.models.social_force.SocialForceModelState | jupedsim.models.warp_driver.WarpDriverModelState | Any, region_id: int) -> int
 
       Add an agent to the simulation.
 
@@ -856,7 +856,7 @@ Attributes
 
 
 
-   .. py:method:: add_exit_stage(polygon: str | shapely.GeometryCollection | shapely.Polygon | shapely.MultiPolygon | shapely.MultiPoint | list[tuple[float, float]], region_id: int = 0) -> int
+   .. py:method:: add_exit_stage(polygon: str | shapely.GeometryCollection | shapely.Polygon | shapely.MultiPolygon | shapely.MultiPoint | list[tuple[float, float]], *, region_id: int) -> int
 
       Add an exit stage to the simulation.
 
@@ -889,7 +889,7 @@ Attributes
 
 
 
-   .. py:method:: add_queue_stage(positions: list[tuple[float, float]], region_id: int = 0) -> int
+   .. py:method:: add_queue_stage(positions: list[tuple[float, float]], *, region_id: int) -> int
 
       Add a new queue state to this simulation.
 
@@ -903,7 +903,7 @@ Attributes
 
 
 
-   .. py:method:: add_waiting_set_stage(positions: list[tuple[float, float]], region_id: int = 0) -> int
+   .. py:method:: add_waiting_set_stage(positions: list[tuple[float, float]], *, region_id: int) -> int
 
       Add a new waiting set stage to this simulation.
 
@@ -917,7 +917,7 @@ Attributes
 
 
 
-   .. py:method:: add_waypoint_stage(position: tuple[float, float], distance, region_id: int = 0) -> int
+   .. py:method:: add_waypoint_stage(position: tuple[float, float], distance, *, region_id: int) -> int
 
       Add a new waypoint stage to this simulation.
 
@@ -1023,7 +1023,7 @@ Attributes
 
 
 
-   .. py:method:: get_location(x: float, y: float, region_id: int = 0) -> jupedsim.location.Location
+   .. py:method:: get_location(x: float, y: float, *, region_id: int) -> jupedsim.location.Location
 
       Get the location at ``(x, y)`` in region ``region_id``.
 

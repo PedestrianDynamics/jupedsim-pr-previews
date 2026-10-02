@@ -416,7 +416,7 @@
             <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">num_regions</span><span class="si">}</span><span class="s2"> regions."</span>
         <span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">geometry</span><span class="o">.</span><span class="n">polygon</span><span class="p">()</span><span class="o">.</span><span class="n">as_wkt</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">geometry</span><span class="o">.</span><span class="n">polygon</span><span class="p">(</span><span class="n">region_id</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">as_wkt</span><span class="p">()</span>
     <span class="k">except</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">SimulationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">TrajectoryWriter</span><span class="o">.</span><span class="n">Exception</span><span class="p">(</span>
             <span class="s2">"Cannot write trajectories for a simulation with a geometry "</span>

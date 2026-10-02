@@ -488,6 +488,8 @@
 
 <span class="sd">                * :class:`~pathlib.Path` (or a str ending in ``.obj``) naming an OBJ file holding a walkable surface. The world is then a surface: agents walk on it and are routed over it, floors may be stacked, and there is no polygon underneath -- :func:`get_geometry` has no answer for such a simulation.</span>
 
+<span class="sd">                A walkable area given as a polygon (all forms but the OBJ file) is a single region with id ``0``.</span>
+
 <span class="sd">            dt: Iteration step size in seconds. It is recommended to</span>
 <span class="sd">                leave this at its default value.</span>
 <span class="sd">            trajectory_writer: Any object implementing the</span>
@@ -521,7 +523,8 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">position</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
         <span class="n">distance</span><span class="p">,</span>
-        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Add a new waypoint stage to this simulation.</span>
 
@@ -542,7 +545,8 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">add_queue_stage</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
-        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Add a new queue state to this simulation.</span>
 
@@ -564,7 +568,8 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">add_waiting_set_stage</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
-        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Add a new waiting set stage to this simulation.</span>
 
@@ -593,7 +598,8 @@
             <span class="o">|</span> <span class="n">shapely</span><span class="o">.</span><span class="n">MultiPoint</span>
             <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
         <span class="p">),</span>
-        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Add an exit stage to the simulation.</span>
 
@@ -678,7 +684,7 @@
             <span class="o">|</span> <span class="n">WarpDriverModelState</span>
             <span class="o">|</span> <span class="n">Any</span>
         <span class="p">),</span>
-        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Add an agent to the simulation.</span>
 
@@ -720,7 +726,7 @@
 
 <div class="viewcode-block" id="Simulation.get_location">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.get_location">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Location</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Location</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Get the location at ``(x, y)`` in region ``region_id``.</span>
 
 <span class="sd">        The location stays valid as long as this simulation exists.</span>
