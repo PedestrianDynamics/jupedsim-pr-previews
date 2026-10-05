@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>jupedsim.agent_view &#8212; JuPedSim  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=29da98fa" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupedsim-style.css?v=df79899f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/chroma-dark.css?v=9526b014" />
+    <link rel="stylesheet" type="text/css" href="../../_static/book.css?v=7f8b60bd" />
+    <link rel="stylesheet" type="text/css" href="../../_static/site.css?v=34df8e08" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx.css?v=164699b4" />
+    <script src="../../_static/documentation_options.js?v=7f41d439"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer="defer" src="../../_static/theme.js?v=07cb4702"></script>
+    <script defer="defer" src="../../_static/search.js?v=322617c8"></script>
+    <script defer="defer" src="../../_static/switcher.js?v=bc5f7bca"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="canonical" href="https://www.jupedsim.org/docs/stable/_modules/jupedsim/agent_view.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+ 
+<script>(function(){var s=null;try{s=localStorage.getItem('theme')}catch(e){}var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var r=document.documentElement;r.dataset.theme=(s==='light'||s==='dark')?s:(d?'dark':'light');r.dataset.themeMode=(s==='light'||s==='dark')?s:'auto';})();</script>
+  </head><body>
+<input type="checkbox" class="book-control" id="menu-control" aria-label="Toggle navigation" aria-controls="book-menu">
+<input type="checkbox" class="book-control" id="search-control" aria-label="Show search">
+<label for="menu-control" class="book-overlay book-overlay-menu" aria-hidden="true"></label>
+<header class="site-bar">
+<div class="site-bar-inner">
+<label for="menu-control" class="site-bar-btn site-bar-menu" aria-label="Open navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></label>
+<a class="book-brand" href="/pull-requests/1668/" aria-label="JuPedSim"><img class="book-logo book-logo-light" src="../../_static/jupedsim-mark-light.svg" alt="JuPedSim" width="737" height="200"><img class="book-logo book-logo-dark" src="../../_static/jupedsim-mark-dark.svg" alt="" aria-hidden="true" width="737" height="200"></a>
+<nav class="site-nav" aria-label="Site">
+<ul>
+<li><a class="bracket-label" href="/pull-requests/1668/articles/">[Articles]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1668/notes/">[Notes]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1668/docs/stable/" aria-current="page">[Docs]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1668/docs/v1x/v1.4.2/">[Docs v1&nbsp;<span aria-hidden="true">↗</span>]</a></li>
+</ul>
+</nav>
+<label for="search-control" class="site-bar-btn site-bar-search-btn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></label>
+<form class="book-search" action="../../search.html" method="get" role="search">
+<input type="search" id="book-search-input" name="q" data-pagefind="/pull-requests/1668/pagefind/pagefind.js" placeholder="Search  /" aria-label="Search" autocomplete="off" spellcheck="false">
+<ul class="book-search-results" id="book-search-results" hidden></ul>
+</form>
+<button type="button" id="book-theme-toggle" class="book-theme-toggle bracket-label" aria-live="polite">Theme: auto</button>
+</div>
+</header>
+<main class="book">
+<aside class="book-menu" id="book-menu"><nav class="site-nav-drawer" aria-label="Site (menu)">
+<ul>
+<li><a class="bracket-label" href="/pull-requests/1668/articles/">[Articles]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1668/notes/">[Notes]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1668/docs/stable/" aria-current="page">[Docs]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1668/docs/v1x/v1.4.2/">[Docs v1&nbsp;<span aria-hidden="true">↗</span>]</a></li>
+</ul>
+</nav>
+<select id="book-version-switcher" class="book-version-switcher" aria-label="Documentation version" data-json="/pull-requests/1668/docs/versions.json" data-match="v2.0.0" data-page="_modules/jupedsim/agent_view.html" hidden></select>
+<nav class="book-tree" aria-label="Documentation">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration_2_0.html">Migrating to 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/geometry.html">Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/routing.html">Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/custom_serialization.html">Custom Serialization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pedestrian_models/index.html">Pedestrian Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../pedestrian_models/collision_free_speed_model_v3.html">CollisionFreeSpeedModelV3 (Rotational Steering)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pedestrian_models/warp_driver_model.html">WarpDriver Model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/index.html">Notebooks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/model-comparison.html">Comparative Analysis of Pedestrian Dynamics Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/corner.html">Movement around Corners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/corner.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/double-bottleneck.html">Movement through Bottlenecks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/double-bottleneck.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/journey.html">How to work with Journeys</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/journey.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/lane-formation.html">Lane formation in bi-directional flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/lane-formation.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/motivation.html">Modelling Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/motivation.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/queues_waiting.html">Waiting in Queues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/queues_waiting.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/routing.html">How Route Choice can Impact Evacuation Times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/routing.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/direct_steering.html">Leader–Follower Dynamics with Direct Steering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/single-file.html">Simulating Single-File Movement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/single-file.html#download">Download</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../debugging/index.html">Debugging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../debugging/profiling_and_timing.html">Profiling and Timing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../disclaimer.html">Disclaimer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/jupedsim/index.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/jupedsim/models/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">jupedsim.models</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../citation/citation.html">Cite JuPedSim</a></li>
+</ul>
+
+</nav>
+</aside>
+<div class="book-page">
+<article class="report" data-pagefind-filter="section:Docs" data-pagefind-meta="title:jupedsim.agent_view">
+<header class="report-header">
+<p class="report-kicker">Docs</p>
+<h1 class="report-title">jupedsim.agent_view</h1>
+</header>
+<div class="report-body">
+<h1>Source code for jupedsim.agent_view</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: LGPL-3.0-or-later</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">jupedsim.native</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">py_jps</span>
+
+
+<div class="viewcode-block" id="NeighborView">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.NeighborView">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">NeighborView</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A neighboring agent as seen from the agent that asked for it.</span>
+
+<span class="sd">    Obtained from :meth:`AgentView.other_agents_in_range`. Only valid for the</span>
+<span class="sd">    duration of the callback it was created in; never store it.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">NeighborView</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Do not use.</span>
+
+<span class="sd">        Neighbor views are created by neighborhood queries.</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">obj</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">relative_position</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Vector from the querying agent to this neighbor."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">relative_position</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Model state of this neighbor.</span>
+
+<span class="sd">        Treat it as read-only: state may only be changed by returning a new</span>
+<span class="sd">        state object from ``compute_next_state``.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">state</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"NeighborView(relative_position=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">relative_position</span><span class="si">}</span><span class="s2">)"</span></div>
+
+
+
+<div class="viewcode-block" id="WallView">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.WallView">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">WallView</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A wall segment as seen from the agent that asked for it.</span>
+
+<span class="sd">    Obtained from :meth:`AgentView.walls_in_range`. The view is always</span>
+<span class="sd">    relative to the agent - as if the agent sits at the origin.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">WallView</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Do not use.</span>
+
+<span class="sd">        Wall views are created by wall queries.</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">obj</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">segment</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">"""The segment itself, relative to the agent."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">segment</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""The point on the segment closest to the agent."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">closest_point</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">distance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Distance to that point."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">distance</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">normal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Unit vector pointing from the wall towards the agent.</span>
+
+<span class="sd">        This is the direction a repulsion acts in. It is ``(0.0, 0.0)`` for an</span>
+<span class="sd">        agent standing exactly on the wall, where no direction exists.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">normal</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"WallView(distance=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="si">}</span><span class="s2">, normal=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="si">}</span><span class="s2">)"</span></div>
+
+
+
+<div class="viewcode-block" id="AgentView">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.AgentView">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">AgentView</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""What an agent perceives of its surroundings, relative to where it stands.</span>
+
+<span class="sd">    Passed to</span>
+<span class="sd">    :meth:`~jupedsim.models.custom_model.CustomOperationalModel.check_model_constraint`</span>
+<span class="sd">    and, as :class:`AgentStep`, to</span>
+<span class="sd">    :meth:`~jupedsim.models.custom_model.CustomOperationalModel.compute_next_state`.</span>
+<span class="sd">    Do not store instances beyond the callback they were created in.</span>
+
+<span class="sd">    Example — visibility-filtered neighborhood::</span>
+
+<span class="sd">        def compute_next_state(self, state, step):</span>
+<span class="sd">            boundaries = step.walls_in_range(1.0)</span>
+<span class="sd">            neighbors = step.other_agents_in_range(</span>
+<span class="sd">                5.0,</span>
+<span class="sd">                lambda n: step.no_geometry_between(n),</span>
+<span class="sd">            )</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">AgentView</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Do not use.</span>
+
+<span class="sd">        Agent views are created by the simulation for the duration of a</span>
+<span class="sd">        custom-model callback.</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">obj</span>
+
+<div class="viewcode-block" id="AgentView.other_agents_in_range">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.AgentView.other_agents_in_range">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">other_agents_in_range</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">predicate</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">NeighborView</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">NeighborView</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return agents within *radius*, excluding the agent itself.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            radius: Search radius.</span>
+<span class="sd">            predicate: Optional callable ``(neighbor) -&gt; bool``. Only neighbors</span>
+<span class="sd">                for which the predicate returns ``True`` are included. Use</span>
+<span class="sd">                :meth:`no_geometry_between` to filter by line-of-sight, or</span>
+<span class="sd">                compose multiple predicates with ``lambda n: p1(n) and p2(n)``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List of :class:`NeighborView`. Only valid during the current callback.</span>
+<span class="sd">        """</span>
+        <span class="n">neighbors</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">NeighborView</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">other_agents_in_range</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="n">predicate</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">neighbors</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">neighbors</span> <span class="k">if</span> <span class="n">predicate</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="AgentView.no_geometry_between">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.AgentView.no_geometry_between">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">no_geometry_between</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">NeighborView</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return ``True`` when nothing blocks the straight line to *target*.</span>
+
+<span class="sd">        Given a :class:`NeighborView`, this answers whether that neighbor can be</span>
+<span class="sd">        seen. Given an offset, it answers whether the straight line to that point</span>
+<span class="sd">        is free of geometry — which is also whether the agent can move there, as</span>
+<span class="sd">        what blocks the line of sight blocks the step.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            target: A :class:`NeighborView`, or an offset from the agent as</span>
+<span class="sd">                ``(dx, dy)``.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">NeighborView</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">no_geometry_between</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">_obj</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">no_geometry_between</span><span class="p">(</span><span class="n">target</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AgentView.walls_in_range">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.AgentView.walls_in_range">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">walls_in_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">distance</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">WallView</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return the walls within *distance* of the agent.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            distance: Maximum distance.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List of :class:`WallView`, each as seen from the agent.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">WallView</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">walls_in_range</span><span class="p">(</span><span class="n">distance</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="AgentView.with_neighbor_state_mapping">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.AgentView.with_neighbor_state_mapping">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">with_neighbor_state_mapping</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">repack</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"AgentView"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return this view with every neighbor seen through *repack*.</span>
+
+<span class="sd">        Use this to delegate a view to a built-in model whose</span>
+<span class="sd">        ``check_model_constraint`` expects neighbors to carry its own state type::</span>
+
+<span class="sd">            def check_model_constraint(self, state, view):</span>
+<span class="sd">                cfsm_view = view.with_neighbor_states(self.as_cfsm_state)</span>
+<span class="sd">                return self._cfsm.check_model_constraint(state.sub, cfsm_view)</span>
+
+<span class="sd">        This view is not modified, so the model keeps seeing its own states.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            repack: Callable ``(neighbor_state) -&gt; state``, called once per</span>
+<span class="sd">                neighbor per query. It has to return a built-in model state.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A new :class:`AgentView`. Only valid during the current callback.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="n">AgentView</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">with_neighbor_state_mapping</span><span class="p">(</span>
+                <span class="n">py_jps</span><span class="o">.</span><span class="n">_NeighborStateMapper</span><span class="p">(</span><span class="n">repack</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="AgentStep">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.AgentStep">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">AgentStep</span><span class="p">(</span><span class="n">AgentView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""An :class:`AgentView` plus what only holds for one step.</span>
+
+<span class="sd">    Passed to</span>
+<span class="sd">    :meth:`~jupedsim.models.custom_model.CustomOperationalModel.compute_next_state`.</span>
+<span class="sd">    """</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Duration of this simulation step in seconds."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">dt</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">route_orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Unit vector along the route to the agent's final target.</span>
+
+<span class="sd">        Zero when the agent has already reached it.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">route_orientation</span>
+
+<div class="viewcode-block" id="AgentStep.with_neighbor_state_mapping">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.AgentStep.with_neighbor_state_mapping">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">with_neighbor_state_mapping</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">repack</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"AgentStep"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return this step with every neighbor seen through *repack*.</span>
+
+<span class="sd">        Use this to delegate a step to a built-in model whose</span>
+<span class="sd">        ``compute_next_state`` expects neighbors to carry its own state type::</span>
+
+<span class="sd">            def compute_next_state(self, state, step):</span>
+<span class="sd">                cfsm_step = step.with_neighbor_states(self.as_cfsm_state)</span>
+<span class="sd">                sub, movement = self._cfsm.compute_next_state(state.sub, cfsm_step)</span>
+<span class="sd">                return replace(state, sub=sub), movement</span>
+
+<span class="sd">        This step is not modified, so the model keeps seeing its own states.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            repack: Callable ``(neighbor_state) -&gt; state``, called once per</span>
+<span class="sd">                neighbor per query. It has to return a built-in model state.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A new :class:`AgentStep`. Only valid during the current callback.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="n">AgentStep</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">with_neighbor_state_mapping</span><span class="p">(</span>
+                <span class="n">py_jps</span><span class="o">.</span><span class="n">_NeighborStateMapper</span><span class="p">(</span><span class="n">repack</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
+</div>
+
+</pre></div>
+</div>
+<footer class="report-footer">Last updated 2026-10-05</footer>
+</article>
+</div>
+</main><footer class="site-footer"><div class="site-footer-inner">
+<p class="site-footer-text">© JuPedSim contributors · LGPL-3.0</p>
+<ul class="site-footer-links"><li><a href="https://github.com/PedestrianDynamics/jupedsim">GitHub</a></li><li><a href="/pull-requests/1668/notes/feed.xml">RSS</a></li><li><a href="/pull-requests/1668/docs/v1x/v1.4.2/">1.x docs</a></li></ul>
+</div></footer>
+  </body>
+</html>
