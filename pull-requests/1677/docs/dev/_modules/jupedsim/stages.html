@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>jupedsim.stages &#8212; JuPedSim  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=29da98fa" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupedsim-style.css?v=df79899f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/chroma-dark.css?v=9526b014" />
+    <link rel="stylesheet" type="text/css" href="../../_static/book.css?v=7f8b60bd" />
+    <link rel="stylesheet" type="text/css" href="../../_static/site.css?v=34df8e08" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx.css?v=164699b4" />
+    <script src="../../_static/documentation_options.js?v=7f41d439"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer="defer" src="../../_static/theme.js?v=07cb4702"></script>
+    <script defer="defer" src="../../_static/search.js?v=322617c8"></script>
+    <script defer="defer" src="../../_static/switcher.js?v=bc5f7bca"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="canonical" href="https://www.jupedsim.org/docs/stable/_modules/jupedsim/stages.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+ 
+<script>(function(){var s=null;try{s=localStorage.getItem('theme')}catch(e){}var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var r=document.documentElement;r.dataset.theme=(s==='light'||s==='dark')?s:(d?'dark':'light');r.dataset.themeMode=(s==='light'||s==='dark')?s:'auto';})();</script>
+  </head><body>
+<input type="checkbox" class="book-control" id="menu-control" aria-label="Toggle navigation" aria-controls="book-menu">
+<input type="checkbox" class="book-control" id="search-control" aria-label="Show search">
+<label for="menu-control" class="book-overlay book-overlay-menu" aria-hidden="true"></label>
+<header class="site-bar">
+<div class="site-bar-inner">
+<label for="menu-control" class="site-bar-btn site-bar-menu" aria-label="Open navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></label>
+<a class="book-brand" href="/pull-requests/1677/" aria-label="JuPedSim"><img class="book-logo book-logo-light" src="../../_static/jupedsim-mark-light.svg" alt="JuPedSim" width="737" height="200"><img class="book-logo book-logo-dark" src="../../_static/jupedsim-mark-dark.svg" alt="" aria-hidden="true" width="737" height="200"></a>
+<nav class="site-nav" aria-label="Site">
+<ul>
+<li><a class="bracket-label" href="/pull-requests/1677/articles/">[Articles]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1677/notes/">[Notes]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1677/docs/stable/" aria-current="page">[Docs]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1677/docs/v1x/v1.4.2/">[Docs v1&nbsp;<span aria-hidden="true">↗</span>]</a></li>
+</ul>
+</nav>
+<label for="search-control" class="site-bar-btn site-bar-search-btn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></label>
+<form class="book-search" action="../../search.html" method="get" role="search">
+<input type="search" id="book-search-input" name="q" data-pagefind="/pull-requests/1677/pagefind/pagefind.js" placeholder="Search  /" aria-label="Search" autocomplete="off" spellcheck="false">
+<ul class="book-search-results" id="book-search-results" hidden></ul>
+</form>
+<button type="button" id="book-theme-toggle" class="book-theme-toggle bracket-label" aria-live="polite">Theme: auto</button>
+</div>
+</header>
+<main class="book">
+<aside class="book-menu" id="book-menu"><nav class="site-nav-drawer" aria-label="Site (menu)">
+<ul>
+<li><a class="bracket-label" href="/pull-requests/1677/articles/">[Articles]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1677/notes/">[Notes]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1677/docs/stable/" aria-current="page">[Docs]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1677/docs/v1x/v1.4.2/">[Docs v1&nbsp;<span aria-hidden="true">↗</span>]</a></li>
+</ul>
+</nav>
+<select id="book-version-switcher" class="book-version-switcher" aria-label="Documentation version" data-json="/pull-requests/1677/docs/versions.json" data-match="v2.0.0" data-page="_modules/jupedsim/stages.html" hidden></select>
+<nav class="book-tree" aria-label="Documentation">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration_2_0.html">Migrating to 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/geometry.html">Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/routing.html">Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/custom_serialization.html">Custom Serialization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pedestrian_models/index.html">Pedestrian Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../pedestrian_models/collision_free_speed_model_v3.html">CollisionFreeSpeedModelV3 (Rotational Steering)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pedestrian_models/warp_driver_model.html">WarpDriver Model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/index.html">Notebooks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/model-comparison.html">Comparative Analysis of Pedestrian Dynamics Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/corner.html">Movement around Corners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/corner.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/double-bottleneck.html">Movement through Bottlenecks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/double-bottleneck.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/journey.html">How to work with Journeys</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/journey.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/lane-formation.html">Lane formation in bi-directional flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/lane-formation.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/motivation.html">Modelling Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/motivation.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/queues_waiting.html">Waiting in Queues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/queues_waiting.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/routing.html">How Route Choice can Impact Evacuation Times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/routing.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/direct_steering.html">Leader–Follower Dynamics with Direct Steering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/single-file.html">Simulating Single-File Movement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/single-file.html#download">Download</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../debugging/index.html">Debugging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../debugging/profiling_and_timing.html">Profiling and Timing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../disclaimer.html">Disclaimer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/jupedsim/index.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/jupedsim/models/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">jupedsim.models</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../citation/citation.html">Cite JuPedSim</a></li>
+</ul>
+
+</nav>
+</aside>
+<div class="book-page">
+<article class="report" data-pagefind-filter="section:Docs" data-pagefind-meta="title:jupedsim.stages">
+<header class="report-header">
+<p class="report-kicker">Docs</p>
+<h1 class="report-title">jupedsim.stages</h1>
+</header>
+<div class="report-body">
+<h1>Source code for jupedsim.stages</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: LGPL-3.0-or-later</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">jupedsim.native</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">py_jps</span>
+
+
+<div class="viewcode-block" id="NotifiableQueueStage">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.NotifiableQueueStage">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">NotifiableQueueStage</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Models a queue where agents can wait until notified.</span>
+
+<span class="sd">    The queues waiting positions are predefined and agents will wait on the</span>
+<span class="sd">    first empty position. When agents leave the queue the remaining waiting</span>
+<span class="sd">    agents move up. If there are more agents trying to enqueue than there are</span>
+<span class="sd">    waiting positions defined the overflow agents will wait at the last waiting</span>
+<span class="sd">    position in the queue.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        This type is used to interact with an already created stage. To create</span>
+<span class="sd">        a stage of this type see :class:`~jupedsim.simulation.Simulation`</span>
+
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backing</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">backing</span>
+
+<div class="viewcode-block" id="NotifiableQueueStage.count_targeting">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.NotifiableQueueStage.count_targeting">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">count_targeting</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Number of agents currently targeting this stage.</span>
+
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">count_targeting</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="NotifiableQueueStage.count_enqueued">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.NotifiableQueueStage.count_enqueued">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">count_enqueued</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Number of agents currently enqueued at this stage.</span>
+
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">count_enqueued</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="NotifiableQueueStage.pop">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.NotifiableQueueStage.pop">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Pop `count` number of agents from the front of the queue.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            count: Number of agents to be popped from the front of the</span>
+<span class="sd">                queue</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">count</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="NotifiableQueueStage.enqueued">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.NotifiableQueueStage.enqueued">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">enqueued</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Access the ids of all enqueued agents in order they are waiting at</span>
+<span class="sd">        the queue.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list of enqueued agents ordered by their position in the queue.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">enqueued</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="WaitingSetState">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.WaitingSetState">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">WaitingSetState</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">ACTIVE</span> <span class="o">=</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">WaitingSetState</span><span class="o">.</span><span class="n">Active</span>
+    <span class="n">INACTIVE</span> <span class="o">=</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">WaitingSetState</span><span class="o">.</span><span class="n">Inactive</span></div>
+
+
+
+<div class="viewcode-block" id="WaitingSetStage">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.WaitingSetStage">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">WaitingSetStage</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Models a set of waiting positions that can be activated or deactivated.</span>
+
+<span class="sd">    Similar as with a :class:`NotifiableQueueStage` there needs to be a set of</span>
+<span class="sd">    waiting positions defined which will be filled in order of definition. The</span>
+<span class="sd">    :class:`WaitingSetStage` now can be active or inactive. If active agents will fill</span>
+<span class="sd">    waiting positions until all are occupied. Additional agents will all try to</span>
+<span class="sd">    wait at the last defined waiting position. In inactive state the</span>
+<span class="sd">    :class:`WaitingSetStage` acts as a simple waypoint at the position of the first</span>
+<span class="sd">    defined waiting position.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backing</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">backing</span>
+
+<div class="viewcode-block" id="WaitingSetStage.count_targeting">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.WaitingSetStage.count_targeting">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">count_targeting</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Number of agents currently targeting this stage.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">count_targeting</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="WaitingSetStage.count_waiting">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.WaitingSetStage.count_waiting">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">count_waiting</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Number of agents currently waiting at this stage.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">count_waiting</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="WaitingSetStage.waiting">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.WaitingSetStage.waiting">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">waiting</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Access the ids of all waiting agents in order they are waiting.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list of waiting agents ordered by their position.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">waiting</span><span class="p">()</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WaitingSetState</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""State of the set.</span>
+
+<span class="sd">        Can be active or inactive, see :class:`WaitingSetState`</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="n">WaitingSetState</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
+
+    <span class="nd">@state</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_state</span><span class="p">:</span> <span class="n">WaitingSetState</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">new_state</span><span class="o">.</span><span class="n">value</span></div>
+
+
+
+<div class="viewcode-block" id="WaypointStage">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.WaypointStage">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">WaypointStage</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Models a waypoint.</span>
+
+<span class="sd">    A waypoint is considered to be reached if an agent is within the specified</span>
+<span class="sd">    distance to the waypoint.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backing</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">backing</span>
+
+<div class="viewcode-block" id="WaypointStage.count_targeting">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.WaypointStage.count_targeting">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">count_targeting</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Returns:</span>
+<span class="sd">        Number of agents currently targeting this stage.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">count_targeting</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ExitStage">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.ExitStage">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExitStage</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Models an exit.</span>
+
+<span class="sd">    Agents entering the polygon defining the exit will be removed at the</span>
+<span class="sd">    beginning of the next iteration, i.e. agents will be inside the specified</span>
+<span class="sd">    polygon for one frame.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backing</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">backing</span>
+
+<div class="viewcode-block" id="ExitStage.count_targeting">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.ExitStage.count_targeting">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">count_targeting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Number of agents currently targeting this stage.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">count_targeting</span><span class="p">()</span></div>
+</div>
+
+</pre></div>
+</div>
+<footer class="report-footer">Last updated 2026-10-06</footer>
+</article>
+</div>
+</main><footer class="site-footer"><div class="site-footer-inner">
+<p class="site-footer-text">© JuPedSim contributors · LGPL-3.0</p>
+<ul class="site-footer-links"><li><a href="https://github.com/PedestrianDynamics/jupedsim">GitHub</a></li><li><a href="/pull-requests/1677/notes/feed.xml">RSS</a></li><li><a href="/pull-requests/1677/docs/v1x/v1.4.2/">1.x docs</a></li></ul>
+</div></footer>
+  </body>
+</html>
