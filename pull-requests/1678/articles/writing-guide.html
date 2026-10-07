@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../_static/logo.png" sizes="482x536" rel="icon" type="image/png">
+    <title>Writing for jupedsim.org &#8212; JuPedSim  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=29da98fa" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupedsim-style.css?v=df79899f" />
+    <link rel="stylesheet" type="text/css" href="../_static/chroma-dark.css?v=9526b014" />
+    <link rel="stylesheet" type="text/css" href="../_static/book.css?v=7f8b60bd" />
+    <link rel="stylesheet" type="text/css" href="../_static/site.css?v=34df8e08" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx.css?v=164699b4" />
+    <script src="../_static/documentation_options.js?v=7f41d439"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer="defer" src="../_static/theme.js?v=07cb4702"></script>
+    <script defer="defer" src="../_static/search.js?v=322617c8"></script>
+    <script defer="defer" src="../_static/switcher.js?v=bc5f7bca"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <link rel="canonical" href="https://www.jupedsim.org/articles/writing-guide.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Notes" href="../notes/index.html" />
+    <link rel="prev" title="Articles" href="index.html" />
+ 
+<script>(function(){var s=null;try{s=localStorage.getItem('theme')}catch(e){}var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var r=document.documentElement;r.dataset.theme=(s==='light'||s==='dark')?s:(d?'dark':'light');r.dataset.themeMode=(s==='light'||s==='dark')?s:'auto';})();</script>
+<link rel="alternate" type="application/rss+xml" href="/pull-requests/1678/notes/feed.xml" title="JuPedSim">
+  </head><body>
+<input type="checkbox" class="book-control" id="menu-control" aria-label="Toggle navigation" aria-controls="book-menu">
+<input type="checkbox" class="book-control" id="search-control" aria-label="Show search">
+<input type="checkbox" class="book-control" id="toc-control" aria-label="Toggle table of contents" aria-controls="book-toc">
+<label for="menu-control" class="book-overlay book-overlay-menu" aria-hidden="true"></label>
+<label for="toc-control" class="book-overlay book-overlay-toc" aria-hidden="true"></label>
+<header class="site-bar">
+<div class="site-bar-inner">
+<label for="menu-control" class="site-bar-btn site-bar-menu" aria-label="Open navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></label>
+<a class="book-brand" href="/pull-requests/1678/" aria-label="JuPedSim"><img class="book-logo book-logo-light" src="../_static/jupedsim-mark-light.svg" alt="JuPedSim" width="737" height="200"><img class="book-logo book-logo-dark" src="../_static/jupedsim-mark-dark.svg" alt="" aria-hidden="true" width="737" height="200"></a>
+<nav class="site-nav" aria-label="Site">
+<ul>
+<li><a class="bracket-label" href="/pull-requests/1678/articles/" aria-current="page">[Articles]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1678/notes/">[Notes]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1678/docs/stable/">[Docs]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1678/docs/v1x/v1.4.2/">[Docs v1&nbsp;<span aria-hidden="true">↗</span>]</a></li>
+</ul>
+</nav>
+<label for="search-control" class="site-bar-btn site-bar-search-btn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></label>
+<form class="book-search" action="../search.html" method="get" role="search">
+<input type="search" id="book-search-input" name="q" data-pagefind="/pull-requests/1678/pagefind/pagefind.js" placeholder="Search  /" aria-label="Search" autocomplete="off" spellcheck="false">
+<ul class="book-search-results" id="book-search-results" hidden></ul>
+</form>
+<button type="button" id="book-theme-toggle" class="book-theme-toggle bracket-label" aria-live="polite">Theme: auto</button>
+<label for="toc-control" class="site-bar-btn site-bar-toc" aria-label="On this page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></label>
+</div>
+</header>
+<main class="book book--no-tree">
+<aside class="book-menu" id="book-menu"><nav class="site-nav-drawer" aria-label="Site (menu)">
+<ul>
+<li><a class="bracket-label" href="/pull-requests/1678/articles/" aria-current="page">[Articles]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1678/notes/">[Notes]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1678/docs/stable/">[Docs]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1678/docs/v1x/v1.4.2/">[Docs v1&nbsp;<span aria-hidden="true">↗</span>]</a></li>
+</ul>
+</nav>
+</aside>
+<div class="book-page">
+<article class="report" data-pagefind-filter="section:Article" data-pagefind-meta="title:Writing for jupedsim.org">
+<header class="report-header">
+<p class="report-kicker">Article</p>
+<h1 class="report-title">Writing for jupedsim.org</h1>
+<p class="report-subtitle">How to write articles and notes for jupedsim.org, and a live reference of the markup the site supports.</p>
+<p class="report-meta"><span class="meta-item">JuPedSim team</span><span class="meta-item"><time datetime="2026-09-28" data-pagefind-meta="date[datetime]">2026-09-28</time></span><span class="meta-item">736 words</span><span class="meta-item">4 min read</span>
+</p>
+</header>
+<div class="report-body" data-pagefind-body>
+<!-- SPDX-License-Identifier: LGPL-3.0-or-later -->
+<section class="tex2jax_ignore mathjax_ignore" id="writing-for-jupedsim-org">
+<h1>Writing for jupedsim.org<a class="headerlink" href="#writing-for-jupedsim-org" title="Link to this heading">#</a></h1>
+<p>jupedsim.org is a Sphinx project in the <code class="docutils literal notranslate"><span class="pre">site/</span></code> folder of the
+<a class="reference external" href="https://github.com/PedestrianDynamics/jupedsim">JuPedSim repository</a>. Articles
+live in <code class="docutils literal notranslate"><span class="pre">site/articles/</span></code>, notes in <code class="docutils literal notranslate"><span class="pre">site/notes/</span></code>. Both are MyST Markdown (or
+Jupyter notebooks for articles). This page is itself an article and shows every
+piece of markup the site supports, so you can compare source and rendering.</p>
+<section id="articles-and-notes">
+<h2>Articles and notes<a class="headerlink" href="#articles-and-notes" title="Link to this heading">#</a></h2>
+<p><strong>Articles</strong> are longer, curated pieces. Add the file to <code class="docutils literal notranslate"><span class="pre">site/articles/</span></code> and
+list it in the hidden toctree of <code class="docutils literal notranslate"><span class="pre">site/articles/index.md</span></code>; the order there is the
+previous/next order. The list on <code class="docutils literal notranslate"><span class="pre">/articles/</span></code> itself is sorted by date, newest
+first.</p>
+<p><strong>Notes</strong> are short, dated news items. Name the file
+<code class="docutils literal notranslate"><span class="pre">site/notes/YYYY-MM-DD-slug.md</span></code>; the notes index picks it up automatically,
+newest first, and the note appears in the RSS feed at <code class="docutils literal notranslate"><span class="pre">/notes/feed.xml</span></code> and on
+the landing page.</p>
+</section>
+<section id="front-matter">
+<h2>Front matter<a class="headerlink" href="#front-matter" title="Link to this heading">#</a></h2>
+<p>Every Markdown article and note starts with YAML front matter. All three keys are
+required and are plain strings:</p>
+<div class="highlight-yaml notranslate" data-lang="yaml"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="nt">date</span><span class="p">:</span><span class="w"> </span><span class="s">"2026-09-28"</span><span class="w">          </span><span class="c1"># ISO date, used for sorting and the feed</span>
+<span class="nt">author</span><span class="p">:</span><span class="w"> </span><span class="s">"Jane</span><span class="nv"> </span><span class="s">Doe"</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"One</span><span class="nv"> </span><span class="s">sentence</span><span class="nv"> </span><span class="s">shown</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">listings</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">feed."</span>
+<span class="nn">---</span>
+</pre></div>
+</div>
+<p>The first heading of the document is its title. Keep exactly one top-level
+heading per page. A missing or invalid <code class="docutils literal notranslate"><span class="pre">date</span></code> fails the build.</p>
+</section>
+<section id="notebook-articles">
+<h2>Notebook articles<a class="headerlink" href="#notebook-articles" title="Link to this heading">#</a></h2>
+<p>An article can also be a Jupyter notebook (<code class="docutils literal notranslate"><span class="pre">.ipynb</span></code>). Its front matter goes
+into the notebook metadata instead of a Markdown cell, as top-level keys:</p>
+<div class="highlight-json notranslate" data-lang="json"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2026-09-28"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"author"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Jane Doe"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"One sentence shown in listings and the feed."</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"kernelspec"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"python3"</span><span class="p">,</span><span class="w"> </span><span class="nt">"display_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Python 3"</span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The first Markdown cell starts with the <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">Title</span></code>. Notebooks stored without
+outputs are executed during the build (this needs an importable <code class="docutils literal notranslate"><span class="pre">jupedsim</span></code>;
+the timeout is 900 s per notebook), notebooks with outputs are used as they
+are. The published site executes notebooks against the latest <code class="docutils literal notranslate"><span class="pre">jupedsim</span></code>
+release on PyPI, not against master; commit the outputs of an article that
+needs unreleased features. Interactive outputs such as plotly figures are
+not supported and fail the build; save them as static images instead.</p>
+</section>
+<section id="headings">
+<h2>Headings<a class="headerlink" href="#headings" title="Link to this heading">#</a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">##</span></code> for sections and <code class="docutils literal notranslate"><span class="pre">###</span></code> for subsections; they appear in the
+“On this page” table of contents.</p>
+<section id="a-subsection">
+<h3>A subsection<a class="headerlink" href="#a-subsection" title="Link to this heading">#</a></h3>
+<p>Deeper levels work too, but rarely help the reader.</p>
+</section>
+</section>
+<section id="text">
+<h2>Text<a class="headerlink" href="#text" title="Link to this heading">#</a></h2>
+<p>Paragraphs are separated by a blank line. Use <em>emphasis</em>, <strong>strong</strong>,
+<code class="docutils literal notranslate"><span class="pre">inline</span> <span class="pre">code</span></code> and <a class="reference external" href="https://www.jupedsim.org/">links</a>. Link to other pages of the
+site with relative paths, e.g. <a class="reference internal" href="../notes/index.html"><span class="std std-doc">the notes</span></a>, and to the
+documentation (which is a separate project) with an HTML link and an
+absolute path, <code class="docutils literal notranslate"><span class="pre">&lt;a</span> <span class="pre">href=&quot;/docs/stable/&quot;&gt;/docs/stable/&lt;/a&gt;</span></code>, which renders as
+<a href="/pull-requests/1678/docs/stable/">/docs/stable/</a>.</p>
+<ul class="simple">
+<li><p>Bullet lists</p></li>
+<li><p>use <code class="docutils literal notranslate"><span class="pre">-</span></code></p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>Numbered lists</p></li>
+<li><p>use <code class="docutils literal notranslate"><span class="pre">1.</span></code></p></li>
+</ol>
+</section>
+<section id="admonitions">
+<h2>Admonitions<a class="headerlink" href="#admonitions" title="Link to this heading">#</a></h2>
+<div class="highlight-md notranslate" data-lang="md"><div class="highlight"><pre><span></span>```{note}
+Something the reader should know.
+```
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Something the reader should know.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>A helpful shortcut.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Something that can go wrong.</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>With the <code class="docutils literal notranslate"><span class="pre">colon_fence</span></code> extension, <code class="docutils literal notranslate"><span class="pre">:::</span></code> works as a fence as well.</p>
+</div>
+</section>
+<section id="code">
+<h2>Code<a class="headerlink" href="#code" title="Link to this heading">#</a></h2>
+<p>Fenced code blocks carry a language label that selects the highlighting:</p>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">jupedsim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jps</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
+
+<span class="n">area</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)])</span>
+<span class="n">simulation</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModel</span><span class="p">(),</span> <span class="n">geometry</span><span class="o">=</span><span class="n">area</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate" data-lang="bash"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>jupedsim
+</pre></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">A code block with a caption</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+<span class="hll">    <span class="n">simulation</span><span class="o">.</span><span class="n">iterate</span><span class="p">()</span>
+</span></pre></div>
+</div>
+</div>
+</section>
+<section id="tables">
+<h2>Tables<a class="headerlink" href="#tables" title="Link to this heading">#</a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>Kind</p></th>
+<th class="head"><p>Since</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Collision-free speed</p></td>
+<td><p>velocity based</p></td>
+<td><p>1.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Social force</p></td>
+<td><p>force based</p></td>
+<td><p>1.1</p></td>
+</tr>
+<tr class="row-even"><td><p>Anticipation velocity</p></td>
+<td><p>velocity based</p></td>
+<td><p>1.3</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="math">
+<h2>Math<a class="headerlink" href="#math" title="Link to this heading">#</a></h2>
+<p>Inline math uses dollars, e.g. <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>v</mi>
+    <mi>i</mi>
+  </msub>
+  <mo>=</mo>
+  <mfrac>
+    <mrow>
+      <mi class="capital-greek">Δ</mi>
+      <msub>
+        <mi>x</mi>
+        <mi>i</mi>
+      </msub>
+    </mrow>
+    <mrow>
+      <mi class="capital-greek">Δ</mi>
+      <mi>t</mi>
+    </mrow>
+  </mfrac>
+</math>. Display
+math uses double dollars:</p>
+<div class="math"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msub>
+    <mover accent="true">
+      <mi>F</mi>
+      <mo stretchy="false" scriptlevel="+1">→</mo>
+    </mover>
+    <mi>i</mi>
+  </msub>
+  <mo>=</mo>
+  <msub>
+    <mi>m</mi>
+    <mi>i</mi>
+  </msub>
+  <mfrac>
+    <mrow>
+      <msubsup>
+        <mover accent="true">
+          <mi>v</mi>
+          <mo stretchy="false" scriptlevel="+1">→</mo>
+        </mover>
+        <mi>i</mi>
+        <mn>0</mn>
+      </msubsup>
+      <mo>−</mo>
+      <msub>
+        <mover accent="true">
+          <mi>v</mi>
+          <mo stretchy="false" scriptlevel="+1">→</mo>
+        </mover>
+        <mi>i</mi>
+      </msub>
+    </mrow>
+    <mi>τ</mi>
+  </mfrac>
+  <mo>+</mo>
+  <munder>
+    <mo movablelimits="true">∑</mo>
+    <mrow>
+      <mi>j</mi>
+      <mo>≠</mo>
+      <mi>i</mi>
+    </mrow>
+  </munder>
+  <msub>
+    <mover accent="true">
+      <mi>F</mi>
+      <mo stretchy="false" scriptlevel="+1">→</mo>
+    </mover>
+    <mrow>
+      <mi>i</mi>
+      <mi>j</mi>
+    </mrow>
+  </msub>
+</math></div>
+<p>Give an equation a label to number it and refer to it with
+<code class="docutils literal notranslate"><span class="pre">{eq}`label`</span></code>:</p>
+<div class="highlight-md notranslate" data-lang="md"><div class="highlight"><pre><span></span>```{math}
+:label: velocity-update
+
+\vec{v}_i(t + \Delta t) = \vec{v}_i(t) + \frac{\vec{F}_i}{m_i} \Delta t
+```
+</pre></div>
+</div>
+<div class="math" id="equation-velocity-update"><span class="eqno">(1)<a class="headerlink" href="#equation-velocity-update" title="">#</a></span><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msub>
+    <mover accent="true">
+      <mi>v</mi>
+      <mo stretchy="false" scriptlevel="+1">→</mo>
+    </mover>
+    <mi>i</mi>
+  </msub>
+  <mo stretchy="false">(</mo>
+  <mi>t</mi>
+  <mo>+</mo>
+  <mi class="capital-greek">Δ</mi>
+  <mi>t</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <msub>
+    <mover accent="true">
+      <mi>v</mi>
+      <mo stretchy="false" scriptlevel="+1">→</mo>
+    </mover>
+    <mi>i</mi>
+  </msub>
+  <mo stretchy="false">(</mo>
+  <mi>t</mi>
+  <mo stretchy="false">)</mo>
+  <mo>+</mo>
+  <mfrac>
+    <msub>
+      <mover accent="true">
+        <mi>F</mi>
+        <mo stretchy="false" scriptlevel="+1">→</mo>
+      </mover>
+      <mi>i</mi>
+    </msub>
+    <msub>
+      <mi>m</mi>
+      <mi>i</mi>
+    </msub>
+  </mfrac>
+  <mi class="capital-greek">Δ</mi>
+  <mi>t</mi>
+</math></div>
+<p>Equation <a class="reference internal" href="#equation-velocity-update">(1)</a> is the explicit Euler step. Multi-line
+equations use amsmath environments directly in the Markdown:</p>
+<div class="math"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable class="ams-align" displaystyle="true">
+    <mtr>
+      <mtd>
+        <msub>
+          <mi>x</mi>
+          <mi>i</mi>
+        </msub>
+        <mo stretchy="false">(</mo>
+        <mi>t</mi>
+        <mo>+</mo>
+        <mi class="capital-greek">Δ</mi>
+        <mi>t</mi>
+        <mo stretchy="false">)</mo>
+      </mtd>
+      <mtd>
+        <mo>=</mo>
+        <msub>
+          <mi>x</mi>
+          <mi>i</mi>
+        </msub>
+        <mo stretchy="false">(</mo>
+        <mi>t</mi>
+        <mo stretchy="false">)</mo>
+        <mo>+</mo>
+        <msub>
+          <mi>v</mi>
+          <mi>i</mi>
+        </msub>
+        <mi class="capital-greek">Δ</mi>
+        <mi>t</mi>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd>
+        <msub>
+          <mi>y</mi>
+          <mi>i</mi>
+        </msub>
+        <mo stretchy="false">(</mo>
+        <mi>t</mi>
+        <mo>+</mo>
+        <mi class="capital-greek">Δ</mi>
+        <mi>t</mi>
+        <mo stretchy="false">)</mo>
+      </mtd>
+      <mtd>
+        <mo>=</mo>
+        <msub>
+          <mi>y</mi>
+          <mi>i</mi>
+        </msub>
+        <mo stretchy="false">(</mo>
+        <mi>t</mi>
+        <mo stretchy="false">)</mo>
+        <mo>+</mo>
+        <msub>
+          <mi>w</mi>
+          <mi>i</mi>
+        </msub>
+        <mi class="capital-greek">Δ</mi>
+        <mi>t</mi>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></div>
+<p>Math is rendered to MathML at build time; no external script is loaded. The
+renderer covers common LaTeX math; <code class="docutils literal notranslate"><span class="pre">\label</span></code> and <code class="docutils literal notranslate"><span class="pre">\tag</span></code> inside the formula
+are not supported (use the <code class="docutils literal notranslate"><span class="pre">:label:</span></code> option), and anything it cannot render
+is reported as a build warning with the file and line.</p>
+</section>
+<section id="figures">
+<h2>Figures<a class="headerlink" href="#figures" title="Link to this heading">#</a></h2>
+<figure class="align-default" id="id5">
+<a class="reference internal image-reference" href="../_images/jupedsim.svg"><img alt="The JuPedSim logo" src="../_images/jupedsim.svg" style="width: 160px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">A figure with a caption. Put images next to the article or in <code class="docutils literal notranslate"><span class="pre">site/_static/</span></code>.</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="footnotes">
+<h2>Footnotes<a class="headerlink" href="#footnotes" title="Link to this heading">#</a></h2>
+<p>Footnotes use labels<a class="footnote-reference brackets" href="#label" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> and are collected at the end of the page<a class="footnote-reference brackets" href="#id3" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.</p>
+</section>
+</section>
+<hr class="footnotes docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="label" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>This is the first footnote.</p>
+</aside>
+<aside class="footnote brackets" id="id3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>And this is the second one.</p>
+</aside>
+</aside>
+
+</div>
+</article>
+<nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="index.html" rel="prev"><small>Previous</small>Articles</a><a class="book-pagenav-next" href="../notes/index.html" rel="next"><small>Next</small>Notes</a>
+</nav>
+</div>
+<aside class="book-toc" id="book-toc">
+<p class="book-toc-title">On this page</p>
+<nav id="TableOfContents">
+<ul>
+<li><a class="reference internal" href="#">Writing for jupedsim.org</a><ul>
+<li><a class="reference internal" href="#articles-and-notes">Articles and notes</a></li>
+<li><a class="reference internal" href="#front-matter">Front matter</a></li>
+<li><a class="reference internal" href="#notebook-articles">Notebook articles</a></li>
+<li><a class="reference internal" href="#headings">Headings</a><ul>
+<li><a class="reference internal" href="#a-subsection">A subsection</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#text">Text</a></li>
+<li><a class="reference internal" href="#admonitions">Admonitions</a></li>
+<li><a class="reference internal" href="#code">Code</a></li>
+<li><a class="reference internal" href="#tables">Tables</a></li>
+<li><a class="reference internal" href="#math">Math</a></li>
+<li><a class="reference internal" href="#figures">Figures</a></li>
+<li><a class="reference internal" href="#footnotes">Footnotes</a></li>
+</ul>
+</li>
+</ul>
+
+</nav>
+</aside>
+</main><footer class="site-footer"><div class="site-footer-inner">
+<p class="site-footer-text">© JuPedSim contributors · LGPL-3.0</p>
+<ul class="site-footer-links"><li><a href="https://github.com/PedestrianDynamics/jupedsim">GitHub</a></li><li><a href="/pull-requests/1678/notes/feed.xml">RSS</a></li><li><a href="/pull-requests/1678/docs/v1x/v1.4.2/">1.x docs</a></li></ul>
+</div></footer>
+  </body>
+</html>
