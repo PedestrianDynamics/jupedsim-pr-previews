@@ -96,8 +96,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/lane-formation.html#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/motivation.html">Modelling Motivation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/motivation.html#download">Download</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebooks/queues_waiting.html">Waiting in Queues</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebooks/queues_waiting.html#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/routing.html">How Route Choice can Impact Evacuation Times</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/routing.html#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/direct_steering.html">Leader–Follower Dynamics with Direct Steering</a></li>
@@ -170,43 +168,34 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.NeighborView" title="jupedsim.NeighborView"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NeighborView</span></code></a></p></td>
 <td><p>A neighboring agent as seen from the agent that asked for it.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.NotifiableQueueStage" title="jupedsim.NotifiableQueueStage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NotifiableQueueStage</span></code></a></p></td>
-<td><p>Models a queue where agents can wait until notified.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.Recording" title="jupedsim.Recording"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Recording</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.Recording" title="jupedsim.Recording"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Recording</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.RecordingAgent" title="jupedsim.RecordingAgent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RecordingAgent</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.RecordingAgent" title="jupedsim.RecordingAgent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RecordingAgent</span></code></a></p></td>
 <td><p>Data for a single agent at a single frame.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.RecordingFrame" title="jupedsim.RecordingFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RecordingFrame</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.RecordingFrame" title="jupedsim.RecordingFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RecordingFrame</span></code></a></p></td>
 <td><p>A single frame from the simulation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.RoutingEngine" title="jupedsim.RoutingEngine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RoutingEngine</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.RoutingEngine" title="jupedsim.RoutingEngine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RoutingEngine</span></code></a></p></td>
 <td><p>RoutingEngine to compute the shortest paths with navigation meshes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.Simulation" title="jupedsim.Simulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Simulation</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.Simulation" title="jupedsim.Simulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Simulation</span></code></a></p></td>
 <td><p>Defines a simulation of pedestrian movement over a continuous walkable area.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.SqliteTrajectoryWriter" title="jupedsim.SqliteTrajectoryWriter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SqliteTrajectoryWriter</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.SqliteTrajectoryWriter" title="jupedsim.SqliteTrajectoryWriter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SqliteTrajectoryWriter</span></code></a></p></td>
 <td><p>Write trajectory data into a sqlite db</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.TrajectoryWriter" title="jupedsim.TrajectoryWriter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TrajectoryWriter</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.TrajectoryWriter" title="jupedsim.TrajectoryWriter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TrajectoryWriter</span></code></a></p></td>
 <td><p>Interface for trajectory serialization</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.Transition" title="jupedsim.Transition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Transition</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.Transition" title="jupedsim.Transition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Transition</span></code></a></p></td>
 <td><p>Describes the Transition at a stage.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.WaitingSetStage" title="jupedsim.WaitingSetStage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WaitingSetStage</span></code></a></p></td>
-<td><p>Models a set of waiting positions that can be activated or deactivated.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.WaitingSetState" title="jupedsim.WaitingSetState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WaitingSetState</span></code></a></p></td>
-<td><p>Create a collection of name/value pairs.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.WallView" title="jupedsim.WallView"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WallView</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.WallView" title="jupedsim.WallView"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WallView</span></code></a></p></td>
 <td><p>A wall segment as seen from the agent that asked for it.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.WaypointStage" title="jupedsim.WaypointStage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WaypointStage</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.WaypointStage" title="jupedsim.WaypointStage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WaypointStage</span></code></a></p></td>
 <td><p>Models a waypoint.</p></td>
 </tr>
 </tbody>
@@ -878,66 +867,6 @@ state object from <code class="docutils literal notranslate"><span class="pre">c
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="jupedsim.NotifiableQueueStage">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NotifiableQueueStage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backing</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/jupedsim/stages.html#NotifiableQueueStage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.NotifiableQueueStage" title="Link to this definition">#</a></dt>
-<dd><p>Models a queue where agents can wait until notified.</p>
-<p>The queues waiting positions are predefined and agents will wait on the
-first empty position. When agents leave the queue the remaining waiting
-agents move up. If there are more agents trying to enqueue than there are
-waiting positions defined the overflow agents will wait at the last waiting
-position in the queue.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This type is used to interact with an already created stage. To create
-a stage of this type see <code class="xref py py-class docutils literal notranslate"><span class="pre">Simulation</span></code></p>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="jupedsim.NotifiableQueueStage.count_enqueued">
-<span class="sig-name descname"><span class="pre">count_enqueued</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/stages.html#NotifiableQueueStage.count_enqueued"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.NotifiableQueueStage.count_enqueued" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number of agents currently enqueued at this stage.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="jupedsim.NotifiableQueueStage.count_targeting">
-<span class="sig-name descname"><span class="pre">count_targeting</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/stages.html#NotifiableQueueStage.count_targeting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.NotifiableQueueStage.count_targeting" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number of agents currently targeting this stage.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="jupedsim.NotifiableQueueStage.enqueued">
-<span class="sig-name descname"><span class="pre">enqueued</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/jupedsim/stages.html#NotifiableQueueStage.enqueued"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.NotifiableQueueStage.enqueued" title="Link to this definition">#</a></dt>
-<dd><p>Access the ids of all enqueued agents in order they are waiting at
-the queue.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list of enqueued agents ordered by their position in the queue.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="jupedsim.NotifiableQueueStage.pop">
-<span class="sig-name descname"><span class="pre">pop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">count</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/stages.html#NotifiableQueueStage.pop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.NotifiableQueueStage.pop" title="Link to this definition">#</a></dt>
-<dd><p>Pop <cite>count</cite> number of agents from the front of the queue.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>count</strong> – Number of agents to be popped from the front of the
-queue</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt class="sig sig-object py" id="jupedsim.Recording">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Recording</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_connection_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">uri</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/jupedsim/recording.html#Recording"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Recording" title="Link to this definition">#</a></dt>
 <dd><dl class="py method">
@@ -1201,46 +1130,6 @@ operational level will still be active.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Id of the added Journey.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="jupedsim.Simulation.add_queue_stage">
-<span class="sig-name descname"><span class="pre">add_queue_stage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/simulation.html#Simulation.add_queue_stage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Simulation.add_queue_stage" title="Link to this definition">#</a></dt>
-<dd><p>Add a new queue state to this simulation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>positions</strong> – Ordered list of the waiting
-points of this queue. The first one in the list is the head of
-the queue while the last one is the back of the queue.</p></li>
-<li><p><strong>region_id</strong> – Region the waiting points lie in, see
-<a class="reference internal" href="#jupedsim.Simulation.add_agent" title="jupedsim.Simulation.add_agent"><code class="xref py py-func docutils literal notranslate"><span class="pre">add_agent()</span></code></a>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Id of the new stage.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="jupedsim.Simulation.add_waiting_set_stage">
-<span class="sig-name descname"><span class="pre">add_waiting_set_stage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/simulation.html#Simulation.add_waiting_set_stage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Simulation.add_waiting_set_stage" title="Link to this definition">#</a></dt>
-<dd><p>Add a new waiting set stage to this simulation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>positions</strong> – Ordered list of the waiting points of this waiting set.
-The agents will fill the waiting points in the given order. If more agents
-are targeting the waiting, the remaining will wait at the last given point.</p></li>
-<li><p><strong>region_id</strong> – Region the waiting points lie in, see
-<a class="reference internal" href="#jupedsim.Simulation.add_agent" title="jupedsim.Simulation.add_agent"><code class="xref py py-func docutils literal notranslate"><span class="pre">add_agent()</span></code></a>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Id of the new stage.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1660,113 +1549,6 @@ first stage, and so on…</p>
 </dd>
 </dl>
 </dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="jupedsim.WaitingSetStage">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">WaitingSetStage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backing</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/jupedsim/stages.html#WaitingSetStage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.WaitingSetStage" title="Link to this definition">#</a></dt>
-<dd><p>Models a set of waiting positions that can be activated or deactivated.</p>
-<p>Similar as with a <a class="reference internal" href="#jupedsim.NotifiableQueueStage" title="jupedsim.NotifiableQueueStage"><code class="xref py py-class docutils literal notranslate"><span class="pre">NotifiableQueueStage</span></code></a> there needs to be a set of
-waiting positions defined which will be filled in order of definition. The
-<a class="reference internal" href="#jupedsim.WaitingSetStage" title="jupedsim.WaitingSetStage"><code class="xref py py-class docutils literal notranslate"><span class="pre">WaitingSetStage</span></code></a> now can be active or inactive. If active agents will fill
-waiting positions until all are occupied. Additional agents will all try to
-wait at the last defined waiting position. In inactive state the
-<a class="reference internal" href="#jupedsim.WaitingSetStage" title="jupedsim.WaitingSetStage"><code class="xref py py-class docutils literal notranslate"><span class="pre">WaitingSetStage</span></code></a> acts as a simple waypoint at the position of the first
-defined waiting position.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="jupedsim.WaitingSetStage.count_targeting">
-<span class="sig-name descname"><span class="pre">count_targeting</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/stages.html#WaitingSetStage.count_targeting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.WaitingSetStage.count_targeting" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number of agents currently targeting this stage.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="jupedsim.WaitingSetStage.count_waiting">
-<span class="sig-name descname"><span class="pre">count_waiting</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/stages.html#WaitingSetStage.count_waiting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.WaitingSetStage.count_waiting" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number of agents currently waiting at this stage.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="jupedsim.WaitingSetStage.waiting">
-<span class="sig-name descname"><span class="pre">waiting</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/jupedsim/stages.html#WaitingSetStage.waiting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.WaitingSetStage.waiting" title="Link to this definition">#</a></dt>
-<dd><p>Access the ids of all waiting agents in order they are waiting.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list of waiting agents ordered by their position.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="jupedsim.WaitingSetStage.state">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">state</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#jupedsim.WaitingSetState" title="jupedsim.WaitingSetState"><span class="pre">WaitingSetState</span></a></em><a class="headerlink" href="#jupedsim.WaitingSetStage.state" title="Link to this definition">#</a></dt>
-<dd><p>State of the set.</p>
-<p>Can be active or inactive, see <a class="reference internal" href="#jupedsim.WaitingSetState" title="jupedsim.WaitingSetState"><code class="xref py py-class docutils literal notranslate"><span class="pre">WaitingSetState</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="jupedsim.WaitingSetState">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">WaitingSetState</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/jupedsim/stages.html#WaitingSetState"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.WaitingSetState" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
-<p>Create a collection of name/value pairs.</p>
-<p>Example enumeration:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">Color</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="n">RED</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="gp">... </span>    <span class="n">BLUE</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="gp">... </span>    <span class="n">GREEN</span> <span class="o">=</span> <span class="mi">3</span>
-</pre></div>
-</div>
-<p>Access them by:</p>
-<ul>
-<li><p>attribute access:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">RED</span>
-<span class="go">&lt;Color.RED: 1&gt;</span>
-</pre></div>
-</div>
-</li>
-<li><p>value lookup:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="go">&lt;Color.RED: 1&gt;</span>
-</pre></div>
-</div>
-</li>
-<li><p>name lookup:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="p">[</span><span class="s1">'RED'</span><span class="p">]</span>
-<span class="go">&lt;Color.RED: 1&gt;</span>
-</pre></div>
-</div>
-</li>
-</ul>
-<p>Enumerations can be iterated over, and know how many members they have:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">Color</span><span class="p">)</span>
-<span class="go">3</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">Color</span><span class="p">)</span>
-<span class="go">[&lt;Color.RED: 1&gt;, &lt;Color.BLUE: 2&gt;, &lt;Color.GREEN: 3&gt;]</span>
-</pre></div>
-</div>
-<p>Methods can be added to enumerations, and members can have their own
-attributes – see the documentation for details.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="jupedsim.WaitingSetState.ACTIVE">
-<span class="sig-name descname"><span class="pre">ACTIVE</span></span><a class="headerlink" href="#jupedsim.WaitingSetState.ACTIVE" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="jupedsim.WaitingSetState.INACTIVE">
-<span class="sig-name descname"><span class="pre">INACTIVE</span></span><a class="headerlink" href="#jupedsim.WaitingSetState.INACTIVE" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
@@ -2199,7 +1981,7 @@ custom-model callback.</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-10-06</footer>
+<footer class="report-footer">Last updated 2026-10-07</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="../../disclaimer.html" rel="prev"><small>Previous</small>Disclaimer</a><a class="book-pagenav-next" href="models/index.html" rel="next"><small>Next</small><code class="xref py py-mod docutils literal notranslate"><span class="pre">jupedsim.models</span></code></a>
 </nav>
@@ -2289,13 +2071,6 @@ custom-model callback.</p>
 <li><a class="reference internal" href="#jupedsim.NeighborView.state"><code class="docutils literal notranslate"><span class="pre">NeighborView.state</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#jupedsim.NotifiableQueueStage"><code class="docutils literal notranslate"><span class="pre">NotifiableQueueStage</span></code></a><ul>
-<li><a class="reference internal" href="#jupedsim.NotifiableQueueStage.count_enqueued"><code class="docutils literal notranslate"><span class="pre">NotifiableQueueStage.count_enqueued()</span></code></a></li>
-<li><a class="reference internal" href="#jupedsim.NotifiableQueueStage.count_targeting"><code class="docutils literal notranslate"><span class="pre">NotifiableQueueStage.count_targeting()</span></code></a></li>
-<li><a class="reference internal" href="#jupedsim.NotifiableQueueStage.enqueued"><code class="docutils literal notranslate"><span class="pre">NotifiableQueueStage.enqueued()</span></code></a></li>
-<li><a class="reference internal" href="#jupedsim.NotifiableQueueStage.pop"><code class="docutils literal notranslate"><span class="pre">NotifiableQueueStage.pop()</span></code></a></li>
-</ul>
-</li>
 <li><a class="reference internal" href="#jupedsim.Recording"><code class="docutils literal notranslate"><span class="pre">Recording</span></code></a><ul>
 <li><a class="reference internal" href="#jupedsim.Recording.bounds"><code class="docutils literal notranslate"><span class="pre">Recording.bounds()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Recording.frame"><code class="docutils literal notranslate"><span class="pre">Recording.frame()</span></code></a></li>
@@ -2327,8 +2102,6 @@ custom-model callback.</p>
 <li><a class="reference internal" href="#jupedsim.Simulation.add_direct_steering_stage"><code class="docutils literal notranslate"><span class="pre">Simulation.add_direct_steering_stage()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.add_exit_stage"><code class="docutils literal notranslate"><span class="pre">Simulation.add_exit_stage()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.add_journey"><code class="docutils literal notranslate"><span class="pre">Simulation.add_journey()</span></code></a></li>
-<li><a class="reference internal" href="#jupedsim.Simulation.add_queue_stage"><code class="docutils literal notranslate"><span class="pre">Simulation.add_queue_stage()</span></code></a></li>
-<li><a class="reference internal" href="#jupedsim.Simulation.add_waiting_set_stage"><code class="docutils literal notranslate"><span class="pre">Simulation.add_waiting_set_stage()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.add_waypoint_stage"><code class="docutils literal notranslate"><span class="pre">Simulation.add_waypoint_stage()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.agent"><code class="docutils literal notranslate"><span class="pre">Simulation.agent()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.agent_count"><code class="docutils literal notranslate"><span class="pre">Simulation.agent_count()</span></code></a></li>
@@ -2368,18 +2141,6 @@ custom-model callback.</p>
 <li><a class="reference internal" href="#jupedsim.Transition.create_least_targeted_transition"><code class="docutils literal notranslate"><span class="pre">Transition.create_least_targeted_transition()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Transition.create_none_transition"><code class="docutils literal notranslate"><span class="pre">Transition.create_none_transition()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Transition.create_round_robin_transition"><code class="docutils literal notranslate"><span class="pre">Transition.create_round_robin_transition()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#jupedsim.WaitingSetStage"><code class="docutils literal notranslate"><span class="pre">WaitingSetStage</span></code></a><ul>
-<li><a class="reference internal" href="#jupedsim.WaitingSetStage.count_targeting"><code class="docutils literal notranslate"><span class="pre">WaitingSetStage.count_targeting()</span></code></a></li>
-<li><a class="reference internal" href="#jupedsim.WaitingSetStage.count_waiting"><code class="docutils literal notranslate"><span class="pre">WaitingSetStage.count_waiting()</span></code></a></li>
-<li><a class="reference internal" href="#jupedsim.WaitingSetStage.waiting"><code class="docutils literal notranslate"><span class="pre">WaitingSetStage.waiting()</span></code></a></li>
-<li><a class="reference internal" href="#jupedsim.WaitingSetStage.state"><code class="docutils literal notranslate"><span class="pre">WaitingSetStage.state</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#jupedsim.WaitingSetState"><code class="docutils literal notranslate"><span class="pre">WaitingSetState</span></code></a><ul>
-<li><a class="reference internal" href="#jupedsim.WaitingSetState.ACTIVE"><code class="docutils literal notranslate"><span class="pre">WaitingSetState.ACTIVE</span></code></a></li>
-<li><a class="reference internal" href="#jupedsim.WaitingSetState.INACTIVE"><code class="docutils literal notranslate"><span class="pre">WaitingSetState.INACTIVE</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#jupedsim.WallView"><code class="docutils literal notranslate"><span class="pre">WallView</span></code></a><ul>

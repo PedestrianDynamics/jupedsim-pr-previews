@@ -90,8 +90,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/lane-formation.html#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/motivation.html">Modelling Motivation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/motivation.html#download">Download</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebooks/queues_waiting.html">Waiting in Queues</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebooks/queues_waiting.html#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/routing.html">How Route Choice can Impact Evacuation Times</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/routing.html#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/direct_steering.html">Leader–Follower Dynamics with Direct Steering</a></li>
@@ -123,149 +121,6 @@
 <div class="report-body">
 <h1>Source code for jupedsim.stages</h1><div class="highlight"><pre>
 <span></span><span class="c1"># SPDX-License-Identifier: LGPL-3.0-or-later</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">jupedsim.native</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">py_jps</span>
-
-
-<div class="viewcode-block" id="NotifiableQueueStage">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.NotifiableQueueStage">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">NotifiableQueueStage</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">"""Models a queue where agents can wait until notified.</span>
-
-<span class="sd">    The queues waiting positions are predefined and agents will wait on the</span>
-<span class="sd">    first empty position. When agents leave the queue the remaining waiting</span>
-<span class="sd">    agents move up. If there are more agents trying to enqueue than there are</span>
-<span class="sd">    waiting positions defined the overflow agents will wait at the last waiting</span>
-<span class="sd">    position in the queue.</span>
-
-<span class="sd">    .. note::</span>
-<span class="sd">        This type is used to interact with an already created stage. To create</span>
-<span class="sd">        a stage of this type see :class:`~jupedsim.simulation.Simulation`</span>
-
-<span class="sd">    """</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backing</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">backing</span>
-
-<div class="viewcode-block" id="NotifiableQueueStage.count_targeting">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.NotifiableQueueStage.count_targeting">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">count_targeting</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Returns:</span>
-<span class="sd">            Number of agents currently targeting this stage.</span>
-
-<span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">count_targeting</span><span class="p">()</span></div>
-
-
-<div class="viewcode-block" id="NotifiableQueueStage.count_enqueued">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.NotifiableQueueStage.count_enqueued">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">count_enqueued</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Returns:</span>
-<span class="sd">            Number of agents currently enqueued at this stage.</span>
-
-<span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">count_enqueued</span><span class="p">()</span></div>
-
-
-<div class="viewcode-block" id="NotifiableQueueStage.pop">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.NotifiableQueueStage.pop">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Pop `count` number of agents from the front of the queue.</span>
-
-<span class="sd">        Arguments:</span>
-<span class="sd">            count: Number of agents to be popped from the front of the</span>
-<span class="sd">                queue</span>
-<span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">count</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="NotifiableQueueStage.enqueued">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.NotifiableQueueStage.enqueued">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">enqueued</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""Access the ids of all enqueued agents in order they are waiting at</span>
-<span class="sd">        the queue.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            list of enqueued agents ordered by their position in the queue.</span>
-<span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">enqueued</span><span class="p">()</span></div>
-</div>
-
-
-
-<div class="viewcode-block" id="WaitingSetState">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.WaitingSetState">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">WaitingSetState</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="n">ACTIVE</span> <span class="o">=</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">WaitingSetState</span><span class="o">.</span><span class="n">Active</span>
-    <span class="n">INACTIVE</span> <span class="o">=</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">WaitingSetState</span><span class="o">.</span><span class="n">Inactive</span></div>
-
-
-
-<div class="viewcode-block" id="WaitingSetStage">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.WaitingSetStage">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">WaitingSetStage</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">"""Models a set of waiting positions that can be activated or deactivated.</span>
-
-<span class="sd">    Similar as with a :class:`NotifiableQueueStage` there needs to be a set of</span>
-<span class="sd">    waiting positions defined which will be filled in order of definition. The</span>
-<span class="sd">    :class:`WaitingSetStage` now can be active or inactive. If active agents will fill</span>
-<span class="sd">    waiting positions until all are occupied. Additional agents will all try to</span>
-<span class="sd">    wait at the last defined waiting position. In inactive state the</span>
-<span class="sd">    :class:`WaitingSetStage` acts as a simple waypoint at the position of the first</span>
-<span class="sd">    defined waiting position.</span>
-<span class="sd">    """</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backing</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">backing</span>
-
-<div class="viewcode-block" id="WaitingSetStage.count_targeting">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.WaitingSetStage.count_targeting">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">count_targeting</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Returns:</span>
-<span class="sd">            Number of agents currently targeting this stage.</span>
-<span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">count_targeting</span><span class="p">()</span></div>
-
-
-<div class="viewcode-block" id="WaitingSetStage.count_waiting">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.WaitingSetStage.count_waiting">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">count_waiting</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Returns:</span>
-<span class="sd">            Number of agents currently waiting at this stage.</span>
-<span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">count_waiting</span><span class="p">()</span></div>
-
-
-<div class="viewcode-block" id="WaitingSetStage.waiting">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.WaitingSetStage.waiting">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">waiting</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""Access the ids of all waiting agents in order they are waiting.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            list of waiting agents ordered by their position.</span>
-<span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">waiting</span><span class="p">()</span></div>
-
-
-    <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WaitingSetState</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""State of the set.</span>
-
-<span class="sd">        Can be active or inactive, see :class:`WaitingSetState`</span>
-<span class="sd">        """</span>
-        <span class="k">return</span> <span class="n">WaitingSetState</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
-
-    <span class="nd">@state</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_state</span><span class="p">:</span> <span class="n">WaitingSetState</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">new_state</span><span class="o">.</span><span class="n">value</span></div>
-
-
-
 <div class="viewcode-block" id="WaypointStage">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.WaypointStage">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">WaypointStage</span><span class="p">:</span>
@@ -314,7 +169,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-10-06</footer>
+<footer class="report-footer">Last updated 2026-10-07</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

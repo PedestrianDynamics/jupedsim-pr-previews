@@ -90,8 +90,6 @@
 <li class="toctree-l2"><a class="reference internal" href="notebooks/lane-formation.html#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/motivation.html">Modelling Motivation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/motivation.html#download">Download</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/queues_waiting.html">Waiting in Queues</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/queues_waiting.html#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/routing.html">How Route Choice can Impact Evacuation Times</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/routing.html#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/direct_steering.html">Leader–Follower Dynamics with Direct Steering</a></li>
@@ -153,8 +151,6 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/jupedsim/index.html#jupedsim.WaitingSetState.ACTIVE">ACTIVE (WaitingSetState attribute)</a>
-</li>
       <li><a href="api/jupedsim/index.html#jupedsim.JourneyDescription.add">add() (JourneyDescription method)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.Simulation.add_agent">add_agent() (Simulation method)</a>
@@ -165,20 +161,16 @@
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.Simulation.add_journey">add_journey() (Simulation method)</a>
 </li>
-      <li><a href="api/jupedsim/index.html#jupedsim.Simulation.add_queue_stage">add_queue_stage() (Simulation method)</a>
-</li>
-      <li><a href="api/jupedsim/index.html#jupedsim.Simulation.add_waiting_set_stage">add_waiting_set_stage() (Simulation method)</a>
-</li>
       <li><a href="api/jupedsim/index.html#jupedsim.Simulation.add_waypoint_stage">add_waypoint_stage() (Simulation method)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.Agent">Agent (class in jupedsim)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/jupedsim/index.html#jupedsim.Simulation.agent">agent() (Simulation method)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.Simulation.agent_count">agent_count() (Simulation method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/jupedsim/index.html#jupedsim.AgentNumberError">AgentNumberError</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.RecordingFrame.agents">agents (RecordingFrame attribute)</a>
@@ -241,30 +233,22 @@
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.BuildInfo.compiler">compiler (BuildInfo property)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/jupedsim/index.html#jupedsim.BuildInfo.compiler_version">compiler_version (BuildInfo property)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.CustomOperationalModel.compute_next_state">compute_next_state() (CustomOperationalModel method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/jupedsim/index.html#jupedsim.RoutingEngine.compute_waypoints">compute_waypoints() (RoutingEngine method)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.SqliteTrajectoryWriter.connection">connection() (SqliteTrajectoryWriter method)</a>
 </li>
-      <li><a href="api/jupedsim/index.html#jupedsim.NotifiableQueueStage.count_enqueued">count_enqueued() (NotifiableQueueStage method)</a>
-</li>
       <li><a href="api/jupedsim/index.html#jupedsim.ExitStage.count_targeting">count_targeting() (ExitStage method)</a>
 
       <ul>
-        <li><a href="api/jupedsim/index.html#jupedsim.NotifiableQueueStage.count_targeting">(NotifiableQueueStage method)</a>
-</li>
-        <li><a href="api/jupedsim/index.html#jupedsim.WaitingSetStage.count_targeting">(WaitingSetStage method)</a>
-</li>
         <li><a href="api/jupedsim/index.html#jupedsim.WaypointStage.count_targeting">(WaypointStage method)</a>
 </li>
       </ul></li>
-      <li><a href="api/jupedsim/index.html#jupedsim.WaitingSetStage.count_waiting">count_waiting() (WaitingSetStage method)</a>
-</li>
       <li><a href="api/jupedsim/index.html#jupedsim.Transition.create_fixed_transition">create_fixed_transition() (Transition static method)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.Transition.create_least_targeted_transition">create_least_targeted_transition() (Transition static method)</a>
@@ -311,16 +295,14 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/jupedsim/index.html#jupedsim.Simulation.elapsed_time">elapsed_time() (Simulation method)</a>
 </li>
-      <li><a href="api/jupedsim/index.html#jupedsim.NotifiableQueueStage.enqueued">enqueued() (NotifiableQueueStage method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/jupedsim/index.html#jupedsim.SqliteTrajectoryWriter.every_nth_frame">every_nth_frame() (SqliteTrajectoryWriter method)</a>
 
       <ul>
         <li><a href="api/jupedsim/index.html#jupedsim.TrajectoryWriter.every_nth_frame">(TrajectoryWriter method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/jupedsim/index.html#jupedsim.ExitStage">ExitStage (class in jupedsim)</a>
 </li>
   </ul></td>
@@ -387,8 +369,6 @@
         <li><a href="api/jupedsim/index.html#jupedsim.RecordingAgent.id">(RecordingAgent attribute)</a>
 </li>
       </ul></li>
-      <li><a href="api/jupedsim/index.html#jupedsim.WaitingSetState.INACTIVE">INACTIVE (WaitingSetState attribute)</a>
-</li>
       <li><a href="api/jupedsim/index.html#jupedsim.IncorrectParameterError">IncorrectParameterError</a>
 </li>
   </ul></td>
@@ -482,13 +462,11 @@
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.NeighborView">NeighborView (class in jupedsim)</a>
 </li>
-      <li><a href="api/jupedsim/index.html#jupedsim.AgentView.no_geometry_between">no_geometry_between() (AgentView method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/jupedsim/index.html#jupedsim.WallView.normal">normal (WallView property)</a>
+      <li><a href="api/jupedsim/index.html#jupedsim.AgentView.no_geometry_between">no_geometry_between() (AgentView method)</a>
 </li>
-      <li><a href="api/jupedsim/index.html#jupedsim.NotifiableQueueStage">NotifiableQueueStage (class in jupedsim)</a>
+      <li><a href="api/jupedsim/index.html#jupedsim.WallView.normal">normal (WallView property)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.Recording.num_frames">num_frames (Recording property)</a>
 </li>
@@ -509,10 +487,6 @@
 
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/jupedsim/index.html#jupedsim.NotifiableQueueStage.pop">pop() (NotifiableQueueStage method)</a>
-</li>
-  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/jupedsim/index.html#jupedsim.Agent.position">position (Agent property)</a>
 
@@ -568,10 +542,10 @@
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.Simulation">Simulation (class in jupedsim)</a>
 </li>
-      <li><a href="api/jupedsim/index.html#jupedsim.SimulationError">SimulationError (in module jupedsim)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/jupedsim/index.html#jupedsim.SimulationError">SimulationError (in module jupedsim)</a>
+</li>
       <li><a href="api/jupedsim/index.html#jupedsim.SocialForceModel">SocialForceModel (in module jupedsim)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.SocialForceModelState">SocialForceModelState (in module jupedsim)</a>
@@ -584,8 +558,6 @@
 
       <ul>
         <li><a href="api/jupedsim/index.html#jupedsim.NeighborView.state">(NeighborView property)</a>
-</li>
-        <li><a href="api/jupedsim/index.html#jupedsim.WaitingSetStage.state">(WaitingSetStage property)</a>
 </li>
       </ul></li>
       <li><a href="api/jupedsim/index.html#jupedsim.Simulation.switch_agent_journey">switch_agent_journey() (Simulation method)</a>
@@ -612,22 +584,16 @@
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/jupedsim/index.html#jupedsim.WaitingSetStage.waiting">waiting() (WaitingSetStage method)</a>
-</li>
-      <li><a href="api/jupedsim/index.html#jupedsim.WaitingSetStage">WaitingSetStage (class in jupedsim)</a>
-</li>
-      <li><a href="api/jupedsim/index.html#jupedsim.WaitingSetState">WaitingSetState (class in jupedsim)</a>
-</li>
       <li><a href="api/jupedsim/index.html#jupedsim.AgentView.walls_in_range">walls_in_range() (AgentView method)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.WallView">WallView (class in jupedsim)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.WarpDriverModel">WarpDriverModel (in module jupedsim)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/jupedsim/index.html#jupedsim.WarpDriverModelState">WarpDriverModelState (in module jupedsim)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/jupedsim/index.html#jupedsim.WaypointStage">WaypointStage (class in jupedsim)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.AgentStep.with_neighbor_state_mapping">with_neighbor_state_mapping() (AgentStep method)</a>
@@ -672,7 +638,7 @@
 
 
 </div>
-<footer class="report-footer">Last updated 2026-10-06</footer>
+<footer class="report-footer">Last updated 2026-10-07</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

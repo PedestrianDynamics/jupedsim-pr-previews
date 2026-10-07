@@ -90,8 +90,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/lane-formation.html#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/motivation.html">Modelling Motivation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/motivation.html#download">Download</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebooks/queues_waiting.html">Waiting in Queues</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebooks/queues_waiting.html#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/routing.html">How Route Choice can Impact Evacuation Times</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/routing.html#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/direct_steering.html">Leader–Follower Dynamics with Direct Steering</a></li>
@@ -168,8 +166,6 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.serialization</span><span class="w"> </span><span class="kn">import</span> <span class="n">TrajectoryWriter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.stages</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">ExitStage</span><span class="p">,</span>
-    <span class="n">NotifiableQueueStage</span><span class="p">,</span>
-    <span class="n">WaitingSetStage</span><span class="p">,</span>
     <span class="n">WaypointStage</span><span class="p">,</span>
 <span class="p">)</span>
 
@@ -328,52 +324,6 @@
 
 <span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_waypoint_stage</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">region_id</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="Simulation.add_queue_stage">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.add_queue_stage">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_queue_stage</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Add a new queue state to this simulation.</span>
-
-<span class="sd">        Arguments:</span>
-<span class="sd">            positions: Ordered list of the waiting</span>
-<span class="sd">                points of this queue. The first one in the list is the head of</span>
-<span class="sd">                the queue while the last one is the back of the queue.</span>
-<span class="sd">            region_id: Region the waiting points lie in, see</span>
-<span class="sd">                :func:`add_agent`.</span>
-<span class="sd">        Returns:</span>
-<span class="sd">            Id of the new stage.</span>
-
-<span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_queue_stage</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">region_id</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="Simulation.add_waiting_set_stage">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.add_waiting_set_stage">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_waiting_set_stage</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Add a new waiting set stage to this simulation.</span>
-
-<span class="sd">        Arguments:</span>
-<span class="sd">            positions: Ordered list of the waiting points of this waiting set.</span>
-<span class="sd">                The agents will fill the waiting points in the given order. If more agents</span>
-<span class="sd">                are targeting the waiting, the remaining will wait at the last given point.</span>
-<span class="sd">            region_id: Region the waiting points lie in, see</span>
-<span class="sd">                :func:`add_agent`.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Id of the new stage.</span>
-<span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_waiting_set_stage</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">region_id</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Simulation.add_exit_stage">
@@ -766,10 +716,6 @@
                 <span class="k">return</span> <span class="n">WaypointStage</span><span class="p">(</span><span class="n">stage</span><span class="p">)</span>
             <span class="k">case</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">ExitProxy</span><span class="p">():</span>
                 <span class="k">return</span> <span class="n">ExitStage</span><span class="p">(</span><span class="n">stage</span><span class="p">)</span>
-            <span class="k">case</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">NotifiableQueueProxy</span><span class="p">():</span>
-                <span class="k">return</span> <span class="n">NotifiableQueueStage</span><span class="p">(</span><span class="n">stage</span><span class="p">)</span>
-            <span class="k">case</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">WaitingSetProxy</span><span class="p">():</span>
-                <span class="k">return</span> <span class="n">WaitingSetStage</span><span class="p">(</span><span class="n">stage</span><span class="p">)</span>
             <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">"Internal error, unexpected type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">stage</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
@@ -801,7 +747,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-10-06</footer>
+<footer class="report-footer">Last updated 2026-10-07</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

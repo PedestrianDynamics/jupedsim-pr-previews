@@ -98,8 +98,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/lane-formation.html#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/motivation.html">Modelling Motivation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/motivation.html#download">Download</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../notebooks/queues_waiting.html">Waiting in Queues</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../notebooks/queues_waiting.html#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/routing.html">How Route Choice can Impact Evacuation Times</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/routing.html#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/direct_steering.html">Leader–Follower Dynamics with Direct Steering</a></li>
@@ -170,8 +168,7 @@ Each circle represents an intermediate stage, while the arrows the corresponding
 <section id="stages">
 <h3>Stages<a class="headerlink" href="#stages" title="Link to this heading">#</a></h3>
 <p>In <em>JuPedSim</em>, a stage refers to an interim target that the agent aims to reach.
-When a stage is reached, the agent will wait for its completion and then continue to the next stage.
-A stage may already count as completed when the stage is reached or when some condition is fulfilled.
+A stage counts as completed when the agent reaches it; the agent then continues to the next stage.
 The various types of stages will be explained below.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -234,95 +231,6 @@ Therefore, creating wide exits could potentially lead to unpredictable behavior.
 In certain situations, it may be more appropriate to establish multiple exits rather than a single wide one.</p>
 </div>
 </section>
-<section id="waiting-queue">
-<h4>Waiting Queue<a class="headerlink" href="#waiting-queue" title="Link to this heading">#</a></h4>
-<p>It is not only possible to steer agents with waypoints, it is also possible to let them wait in queues.
-<em>JuPedSim</em> offers <code class="xref py py-class docutils literal notranslate"><span class="pre">Queues</span></code> where the agents will wait at predefined positions.
-The positions given are arranged according to the sequence in which they are defined, and agents will wait at the first available spot.
-When agents leave the queue, the other agents will move up in their waiting positions until they reach the front.
-In order to allow agents to leave the queue, a signal must be sent to it, indicating that the first <cite>n</cite> agents in the queue are permitted to exit.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If the number of agents arriving at the queue exceeds the available waiting positions, all additional agents beyond capacity will wait at the last designated waiting position.</p>
-</div>
-<figure class="align-center" id="id4">
-<a class="reference internal image-reference" href="../_images/queue.svg"><img alt="A series of dots represent the different waiting positions, connected with arrows which show in which direction the agents will move up." src="../_images/queue.svg" style="width: 80%;" />
-</a>
-<figcaption>
-<p><span class="caption-text">Representation of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Queue</span></code> (dots).
-The first position is marked orange and the last position light-blue.
-The movement of the agents to move up the queue is indicated by the red arrows.</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-<p>The following code snippet creates a Queue with five waiting spots at (0, 0), (0, 5), (0, 10), (0, 15), and (0, 20) and adds it to the simulation.
-Afterwards, it retrieves the Queue object from the simulation and then releases the first two and then the first agent from the simulation.</p>
-<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="c1"># add the queue to the simulation</span>
-<span class="n">queue_id</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_queue_stage</span><span class="p">(</span>
-    <span class="p">[</span>
-        <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
-    <span class="p">],</span>
-    <span class="n">region_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="c1"># retrieve queue from the simulation</span>
-<span class="n">queue</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">get_stage</span><span class="p">(</span><span class="n">queue_id</span><span class="p">)</span>
-
-<span class="o">...</span>
-
-<span class="c1"># notify that the first 2 agents can move to the next stage</span>
-<span class="n">queue</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="c1"># notify that the first agent can move to the next stage</span>
-<span class="n">queue</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="waiting-set">
-<h4>Waiting Set<a class="headerlink" href="#waiting-set" title="Link to this heading">#</a></h4>
-<p>A second option to introduce a waiting stage to the simulation are <code class="xref py py-class docutils literal notranslate"><span class="pre">WaitingSets</span></code>.
-They consists of multiple waiting positions which will be filled in the order of their definition, when creating the waiting set.
-A waiting set can either be active, which means the agents will wait there, or inactive, which will release all waiting agents.
-If a waiting set is inactive when an agents targets it, the first defined waiting position will be used as a waypoint.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>When the number of agents targeting the waiting set exceeds the available waiting spots, the agents in excess will wait at the position where the last agent entered the waiting area.</p>
-</div>
-<figure class="align-center" id="id5">
-<a class="reference internal image-reference" href="../_images/waiting_set.svg"><img alt="A waiting set is represented by a number of unevenly distributed circles. Two circles are highlighted." src="../_images/waiting_set.svg" style="width: 80%;" />
-</a>
-<figcaption>
-<p><span class="caption-text">Representation of the <code class="xref py py-class docutils literal notranslate"><span class="pre">WaitingSet</span></code>.
-The first (colored orange) and last defined position (colored blue) are highlighted.</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-<p>In the following, you can see how to add a waiting set to a simulation and how to activate and deactivate it:</p>
-<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="c1"># add the waiting set to the simulation</span>
-<span class="n">waiting_set_id</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_waiting_set_stage</span><span class="p">(</span>
-    <span class="p">[</span>
-        <span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">59</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">58</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span>
-    <span class="p">],</span>
-    <span class="n">region_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="c1"># retrieve waiting set from the simulation</span>
-<span class="n">waiting_set</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">get_stage</span><span class="p">(</span><span class="n">waiting_set_id</span><span class="p">)</span>
-
-<span class="o">...</span>
-
-<span class="c1"># deactivate the waiting</span>
-<span class="n">waiting_set</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">jupedsim</span><span class="o">.</span><span class="n">WaitingSetState</span><span class="o">.</span><span class="n">INACTIVE</span>
-
-<span class="o">...</span>
-
-<span class="c1"># activate the waiting again</span>
-<span class="n">waiting_set</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">jupedsim</span><span class="o">.</span><span class="n">WaitingSetState</span><span class="o">.</span><span class="n">ACTIVE</span>
-</pre></div>
-</div>
-</section>
 </section>
 <section id="journeys">
 <h3>Journeys<a class="headerlink" href="#journeys" title="Link to this heading">#</a></h3>
@@ -336,8 +244,6 @@ But before we can add transitions we have to create Journeys:</p>
 <span class="n">journey</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">JourneyDescription</span><span class="p">(</span>
     <span class="p">[</span>
         <span class="n">waypoint_id</span><span class="p">,</span>
-        <span class="n">queue_id</span><span class="p">,</span>
-        <span class="n">waiting_set_id</span><span class="p">,</span>
         <span class="n">exit_id</span>
     <span class="p">]</span>
 <span class="p">)</span>
@@ -475,7 +381,7 @@ When multiple paths lead to the target, the shortest one will be preferred.</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-10-06</footer>
+<footer class="report-footer">Last updated 2026-10-07</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="geometry.html" rel="prev"><small>Previous</small>Geometry</a><a class="book-pagenav-next" href="custom_serialization.html" rel="next"><small>Next</small>Custom Serialization</a>
 </nav>
@@ -489,8 +395,6 @@ When multiple paths lead to the target, the shortest one will be preferred.</p>
 <li><a class="reference internal" href="#stages">Stages</a><ul>
 <li><a class="reference internal" href="#waypoint">Waypoint</a></li>
 <li><a class="reference internal" href="#exit">Exit</a></li>
-<li><a class="reference internal" href="#waiting-queue">Waiting Queue</a></li>
-<li><a class="reference internal" href="#waiting-set">Waiting Set</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#journeys">Journeys</a></li>
