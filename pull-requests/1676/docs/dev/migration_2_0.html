@@ -237,7 +237,7 @@ the model instance and are <em>not</em> part of the state.</p>
 </pre></div>
 </div>
 <p>Passing a state class that does not match the simulation’s model raises
-<a class="reference internal" href="api/jupedsim/index.html#jupedsim.SimulationError" title="jupedsim.SimulationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimulationError</span></code></a>.</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">SimulationError</span></code>.</p>
 <p>For custom models the state is your own object, of whatever type your
 <a class="reference internal" href="api/jupedsim/index.html#jupedsim.CustomOperationalModel" title="jupedsim.CustomOperationalModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">CustomOperationalModel</span></code></a> expects (a frozen dataclass is
 recommended):</p>
@@ -280,7 +280,7 @@ return the region ids:</p>
 </pre></div>
 </div>
 <p>An unknown region id, or a point outside the given region, raises
-<a class="reference internal" href="api/jupedsim/index.html#jupedsim.SimulationError" title="jupedsim.SimulationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimulationError</span></code></a>.</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">SimulationError</span></code>.</p>
 </section>
 <section id="old-new-mapping-per-model">
 <h2>Old → new mapping per model<a class="headerlink" href="#old-new-mapping-per-model" title="Link to this heading">#</a></h2>
@@ -343,7 +343,7 @@ and write resolves the agent freshly through the simulation:</p>
 never points at reallocated memory. You can keep a handle for the whole
 simulation.</p></li>
 <li><p><strong>Removed agents raise.</strong> Accessing any attribute of a handle whose agent
-has left the simulation raises <a class="reference internal" href="api/jupedsim/index.html#jupedsim.SimulationError" title="jupedsim.SimulationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimulationError</span></code></a>.</p></li>
+has left the simulation raises <code class="xref py py-class docutils literal notranslate"><span class="pre">SimulationError</span></code>.</p></li>
 <li><p><strong>Property syntax keeps working, including mutation:</strong></p></li>
 </ul>
 <div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">agent</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">agent</span><span class="p">(</span><span class="n">agent_id</span><span class="p">)</span>
@@ -368,7 +368,7 @@ outside the walkable area now raises immediately, not at the next <code class="d
 <p>Calling mutating simulation methods — <code class="docutils literal notranslate"><span class="pre">add_agent</span></code>,
 <code class="docutils literal notranslate"><span class="pre">mark_agent_for_removal</span></code>, journey or stage mutation — while <code class="docutils literal notranslate"><span class="pre">iterate()</span></code> is
 running (e.g. from a custom-model callback or a trajectory writer invoked
-during iteration) now raises <a class="reference internal" href="api/jupedsim/index.html#jupedsim.SimulationError" title="jupedsim.SimulationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimulationError</span></code></a> instead of
+during iteration) now raises <code class="xref py py-class docutils literal notranslate"><span class="pre">SimulationError</span></code> instead of
 causing undefined behavior. Perform such mutations between <code class="docutils literal notranslate"><span class="pre">iterate()</span></code>
 calls.</p>
 </section>
