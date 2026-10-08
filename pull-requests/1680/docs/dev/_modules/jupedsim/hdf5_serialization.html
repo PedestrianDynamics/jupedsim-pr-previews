@@ -122,12 +122,12 @@
 <h1>Source code for jupedsim.hdf5_serialization</h1><div class="highlight"><pre>
 <span></span><span class="c1"># SPDX-License-Identifier: LGPL-3.0-or-later</span>
 
-<span class="sd">"""HDF5 trajectory writer, schema version 3.</span>
+<span class="sd">"""HDF5 trajectory writer, schema version 2.</span>
 
 <span class="sd">File Layout:</span>
 <span class="sd">```txt</span>
 <span class="sd">    /</span>
-<span class="sd">    │  @schema_version   int  layout version, currently 3</span>
+<span class="sd">    │  @schema_version   int  layout version, currently 2</span>
 <span class="sd">    │  @producer         str  "JuPedSim"</span>
 <span class="sd">    │  @producer_version str  JuPedSim version that wrote the file</span>
 <span class="sd">    │  @dt               f8   simulation time step [s]</span>
@@ -159,8 +159,11 @@
 <span class="sd">    │   │  One row per region</span>
 <span class="sd">    │   │  type compound {</span>
 <span class="sd">    │   │    id  &lt;u8 region id</span>
-<span class="sd">    │   │    wkt str region polygon as WKT</span>
-<span class="sd">    │   └─  }</span>
+<span class="sd">    │   │    wkt str 2D region polygon as WKT</span>
+<span class="sd">    │   │  }</span>
+<span class="sd">    │   │  @id  str "id of the region"</span>
+<span class="sd">    │   └─ @wkt str "2D WKT describing the region polygon."</span>
+<span class="sd">    │               "This is always a projection onto X/Y for connectors."</span>
 <span class="sd">    └── mesh</span>
 <span class="sd">        ├── vertices</span>
 <span class="sd">        │   │  All vertices of the geometry</span>
@@ -194,7 +197,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.serialization</span><span class="w"> </span><span class="kn">import</span> <span class="n">TrajectoryWriter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.simulation</span><span class="w"> </span><span class="kn">import</span> <span class="n">Simulation</span>
 
-<span class="n">SCHEMA_VERSION</span><span class="p">:</span> <span class="n">Final</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">SCHEMA_VERSION</span><span class="p">:</span> <span class="n">Final</span> <span class="o">=</span> <span class="mi">2</span>
 
 
 <div class="viewcode-block" id="Hdf5TrajectoryWriter">
@@ -206,7 +209,7 @@
 <span class="sd">    every chunk, so an interrupted run keeps the metadata, the geometry and the</span>
 <span class="sd">    trajectory rows up to the last chunk; /frame_offsets may be incomplete then.</span>
 <span class="sd">    Call :meth:`close` when the simulation is done to write the remaining rows</span>
-<span class="sd">    and the frame index.</span>
+<span class="sd">    and the frame index, or use the writer in a ``with`` block.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        output_file: File to write to; an existing file is overwritten.</span>
@@ -311,7 +314,11 @@
             <span class="p">[(</span><span class="s2">"id"</span><span class="p">,</span> <span class="s2">"&lt;u8"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"wkt"</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">string_dtype</span><span class="p">())],</span> <span class="n">align</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
         <span class="n">regions_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">regions</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">regions_dt</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">"regions"</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">regions_arr</span><span class="p">)</span>
+        <span class="n">regions_ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">"regions"</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">regions_arr</span><span class="p">)</span>
+        <span class="n">regions_ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Id of the region."</span>
+        <span class="n">regions_ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"wkt"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">"2D WKT describing the region polygon. This is always a projection onto X/Y for connectors."</span>
+        <span class="p">)</span>
 
         <span class="n">vertices</span> <span class="o">=</span> <span class="n">geo</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span>
         <span class="n">vertices_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"&lt;f4"</span><span class="p">)</span>
@@ -337,7 +344,7 @@
 <span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_writing</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">TrajectoryWriter</span><span class="o">.</span><span class="n">Exception</span><span class="p">(</span>
-                <span class="s2">"Need to call 'begin_writing()' before calling 'write_iteration()'"</span>
+                <span class="s2">"Need to call 'begin_writing()' before calling 'write_iteration_state()'"</span>
             <span class="p">)</span>
         <span class="n">iteration</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">iteration_count</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">iteration</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_every_nth_frame</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
@@ -354,7 +361,7 @@
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_frame_idx</span> <span class="o">=</span> <span class="mi">0</span>
 
-        <span class="k">for</span> <span class="n">agent</span> <span class="ow">in</span> <span class="n">simulation</span><span class="o">.</span><span class="n">agents</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">agent</span> <span class="ow">in</span> <span class="n">simulation</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">agents</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_records_written</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">loc</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">location</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_trajectory_buffer</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_record_idx</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
@@ -393,7 +400,9 @@
 
 <div class="viewcode-block" id="Hdf5TrajectoryWriter.close">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Hdf5TrajectoryWriter.close">[docs]</a>
+    <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Write the remaining rows and the frame index, then close the file."""</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_writing</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_is_writing</span> <span class="o">=</span> <span class="kc">False</span>
@@ -441,7 +450,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-10-07</footer>
+<footer class="report-footer">Last updated 2026-10-08</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

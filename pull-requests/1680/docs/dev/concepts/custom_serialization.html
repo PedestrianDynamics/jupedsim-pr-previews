@@ -305,29 +305,27 @@ of a region.</p></td>
 <p>Using the custom writer is identical to using the built-in SQLite writer:</p>
 <div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">jupedsim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jps</span>
 
-<span class="n">simulation</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span>
-    <span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModel</span><span class="p">(),</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">my_geometry</span><span class="p">,</span>
-    <span class="n">trajectory_writer</span><span class="o">=</span><span class="n">CsvTrajectoryWriter</span><span class="p">(</span>
-        <span class="n">output_file</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">"output.csv"</span><span class="p">),</span>
-        <span class="n">every_nth_frame</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-    <span class="p">),</span>
-<span class="p">)</span>
+<span class="c1"># Leaving the block calls close(), which flushes the remaining data</span>
+<span class="k">with</span> <span class="n">CsvTrajectoryWriter</span><span class="p">(</span>
+    <span class="n">output_file</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">"output.csv"</span><span class="p">),</span>
+    <span class="n">every_nth_frame</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+<span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+    <span class="n">simulation</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModel</span><span class="p">(),</span>
+        <span class="n">geometry</span><span class="o">=</span><span class="n">my_geometry</span><span class="p">,</span>
+        <span class="n">trajectory_writer</span><span class="o">=</span><span class="n">writer</span><span class="p">,</span>
+    <span class="p">)</span>
 
-<span class="c1"># Run the simulation — writing happens automatically</span>
-<span class="k">while</span> <span class="n">simulation</span><span class="o">.</span><span class="n">agent_count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="n">simulation</span><span class="o">.</span><span class="n">iterate</span><span class="p">()</span>
-
-<span class="c1"># Flush remaining data</span>
-<span class="n">simulation</span><span class="o">.</span><span class="n">_writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="c1"># Run the simulation — writing happens automatically</span>
+    <span class="k">while</span> <span class="n">simulation</span><span class="o">.</span><span class="n">agent_count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">simulation</span><span class="o">.</span><span class="n">iterate</span><span class="p">()</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Currently, <code class="docutils literal notranslate"><span class="pre">close()</span></code> is not part of the <code class="docutils literal notranslate"><span class="pre">TrajectoryWriter</span></code> interface
-and must be called manually via <code class="docutils literal notranslate"><span class="pre">simulation._writer</span></code>. If your custom
-writer manages resources (file handles, network connections, etc.),
-make sure to call <code class="docutils literal notranslate"><span class="pre">close()</span></code> when the simulation is done.</p>
+<p>Every <code class="docutils literal notranslate"><span class="pre">TrajectoryWriter</span></code> is a context manager: leaving the <code class="docutils literal notranslate"><span class="pre">with</span></code>
+block calls <code class="docutils literal notranslate"><span class="pre">close()</span></code>, also when the simulation raises. Without a
+<code class="docutils literal notranslate"><span class="pre">with</span></code> block, call <code class="docutils literal notranslate"><span class="pre">close()</span></code> yourself when the simulation is done.</p>
 </div>
 </section>
 <section id="tips-for-custom-writers">
@@ -338,9 +336,9 @@ make sure to call <code class="docutils literal notranslate"><span class="pre">c
 regardless of your interval setting.</p></li>
 <li><p><strong>Buffering</strong>: For performance, consider buffering writes in memory and
 flushing periodically, as the built-in SQLite writer does.</p></li>
-<li><p><strong>Resource cleanup</strong>: Implement a <code class="docutils literal notranslate"><span class="pre">close()</span></code> method if your writer opens
-files, connections, or other resources. Call it after the simulation loop
-completes.</p></li>
+<li><p><strong>Resource cleanup</strong>: Override <code class="docutils literal notranslate"><span class="pre">close()</span></code> if your writer buffers data or
+opens files, connections, or other resources. It is called when leaving a
+<code class="docutils literal notranslate"><span class="pre">with</span></code> block and must be safe to call more than once.</p></li>
 <li><p><strong>Error handling</strong>: Raise <code class="docutils literal notranslate"><span class="pre">TrajectoryWriter.Exception</span></code> for writer-specific
 errors to keep error reporting consistent.</p></li>
 </ul>
@@ -349,30 +347,30 @@ errors to keep error reporting consistent.</p></li>
 <span id="hdf5-writer"></span><h2>Built-in HDF5 writer<a class="headerlink" href="#built-in-hdf5-writer" title="Link to this heading">#</a></h2>
 <p>JuPedSim provides a built-in HDF5 trajectory writer at
 <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.Hdf5TrajectoryWriter" title="jupedsim.Hdf5TrajectoryWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">jupedsim.Hdf5TrajectoryWriter</span></code></a>. It stores one row per recorded
-agent and frame in a single compressed table, together with the geometry
-the agents walk on.</p>
+agent and frame in a simple table. Additionally geometry is stored
+as 2D regions for easy analysis with pedpy and as full 3D mesh.</p>
 <p>Usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">jupedsim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jps</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
-<span class="n">writer</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Hdf5TrajectoryWriter</span><span class="p">(</span>
+<span class="k">with</span> <span class="n">jps</span><span class="o">.</span><span class="n">Hdf5TrajectoryWriter</span><span class="p">(</span>
     <span class="n">output_file</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">"traj.h5"</span><span class="p">),</span>
     <span class="n">every_nth_frame</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">sim</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span>
-    <span class="n">model</span><span class="o">=...</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=...</span><span class="p">,</span> <span class="n">trajectory_writer</span><span class="o">=</span><span class="n">writer</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="k">while</span> <span class="n">sim</span><span class="o">.</span><span class="n">agent_count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="n">sim</span><span class="o">.</span><span class="n">iterate</span><span class="p">()</span>
-<span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+    <span class="n">sim</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">=...</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=...</span><span class="p">,</span> <span class="n">trajectory_writer</span><span class="o">=</span><span class="n">writer</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">while</span> <span class="n">sim</span><span class="o">.</span><span class="n">agent_count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">sim</span><span class="o">.</span><span class="n">iterate</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Call <code class="docutils literal notranslate"><span class="pre">close()</span></code> once the simulation is done: the last buffered rows and
-the frame index are only written then.</p>
+<p>The last buffered rows and the frame index are only written when the
+writer is closed, i.e. when leaving the <code class="docutils literal notranslate"><span class="pre">with</span></code> block. Without a <code class="docutils literal notranslate"><span class="pre">with</span></code>
+block, call <code class="docutils literal notranslate"><span class="pre">writer.close()</span></code> once the simulation is done.</p>
 <section id="file-layout">
 <h3>File layout<a class="headerlink" href="#file-layout" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>Root attributes <code class="docutils literal notranslate"><span class="pre">schema_version</span></code> (currently <code class="docutils literal notranslate"><span class="pre">3</span></code>), <code class="docutils literal notranslate"><span class="pre">producer</span></code>,
+<li><p>Root attributes <code class="docutils literal notranslate"><span class="pre">schema_version</span></code> (currently <code class="docutils literal notranslate"><span class="pre">2</span></code>), <code class="docutils literal notranslate"><span class="pre">producer</span></code>,
 <code class="docutils literal notranslate"><span class="pre">producer_version</span></code>, <code class="docutils literal notranslate"><span class="pre">dt</span></code>, <code class="docutils literal notranslate"><span class="pre">every_nth_frame</span></code> and <code class="docutils literal notranslate"><span class="pre">created</span></code>
 (ISO 8601, UTC).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">/trajectory</span></code>: compound dataset with the columns <code class="docutils literal notranslate"><span class="pre">frame</span></code>, <code class="docutils literal notranslate"><span class="pre">id</span></code>
@@ -403,7 +401,7 @@ reading the file with h5py:</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-10-07</footer>
+<footer class="report-footer">Last updated 2026-10-08</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="routing.html" rel="prev"><small>Previous</small>Routing</a><a class="book-pagenav-next" href="../pedestrian_models/index.html" rel="next"><small>Next</small>Pedestrian Models</a>
 </nav>

@@ -774,7 +774,7 @@ polygon for one frame.</p>
 every chunk, so an interrupted run keeps the metadata, the geometry and the
 trajectory rows up to the last chunk; /frame_offsets may be incomplete then.
 Call <a class="reference internal" href="#jupedsim.Hdf5TrajectoryWriter.close" title="jupedsim.Hdf5TrajectoryWriter.close"><code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code></a> when the simulation is done to write the remaining rows
-and the frame index.</p>
+and the frame index, or use the writer in a <code class="docutils literal notranslate"><span class="pre">with</span></code> block.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -795,7 +795,8 @@ such as frame rate etc…</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryWriter.close">
 <span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/hdf5_serialization.html#Hdf5TrajectoryWriter.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Hdf5TrajectoryWriter.close" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Write the remaining rows and the frame index, then close the file.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryWriter.every_nth_frame">
@@ -1493,6 +1494,14 @@ and only writing to disk when the buffer is full or close() is called.</p>
 <dt class="sig sig-object py" id="jupedsim.TrajectoryWriter">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TrajectoryWriter</span></span><a class="reference internal" href="../../_modules/jupedsim/serialization.html#TrajectoryWriter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.TrajectoryWriter" title="Link to this definition">#</a></dt>
 <dd><p>Interface for trajectory serialization</p>
+<p>Writers are context managers: leaving a <code class="docutils literal notranslate"><span class="pre">with</span></code> block calls
+<a class="reference internal" href="#jupedsim.TrajectoryWriter.close" title="jupedsim.TrajectoryWriter.close"><code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code></a>, also when the block raises:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">jps</span><span class="o">.</span><span class="n">Hdf5TrajectoryWriter</span><span class="p">(</span><span class="n">output_file</span><span class="o">=</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+    <span class="n">sim</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">trajectory_writer</span><span class="o">=</span><span class="n">writer</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">sim</span><span class="o">.</span><span class="n">agent_count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">sim</span><span class="o">.</span><span class="n">iterate</span><span class="p">()</span>
+</pre></div>
+</div>
 <dl class="py exception">
 <dt class="sig sig-object py" id="jupedsim.TrajectoryWriter.Exception">
 <em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Exception</span></span><a class="headerlink" href="#jupedsim.TrajectoryWriter.Exception" title="Link to this definition">#</a></dt>
@@ -1507,6 +1516,15 @@ and only writing to disk when the buffer is full or close() is called.</p>
 <p>This method is intended to handle all data writing that has to be done
 once before the trajectory data can be written. E.g. Meta information
 such as frame rate etc…</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.TrajectoryWriter.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/serialization.html#TrajectoryWriter.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.TrajectoryWriter.close" title="Link to this definition">#</a></dt>
+<dd><p>Write all buffered data and release the writer’s resources.</p>
+<p>Called when leaving a <code class="docutils literal notranslate"><span class="pre">with</span></code> block. Must be safe to call more than
+once. Does nothing by default; override it if the writer buffers data
+or holds resources such as open files.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -2020,7 +2038,7 @@ basic information about this library.</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-10-07</footer>
+<footer class="report-footer">Last updated 2026-10-08</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="../../disclaimer.html" rel="prev"><small>Previous</small>Disclaimer</a><a class="book-pagenav-next" href="models/index.html" rel="next"><small>Next</small><code class="xref py py-mod docutils literal notranslate"><span class="pre">jupedsim.models</span></code></a>
 </nav>
@@ -2178,6 +2196,7 @@ basic information about this library.</p>
 <li><a class="reference internal" href="#jupedsim.TrajectoryWriter"><code class="docutils literal notranslate"><span class="pre">TrajectoryWriter</span></code></a><ul>
 <li><a class="reference internal" href="#jupedsim.TrajectoryWriter.Exception"><code class="docutils literal notranslate"><span class="pre">TrajectoryWriter.Exception</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.TrajectoryWriter.begin_writing"><code class="docutils literal notranslate"><span class="pre">TrajectoryWriter.begin_writing()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.TrajectoryWriter.close"><code class="docutils literal notranslate"><span class="pre">TrajectoryWriter.close()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.TrajectoryWriter.every_nth_frame"><code class="docutils literal notranslate"><span class="pre">TrajectoryWriter.every_nth_frame()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.TrajectoryWriter.write_iteration_state"><code class="docutils literal notranslate"><span class="pre">TrajectoryWriter.write_iteration_state()</span></code></a></li>
 </ul>
