@@ -291,8 +291,8 @@
 <span class="sd">        :meth:`~jupedsim.simulation.Simulation.get_location`.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Current final target of the agent, or ``None`` if its stage</span>
-<span class="sd">            is not a single location (e.g. an exit).</span>
+<span class="sd">            Current final target of the agent, or ``None`` while it heads</span>
+<span class="sd">            for an area such as an exit.</span>
 <span class="sd">        """</span>
         <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__resolve</span><span class="p">()</span><span class="o">.</span><span class="n">final_target</span>
         <span class="k">return</span> <span class="n">Location</span><span class="p">(</span><span class="n">target</span><span class="p">)</span> <span class="k">if</span> <span class="n">target</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
@@ -336,7 +336,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-10-07</footer>
+<footer class="report-footer">Last updated 2026-10-08</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

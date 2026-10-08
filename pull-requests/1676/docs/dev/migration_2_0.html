@@ -359,9 +359,8 @@ has left the simulation raises <a class="reference internal" href="api/jupedsim/
 <p><code class="docutils literal notranslate"><span class="pre">agent.state</span></code> returns a per-model state handle with the same semantics: it
 resolves per access and raises once the agent is gone.</p>
 <p><code class="docutils literal notranslate"><span class="pre">agent.target</span></code> is now <code class="docutils literal notranslate"><span class="pre">agent.final_target</span></code>. Reading it returns a
-<a class="reference internal" href="api/jupedsim/index.html#jupedsim.Location" title="jupedsim.Location"><code class="xref py py-class docutils literal notranslate"><span class="pre">Location</span></code></a> instead of an <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> tuple, and <code class="docutils literal notranslate"><span class="pre">None</span></code> unless the
-agent is on a direct steering stage: every other stage is an area, not a single
-point. Setting it accepts a <code class="docutils literal notranslate"><span class="pre">Location</span></code> or an <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> tuple. Setting a target
+<a class="reference internal" href="api/jupedsim/index.html#jupedsim.Location" title="jupedsim.Location"><code class="xref py py-class docutils literal notranslate"><span class="pre">Location</span></code></a> instead of an <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> tuple, and <code class="docutils literal notranslate"><span class="pre">None</span></code> while the
+agent heads for an area such as an exit or a waypoint. Setting it accepts a <code class="docutils literal notranslate"><span class="pre">Location</span></code> or an <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> tuple. Setting a target
 outside the walkable area now raises immediately, not at the next <code class="docutils literal notranslate"><span class="pre">iterate()</span></code>.</p>
 </section>
 <section id="mutation-during-iterate-is-now-an-error">
@@ -389,7 +388,7 @@ configured instance (e.g.
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-10-07</footer>
+<footer class="report-footer">Last updated 2026-10-08</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="notebooks/getting_started.html" rel="prev"><small>Previous</small>Getting started</a><a class="book-pagenav-next" href="concepts/index.html" rel="next"><small>Next</small>Concepts</a>
 </nav>
