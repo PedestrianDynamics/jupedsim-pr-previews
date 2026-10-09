@@ -347,7 +347,7 @@ has left the simulation raises <a class="reference internal" href="api/jupedsim/
 <li><p><strong>Property syntax keeps working, including mutation:</strong></p></li>
 </ul>
 <div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">agent</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">agent</span><span class="p">(</span><span class="n">agent_id</span><span class="p">)</span>
-<span class="n">agent</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">)</span>
+<span class="n">agent</span><span class="o">.</span><span class="n">final_target</span> <span class="o">=</span> <span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">)</span>
 <span class="n">agent</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">desired_speed</span> <span class="o">=</span> <span class="mf">0.8</span>   <span class="c1"># takes effect in the next iterate()</span>
 
 <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
@@ -358,6 +358,10 @@ has left the simulation raises <a class="reference internal" href="api/jupedsim/
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">agent.state</span></code> returns a per-model state handle with the same semantics: it
 resolves per access and raises once the agent is gone.</p>
+<p><code class="docutils literal notranslate"><span class="pre">agent.target</span></code> is now <code class="docutils literal notranslate"><span class="pre">agent.final_target</span></code>. Reading it returns a
+<a class="reference internal" href="api/jupedsim/index.html#jupedsim.Location" title="jupedsim.Location"><code class="xref py py-class docutils literal notranslate"><span class="pre">Location</span></code></a> instead of an <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> tuple, and <code class="docutils literal notranslate"><span class="pre">None</span></code> while the
+agent heads for an area such as an exit or a waypoint. Setting it accepts a <code class="docutils literal notranslate"><span class="pre">Location</span></code> or an <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> tuple. Setting a target
+outside the walkable area now raises immediately, not at the next <code class="docutils literal notranslate"><span class="pre">iterate()</span></code>.</p>
 </section>
 <section id="mutation-during-iterate-is-now-an-error">
 <h2>Mutation during iterate() is now an error<a class="headerlink" href="#mutation-during-iterate-is-now-an-error" title="Link to this heading">#</a></h2>

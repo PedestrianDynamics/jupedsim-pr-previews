@@ -122,8 +122,6 @@
 <h1>Source code for jupedsim.simulation</h1><div class="highlight"><pre>
 <span></span><span class="c1"># SPDX-License-Identifier: LGPL-3.0-or-later</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterator</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
@@ -174,24 +172,16 @@
     <span class="n">WarpDriverModelState</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">_MESH_SUFFIXES</span> <span class="o">=</span> <span class="p">(</span><span class="s2">".obj"</span><span class="p">,)</span>
-
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_as_geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">Geometry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Convert to native geometry.</span>
 
-<span class="sd">    A ``Path`` and ``str`` ending with ".obj" read a mesh file; a geometry is used untouched;</span>
-<span class="sd">    fallback to build from 2D.</span>
+<span class="sd">    A geometry is used untouched; fallback to build from 2D.</span>
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">Geometry</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">geometry</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">WalkableSurface</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">geometry</span><span class="o">.</span><span class="n">create_geometry</span><span class="p">()</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
-        <span class="nb">isinstance</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
-        <span class="ow">and</span> <span class="n">Path</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">_MESH_SUFFIXES</span>
-    <span class="p">):</span>
-        <span class="k">return</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">geometry</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">build_geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
 
 
@@ -221,7 +211,6 @@
         <span class="p">),</span>
         <span class="n">geometry</span><span class="p">:</span> <span class="p">(</span>
             <span class="nb">str</span>
-            <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span>
             <span class="o">|</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">WalkableSurface</span>
             <span class="o">|</span> <span class="n">shapely</span><span class="o">.</span><span class="n">GeometryCollection</span>
             <span class="o">|</span> <span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span>
@@ -269,13 +258,11 @@
 <span class="sd">                  for the shapely types are supported: GEOMETRYCOLLETION, MULTIPOLYGON, POLYGON,</span>
 <span class="sd">                  MULTIPOINT. The same restrictions as mentioned for the shapely types apply.</span>
 
-<span class="sd">                * :class:`~pathlib.Path` (or a str ending in ``.obj``) naming an OBJ file holding a</span>
-<span class="sd">                  walkable surface. The world is then a surface: agents walk on it and are routed</span>
-<span class="sd">                  over it, floors may be stacked, and there is no polygon underneath --</span>
-<span class="sd">                  :func:`get_geometry` has no answer for such a simulation.</span>
+<span class="sd">                * :class:`~jupedsim.WalkableSurface` made of regions, which may be stacked into</span>
+<span class="sd">                  floors and joined by stairs or ramps.</span>
 
-<span class="sd">                A walkable area given as a polygon (all forms but the OBJ file) is a single region</span>
-<span class="sd">                with id ``0``.</span>
+<span class="sd">                A walkable area given as a polygon (all forms but the WalkableSurface) is a single</span>
+<span class="sd">                region with id ``0``.</span>
 
 <span class="sd">            dt: Iteration step size in seconds. It is recommended to leave this at its default</span>
 <span class="sd">                value.</span>
@@ -315,7 +302,8 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            position: Position of the waypoint</span>
-<span class="sd">            distance: Minimum distance required to reach this waypoint</span>
+<span class="sd">            distance: Minimum distance required to reach this waypoint.</span>
+<span class="sd">                Must be positive.</span>
 <span class="sd">            region_id: Region the waypoint lies in, see :func:`add_agent`.</span>
 
 <span class="sd">        Returns:</span>
