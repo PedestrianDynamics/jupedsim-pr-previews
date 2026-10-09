@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>jupedsim.journey &#8212; JuPedSim  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=29da98fa" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupedsim-style.css?v=df79899f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/chroma-dark.css?v=9526b014" />
+    <link rel="stylesheet" type="text/css" href="../../_static/book.css?v=7f8b60bd" />
+    <link rel="stylesheet" type="text/css" href="../../_static/site.css?v=34df8e08" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx.css?v=164699b4" />
+    <script src="../../_static/documentation_options.js?v=7f41d439"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer="defer" src="../../_static/theme.js?v=07cb4702"></script>
+    <script defer="defer" src="../../_static/search.js?v=322617c8"></script>
+    <script defer="defer" src="../../_static/switcher.js?v=bc5f7bca"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="canonical" href="https://www.jupedsim.org/docs/stable/_modules/jupedsim/journey.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+ 
+<script>(function(){var s=null;try{s=localStorage.getItem('theme')}catch(e){}var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var r=document.documentElement;r.dataset.theme=(s==='light'||s==='dark')?s:(d?'dark':'light');r.dataset.themeMode=(s==='light'||s==='dark')?s:'auto';})();</script>
+  </head><body>
+<input type="checkbox" class="book-control" id="menu-control" aria-label="Toggle navigation" aria-controls="book-menu">
+<input type="checkbox" class="book-control" id="search-control" aria-label="Show search">
+<label for="menu-control" class="book-overlay book-overlay-menu" aria-hidden="true"></label>
+<header class="site-bar">
+<div class="site-bar-inner">
+<label for="menu-control" class="site-bar-btn site-bar-menu" aria-label="Open navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></label>
+<a class="book-brand" href="/pull-requests/1683/" aria-label="JuPedSim"><img class="book-logo book-logo-light" src="../../_static/jupedsim-mark-light.svg" alt="JuPedSim" width="737" height="200"><img class="book-logo book-logo-dark" src="../../_static/jupedsim-mark-dark.svg" alt="" aria-hidden="true" width="737" height="200"></a>
+<nav class="site-nav" aria-label="Site">
+<ul>
+<li><a class="bracket-label" href="/pull-requests/1683/articles/">[Articles]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1683/notes/">[Notes]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1683/docs/stable/" aria-current="page">[Docs]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1683/docs/v1x/v1.4.2/">[Docs v1&nbsp;<span aria-hidden="true">↗</span>]</a></li>
+</ul>
+</nav>
+<label for="search-control" class="site-bar-btn site-bar-search-btn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></label>
+<form class="book-search" action="../../search.html" method="get" role="search">
+<input type="search" id="book-search-input" name="q" data-pagefind="/pull-requests/1683/pagefind/pagefind.js" placeholder="Search  /" aria-label="Search" autocomplete="off" spellcheck="false">
+<ul class="book-search-results" id="book-search-results" hidden></ul>
+</form>
+<button type="button" id="book-theme-toggle" class="book-theme-toggle bracket-label" aria-live="polite">Theme: auto</button>
+</div>
+</header>
+<main class="book">
+<aside class="book-menu" id="book-menu"><nav class="site-nav-drawer" aria-label="Site (menu)">
+<ul>
+<li><a class="bracket-label" href="/pull-requests/1683/articles/">[Articles]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1683/notes/">[Notes]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1683/docs/stable/" aria-current="page">[Docs]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1683/docs/v1x/v1.4.2/">[Docs v1&nbsp;<span aria-hidden="true">↗</span>]</a></li>
+</ul>
+</nav>
+<select id="book-version-switcher" class="book-version-switcher" aria-label="Documentation version" data-json="/pull-requests/1683/docs/versions.json" data-match="v2.0.0" data-page="_modules/jupedsim/journey.html" hidden></select>
+<nav class="book-tree" aria-label="Documentation">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration_2_0.html">Migrating to 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/geometry.html">Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/routing.html">Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/custom_serialization.html">Custom Serialization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pedestrian_models/index.html">Pedestrian Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../pedestrian_models/collision_free_speed_model_v3.html">CollisionFreeSpeedModelV3 (Rotational Steering)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pedestrian_models/warp_driver_model.html">WarpDriver Model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/index.html">Notebooks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/model-comparison.html">Comparative Analysis of Pedestrian Dynamics Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/corner.html">Movement around Corners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/corner.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/double-bottleneck.html">Movement through Bottlenecks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/double-bottleneck.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/journey.html">How to work with Journeys</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/journey.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/lane-formation.html">Lane formation in bi-directional flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/lane-formation.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/motivation.html">Modelling Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/motivation.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/routing.html">How Route Choice can Impact Evacuation Times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/routing.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/direct_steering.html">Leader–Follower Dynamics with Direct Steering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/single-file.html">Simulating Single-File Movement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/single-file.html#download">Download</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../debugging/index.html">Debugging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../debugging/profiling_and_timing.html">Profiling and Timing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../disclaimer.html">Disclaimer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/jupedsim/index.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/jupedsim/models/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">jupedsim.models</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../citation/citation.html">Cite JuPedSim</a></li>
+</ul>
+
+</nav>
+</aside>
+<div class="book-page">
+<article class="report" data-pagefind-filter="section:Docs" data-pagefind-meta="title:jupedsim.journey">
+<header class="report-header">
+<p class="report-kicker">Docs</p>
+<h1 class="report-title">jupedsim.journey</h1>
+</header>
+<div class="report-body">
+<h1>Source code for jupedsim.journey</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: LGPL-3.0-or-later</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">jupedsim.native</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">py_jps</span>
+
+
+<div class="viewcode-block" id="Transition">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Transition">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Transition</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Describes the Transition at a stage.</span>
+
+<span class="sd">    This type describes how a agent will proceed after completing its stage.</span>
+<span class="sd">    This effectively describes the set of outbound edges for a stage.</span>
+
+<span class="sd">    There are 3 types of transitions currently available:</span>
+
+<span class="sd">    * **Fixed transitions:** On completion of this transitions stage all agents</span>
+<span class="sd">      will proceed to the specified next stage.</span>
+
+<span class="sd">    * **Round robin transitions:** On completion of this transitions stage agents</span>
+<span class="sd">      will proceed in a weighted round-robin manner. A round-robin transitions</span>
+<span class="sd">      with 3 outgoing stages and the weights 5, 7, 11 the first 5 agents to make</span>
+<span class="sd">      a choice will take the first stage, the next 7 the second stage and the</span>
+<span class="sd">      next 11 the third stage. Next 5 will take the first stage, and so on...</span>
+
+<span class="sd">    * **Least targeted transition:** On completion of this stage agents will</span>
+<span class="sd">      proceed towards the currently least targeted amongst the specified choices.</span>
+<span class="sd">      The number of "targeting" agents is the amount of agents currently moving</span>
+<span class="sd">      towards this stage. This includes agents from different journeys.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backing</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">backing</span>
+
+<div class="viewcode-block" id="Transition.create_fixed_transition">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Transition.create_fixed_transition">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_fixed_transition</span><span class="p">(</span><span class="n">stage_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Transition"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Create a fixed transition.</span>
+
+<span class="sd">        On completion of this transitions stage all agents will proceed to the</span>
+<span class="sd">        specified next stage.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            stage_id: id of the stage to move to next.</span>
+
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="n">Transition</span><span class="p">(</span><span class="n">py_jps</span><span class="o">.</span><span class="n">create_fixed_transition</span><span class="p">(</span><span class="n">stage_id</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Transition.create_round_robin_transition">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Transition.create_round_robin_transition">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_round_robin_transition</span><span class="p">(</span>
+        <span class="n">stage_weights</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Transition"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Create a round-robin transition.</span>
+
+<span class="sd">        Round-robin transitions: On completion of this transitions stage agents</span>
+<span class="sd">        will proceed in a weighted round-robin manner. A round-robin</span>
+<span class="sd">        transitions with 3 outgoing stages and the weights 5, 7, 11 the first 5</span>
+<span class="sd">        agents to make a choice will take the first stage, the next 7 the</span>
+<span class="sd">        second stage and the next 11 the third stage. Next 5 will take the</span>
+<span class="sd">        first stage, and so on...</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            stage_weights: list of id/weight tuples.</span>
+
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="n">Transition</span><span class="p">(</span><span class="n">py_jps</span><span class="o">.</span><span class="n">create_round_robin_transition</span><span class="p">(</span><span class="n">stage_weights</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Transition.create_least_targeted_transition">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Transition.create_least_targeted_transition">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_least_targeted_transition</span><span class="p">(</span><span class="n">stage_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s2">"Transition"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Create a least targeted transition.</span>
+
+<span class="sd">        On completion of this stage agents will proceed towards the currently</span>
+<span class="sd">        least targeted amongst the specified choices. The number of "targeting"</span>
+<span class="sd">        agents is the amount of agents currently moving towards this stage.</span>
+<span class="sd">        This includes agents from different journeys.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            stage_ids: list of stage ids to choose the next target from.</span>
+
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="n">Transition</span><span class="p">(</span><span class="n">py_jps</span><span class="o">.</span><span class="n">create_least_targeted_transition</span><span class="p">(</span><span class="n">stage_ids</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Transition.create_none_transition">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Transition.create_none_transition">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_none_transition</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s2">"Transition"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">""" """</span>
+        <span class="k">return</span> <span class="n">Transition</span><span class="p">(</span><span class="n">py_jps</span><span class="o">.</span><span class="n">create_none_transition</span><span class="p">())</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="JourneyDescription">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.JourneyDescription">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">JourneyDescription</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Used to describe a journey for construction by the :class:`~jupedsim.simulation.Simulation`.</span>
+
+<span class="sd">    A Journey describes the desired stations an agent should take when moving through</span>
+<span class="sd">    the simulation space. A journey is described by a graph of stages (nodes) and</span>
+<span class="sd">    transitions (edges). See :class:`~jupedsim.journey.Transition` for an overview of the possible</span>
+<span class="sd">    transitions.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stage_ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Create a Journey Description.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            stage_ids: list of stages this journey should contain.</span>
+
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_transitions</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">stage_ids</span><span class="p">:</span>
+            <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">stage_ids</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_transitions</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">Transition</span><span class="o">.</span><span class="n">create_none_transition</span><span class="p">()</span>
+
+<div class="viewcode-block" id="JourneyDescription.add">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.JourneyDescription.add">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stages</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Add additional stage or stages.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            stages: A single stage id or a list of stage ids.</span>
+
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stages</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_transitions</span><span class="p">[</span><span class="n">stages</span><span class="p">]</span> <span class="o">=</span> <span class="n">Transition</span><span class="o">.</span><span class="n">create_none_transition</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stages</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
+            <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">stages</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_transitions</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">Transition</span><span class="o">.</span><span class="n">create_none_transition</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="JourneyDescription.set_transition_for_stage">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.JourneyDescription.set_transition_for_stage">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_transition_for_stage</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">stage_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">transition</span><span class="p">:</span> <span class="n">Transition</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Set a new transition for the specified stage.</span>
+
+<span class="sd">        Any prior set transition for this stage will be removed.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            stage_id: id of the stage to set the transition for.</span>
+<span class="sd">            transition: transition to set</span>
+
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_transitions</span><span class="p">[</span><span class="n">stage_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">transition</span></div>
+</div>
+
+</pre></div>
+</div>
+<footer class="report-footer">Last updated 2026-10-09</footer>
+</article>
+</div>
+</main><footer class="site-footer"><div class="site-footer-inner">
+<p class="site-footer-text">© JuPedSim contributors · LGPL-3.0</p>
+<ul class="site-footer-links"><li><a href="https://github.com/PedestrianDynamics/jupedsim">GitHub</a></li><li><a href="/pull-requests/1683/notes/feed.xml">RSS</a></li><li><a href="/pull-requests/1683/docs/v1x/v1.4.2/">1.x docs</a></li></ul>
+</div></footer>
+  </body>
+</html>
