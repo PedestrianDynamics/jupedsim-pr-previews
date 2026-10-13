@@ -996,23 +996,43 @@ to move by; the simulation applies it as given.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="jupedsim.DirectSteeringStage">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DirectSteeringStage</span></span><a class="headerlink" href="#jupedsim.DirectSteeringStage" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseStage</span></code></p>
-<p>Models a direct steering stage.</p>
+<dd><p>Models a direct steering stage.</p>
 <p>This stage allows a direct control of the target the agent is walking to,
 see <a class="reference internal" href="#jupedsim.Agent.final_target" title="jupedsim.Agent.final_target"><code class="xref py py-attr docutils literal notranslate"><span class="pre">final_target</span></code></a>. It bypasses the tactical and
 strategical level of the simulation; the operational level stays active.
 A direct steering stage can only be used if it is the only stage in a
 journey.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.DirectSteeringStage.count_targeting">
+<span class="sig-name descname"><span class="pre">count_targeting</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#jupedsim.DirectSteeringStage.count_targeting" title="Link to this definition">#</a></dt>
+<dd><p>Count the agents currently targeting this stage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of agents whose current target is this stage.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="jupedsim.ExitStage">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ExitStage</span></span><a class="headerlink" href="#jupedsim.ExitStage" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseStage</span></code></p>
-<p>Models an exit.</p>
+<dd><p>Models an exit.</p>
 <p>Agents entering the polygon defining the exit will be removed at the
 beginning of the next iteration, i.e. agents will be inside the specified
 polygon for one frame.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.ExitStage.count_targeting">
+<span class="sig-name descname"><span class="pre">count_targeting</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#jupedsim.ExitStage.count_targeting" title="Link to this definition">#</a></dt>
+<dd><p>Count the agents currently targeting this stage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of agents whose current target is this stage.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -2185,10 +2205,20 @@ agent standing exactly on the wall, where no direction exists.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="jupedsim.WaypointStage">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">WaypointStage</span></span><a class="headerlink" href="#jupedsim.WaypointStage" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseStage</span></code></p>
-<p>Models a waypoint.</p>
+<dd><p>Models a waypoint.</p>
 <p>A waypoint is considered to be reached if an agent is within the specified
 distance to the waypoint.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.WaypointStage.count_targeting">
+<span class="sig-name descname"><span class="pre">count_targeting</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#jupedsim.WaypointStage.count_targeting" title="Link to this definition">#</a></dt>
+<dd><p>Count the agents currently targeting this stage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of agents whose current target is this stage.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py function">
@@ -2555,7 +2585,7 @@ basic information about this library.</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-10-12</footer>
+<footer class="report-footer">Last updated 2026-10-13</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="../../disclaimer.html" rel="prev"><small>Previous</small>Disclaimer</a><a class="book-pagenav-next" href="models/index.html" rel="next"><small>Next</small><code class="xref py py-mod docutils literal notranslate"><span class="pre">jupedsim.models</span></code></a>
 </nav>
@@ -2676,8 +2706,14 @@ basic information about this library.</p>
 <li><a class="reference internal" href="#jupedsim.CustomOperationalModel.compute_next_state"><code class="docutils literal notranslate"><span class="pre">CustomOperationalModel.compute_next_state()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#jupedsim.DirectSteeringStage"><code class="docutils literal notranslate"><span class="pre">DirectSteeringStage</span></code></a></li>
-<li><a class="reference internal" href="#jupedsim.ExitStage"><code class="docutils literal notranslate"><span class="pre">ExitStage</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.DirectSteeringStage"><code class="docutils literal notranslate"><span class="pre">DirectSteeringStage</span></code></a><ul>
+<li><a class="reference internal" href="#jupedsim.DirectSteeringStage.count_targeting"><code class="docutils literal notranslate"><span class="pre">DirectSteeringStage.count_targeting()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#jupedsim.ExitStage"><code class="docutils literal notranslate"><span class="pre">ExitStage</span></code></a><ul>
+<li><a class="reference internal" href="#jupedsim.ExitStage.count_targeting"><code class="docutils literal notranslate"><span class="pre">ExitStage.count_targeting()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#jupedsim.GeneralizedCentrifugalForceModel"><code class="docutils literal notranslate"><span class="pre">GeneralizedCentrifugalForceModel</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.GeneralizedCentrifugalForceModelState"><code class="docutils literal notranslate"><span class="pre">GeneralizedCentrifugalForceModelState</span></code></a><ul>
 <li><a class="reference internal" href="#jupedsim.GeneralizedCentrifugalForceModelState.a_min"><code class="docutils literal notranslate"><span class="pre">GeneralizedCentrifugalForceModelState.a_min</span></code></a></li>
@@ -2839,7 +2875,10 @@ basic information about this library.</p>
 <li><a class="reference internal" href="#jupedsim.WarpDriverModelState.stuck_time"><code class="docutils literal notranslate"><span class="pre">WarpDriverModelState.stuck_time</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#jupedsim.WaypointStage"><code class="docutils literal notranslate"><span class="pre">WaypointStage</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.WaypointStage"><code class="docutils literal notranslate"><span class="pre">WaypointStage</span></code></a><ul>
+<li><a class="reference internal" href="#jupedsim.WaypointStage.count_targeting"><code class="docutils literal notranslate"><span class="pre">WaypointStage.count_targeting()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#jupedsim.disable_tracing"><code class="docutils literal notranslate"><span class="pre">disable_tracing()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.distribute_by_density"><code class="docutils literal notranslate"><span class="pre">distribute_by_density()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.distribute_by_number"><code class="docutils literal notranslate"><span class="pre">distribute_by_number()</span></code></a></li>
