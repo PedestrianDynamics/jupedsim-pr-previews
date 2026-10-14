@@ -103,10 +103,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="disclaimer.html">Disclaimer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/jupedsim/index.html">API reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/jupedsim/models/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">jupedsim.models</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="api/jupedsim/index.html">API reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="citation/citation.html">Cite JuPedSim</a></li>
 </ul>
 
@@ -398,14 +395,18 @@
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.Simulation.get_geometry">get_geometry() (Simulation method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/jupedsim/index.html#jupedsim.Geometry.get_location">get_location() (Geometry method)</a>
 
       <ul>
         <li><a href="api/jupedsim/index.html#jupedsim.Simulation.get_location">(Simulation method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/jupedsim/index.html#jupedsim.SurfaceMeshShortestPathRoutingEngine.get_orientation">get_orientation() (SurfaceMeshShortestPathRoutingEngine method)</a>
+</li>
+      <li><a href="api/jupedsim/index.html#jupedsim.SurfaceMeshShortestPathRoutingEngine.get_shortest_path">get_shortest_path() (SurfaceMeshShortestPathRoutingEngine method)</a>
+</li>
       <li><a href="api/jupedsim/index.html#jupedsim.Simulation.get_stage">get_stage() (Simulation method)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.BuildInfo.git_branch">git_branch (BuildInfo property)</a>
@@ -438,12 +439,16 @@
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.RoutingEngine.is_routable">is_routable() (RoutingEngine method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/jupedsim/index.html#jupedsim.is_tracing_enabled">is_tracing_enabled() (in module jupedsim)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/jupedsim/index.html#jupedsim.Geometry.is_valid_location">is_valid_location() (Geometry method)</a>
+
+      <ul>
+        <li><a href="api/jupedsim/index.html#jupedsim.SurfaceMeshShortestPathRoutingEngine.is_valid_location">(SurfaceMeshShortestPathRoutingEngine method)</a>
 </li>
+      </ul></li>
       <li><a href="api/jupedsim/index.html#jupedsim.Simulation.iterate">iterate() (Simulation method)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.Simulation.iteration_count">iteration_count() (Simulation method)</a>
@@ -458,20 +463,13 @@
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.JourneyDescription">JourneyDescription (class in jupedsim)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     jupedsim
 
       <ul>
         <li><a href="api/jupedsim/index.html#module-jupedsim">module</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li>
-    jupedsim.models
-
-      <ul>
-        <li><a href="api/jupedsim/models/index.html#module-jupedsim.models">module</a>
 </li>
       </ul></li>
   </ul></td>
@@ -494,6 +492,8 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/jupedsim/index.html#jupedsim.make_portal_boundary_index">make_portal_boundary_index() (in module jupedsim)</a>
+</li>
       <li><a href="api/jupedsim/index.html#jupedsim.Simulation.mark_agent_for_removal">mark_agent_for_removal() (Simulation method)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.GeneralizedCentrifugalForceModelState.mass">mass (GeneralizedCentrifugalForceModelState property)</a>
@@ -504,6 +504,8 @@
       </ul></li>
       <li><a href="api/jupedsim/index.html#jupedsim.RoutingEngine.mesh">mesh() (RoutingEngine method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/jupedsim/index.html#jupedsim.AgentNumberError.message">message (AgentNumberError attribute)</a>
 
       <ul>
@@ -514,15 +516,11 @@
         <li><a href="api/jupedsim/index.html#jupedsim.OverlappingCirclesError.message">(OverlappingCirclesError attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     module
 
       <ul>
         <li><a href="api/jupedsim/index.html#module-jupedsim">jupedsim</a>
-</li>
-        <li><a href="api/jupedsim/models/index.html#module-jupedsim.models">jupedsim.models</a>
 </li>
       </ul></li>
   </ul></td>
@@ -677,10 +675,10 @@
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.GeneralizedCentrifugalForceModelState.speed">speed (GeneralizedCentrifugalForceModelState property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/jupedsim/index.html#jupedsim.SqliteTrajectoryWriter">SqliteTrajectoryWriter (class in jupedsim)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/jupedsim/index.html#jupedsim.Agent.stage_id">stage_id (Agent property)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.start_trace_event">start_trace_event() (in module jupedsim)</a>
@@ -706,6 +704,8 @@
 </li>
       </ul></li>
       <li><a href="api/jupedsim/index.html#jupedsim.WarpDriverModelState.stuck_time">stuck_time (WarpDriverModelState property)</a>
+</li>
+      <li><a href="api/jupedsim/index.html#jupedsim.SurfaceMeshShortestPathRoutingEngine">SurfaceMeshShortestPathRoutingEngine (class in jupedsim)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.Simulation.switch_agent_journey">switch_agent_journey() (Simulation method)</a>
 </li>
@@ -767,16 +767,18 @@
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.AnticipationVelocityModelState.wall_buffer_distance">wall_buffer_distance (AnticipationVelocityModelState property)</a>
 </li>
+      <li><a href="api/jupedsim/index.html#jupedsim.SurfaceMeshShortestPathRoutingEngine.wall_clearance">wall_clearance() (SurfaceMeshShortestPathRoutingEngine method)</a>
+</li>
       <li><a href="api/jupedsim/index.html#jupedsim.AgentView.walls_in_range">walls_in_range() (AgentView method)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.WallView">WallView (class in jupedsim)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.WarpDriverModel">WarpDriverModel (class in jupedsim)</a>
 </li>
-      <li><a href="api/jupedsim/index.html#jupedsim.WarpDriverModelState">WarpDriverModelState (class in jupedsim)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/jupedsim/index.html#jupedsim.WarpDriverModelState">WarpDriverModelState (class in jupedsim)</a>
+</li>
       <li><a href="api/jupedsim/index.html#jupedsim.WaypointStage">WaypointStage (class in jupedsim)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.AgentStep.with_neighbor_state_mapping">with_neighbor_state_mapping() (AgentStep method)</a>

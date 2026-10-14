@@ -103,10 +103,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../disclaimer.html">Disclaimer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/jupedsim/index.html">API reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../api/jupedsim/models/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">jupedsim.models</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/jupedsim/index.html">API reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citation/citation.html">Cite JuPedSim</a></li>
 </ul>
 
@@ -126,38 +123,35 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">jupedsim.pyjupedsim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jps</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.agent</span><span class="w"> </span><span class="kn">import</span> <span class="n">Agent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.custom_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">CustomOperationalModel</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.internal.tracing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Timer</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.journey</span><span class="w"> </span><span class="kn">import</span> <span class="n">JourneyDescription</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.anticipation_velocity_model</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.pyjupedsim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AnticipationVelocityModel</span><span class="p">,</span>
     <span class="n">AnticipationVelocityModelState</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.collision_free_speed</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">CollisionFreeSpeedModel</span><span class="p">,</span>
     <span class="n">CollisionFreeSpeedModelState</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.collision_free_speed_v2</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">CollisionFreeSpeedModelV2</span><span class="p">,</span>
     <span class="n">CollisionFreeSpeedModelV2State</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.collision_free_speed_v3</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">CollisionFreeSpeedModelV3</span><span class="p">,</span>
     <span class="n">CollisionFreeSpeedModelV3State</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.custom_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">CustomOperationalModel</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.generalized_centrifugal_force</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DirectSteeringStage</span><span class="p">,</span>
+    <span class="n">ExitStage</span><span class="p">,</span>
     <span class="n">GeneralizedCentrifugalForceModel</span><span class="p">,</span>
     <span class="n">GeneralizedCentrifugalForceModelState</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.social_force</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Geometry</span><span class="p">,</span>
+    <span class="n">Location</span><span class="p">,</span>
+    <span class="n">OperationalModel</span><span class="p">,</span>
     <span class="n">SocialForceModel</span><span class="p">,</span>
     <span class="n">SocialForceModelState</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.warp_driver</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">WalkableSurface</span><span class="p">,</span>
     <span class="n">WarpDriverModel</span><span class="p">,</span>
     <span class="n">WarpDriverModelState</span><span class="p">,</span>
+    <span class="n">WaypointStage</span><span class="p">,</span>
+    <span class="n">_CustomModelState</span><span class="p">,</span>
+    <span class="n">_PythonModel</span><span class="p">,</span>
+    <span class="n">_Simulation</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.serialization</span><span class="w"> </span><span class="kn">import</span> <span class="n">TrajectoryWriter</span>
 
@@ -196,7 +190,7 @@
             <span class="o">|</span> <span class="n">WarpDriverModel</span>
             <span class="o">|</span> <span class="n">CustomOperationalModel</span>
         <span class="p">),</span>
-        <span class="n">geometry</span><span class="p">:</span> <span class="n">jps</span><span class="o">.</span><span class="n">WalkableSurface</span> <span class="o">|</span> <span class="n">jps</span><span class="o">.</span><span class="n">Geometry</span><span class="p">,</span>
+        <span class="n">geometry</span><span class="p">:</span> <span class="n">WalkableSurface</span> <span class="o">|</span> <span class="n">Geometry</span><span class="p">,</span>
         <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
         <span class="n">trajectory_writer</span><span class="p">:</span> <span class="n">TrajectoryWriter</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">timer_log_level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
@@ -226,10 +220,10 @@
 <span class="sd">                provides a writer that outputs trajectory data in a sqlite database. If you want</span>
 <span class="sd">                other formats such as CSV you need to provide your own custom implementation.</span>
 <span class="sd">        """</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">jps</span><span class="o">.</span><span class="n">OperationalModel</span><span class="p">):</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">OperationalModel</span><span class="p">):</span>
+            <span class="n">the_model</span> <span class="o">=</span> <span class="n">model</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CustomOperationalModel</span><span class="p">):</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">_PythonModel</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+            <span class="n">the_model</span> <span class="o">=</span> <span class="n">_PythonModel</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
                 <span class="s2">"model must be a built-in operational model instance or a "</span>
@@ -237,9 +231,9 @@
                 <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="o">=</span> <span class="n">trajectory_writer</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">jps</span><span class="o">.</span><span class="n">WalkableSurface</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">WalkableSurface</span><span class="p">):</span>
             <span class="n">geometry</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">create_geometry</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">_Simulation</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">the_model</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_timer</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="n">timer_log_level</span><span class="o">=</span><span class="n">timer_log_level</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Simulation.add_waypoint_stage">
@@ -375,16 +369,14 @@
             <span class="n">journey_id</span><span class="o">=</span><span class="n">journey_id</span><span class="p">,</span>
             <span class="n">stage_id</span><span class="o">=</span><span class="n">stage_id</span><span class="p">,</span>
             <span class="n">position</span><span class="o">=</span><span class="n">position</span><span class="p">,</span>
-            <span class="n">state</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">_CustomModelState</span><span class="p">(</span><span class="n">state</span><span class="p">),</span>
+            <span class="n">state</span><span class="o">=</span><span class="n">_CustomModelState</span><span class="p">(</span><span class="n">state</span><span class="p">),</span>
             <span class="n">region_id</span><span class="o">=</span><span class="n">region_id</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Simulation.get_location">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.get_location">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_location</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jps</span><span class="o">.</span><span class="n">Location</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Location</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Get the location at ``(x, y)`` in region ``region_id``.</span>
 
 <span class="sd">        The location stays valid as long as this simulation exists.</span>
@@ -598,7 +590,7 @@
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.get_stage">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_stage</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">stage_id</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jps</span><span class="o">.</span><span class="n">WaypointStage</span> <span class="o">|</span> <span class="n">jps</span><span class="o">.</span><span class="n">ExitStage</span> <span class="o">|</span> <span class="n">jps</span><span class="o">.</span><span class="n">DirectSteeringStage</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WaypointStage</span> <span class="o">|</span> <span class="n">ExitStage</span> <span class="o">|</span> <span class="n">DirectSteeringStage</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Get the stage with the given id.</span>
 
 <span class="sd">        Args:</span>
@@ -618,7 +610,7 @@
 
 <div class="viewcode-block" id="Simulation.get_geometry">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.get_geometry">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jps</span><span class="o">.</span><span class="n">Geometry</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Geometry</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Current geometry of the simulation.</span>
 
 <span class="sd">        Returns:</span>
