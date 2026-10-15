@@ -120,7 +120,7 @@
 <span></span><span class="c1"># SPDX-License-Identifier: LGPL-3.0-or-later</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">overload</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterator</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
 
@@ -237,36 +237,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">_Simulation</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">the_model</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_timer</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="n">timer_log_level</span><span class="o">=</span><span class="n">timer_log_level</span><span class="p">)</span>
 
-    <span class="nd">@overload</span>
+<div class="viewcode-block" id="Simulation.add_waypoint_stage">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.add_waypoint_stage">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_waypoint_stage</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
         <span class="n">areas</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span>
             <span class="nb">tuple</span><span class="p">[</span><span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span> <span class="nb">int</span><span class="p">]</span>
         <span class="p">],</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span> <span class="o">...</span>
-
-    <span class="nd">@overload</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_waypoint_stage</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">position</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">distance</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span> <span class="o">...</span>
-
-<div class="viewcode-block" id="Simulation.add_waypoint_stage">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.add_waypoint_stage">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_waypoint_stage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Add a waypoint stage to the simulation.</span>
-
-<span class="sd">        The waypoint is given either by its areas, or as a circle around</span>
-<span class="sd">        ``position``.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            areas: Pairs of an area and the region it lies in. An area is a</span>
 <span class="sd">                :class:`~shapely.Polygon` without holes or a list of 2D points</span>
 <span class="sd">                describing its boundary. Only the part of an area inside its</span>
 <span class="sd">                region belongs to the waypoint.</span>
-<span class="sd">            position: Center of the circle.</span>
-<span class="sd">            distance: Radius of the circle. Must be positive.</span>
-<span class="sd">            region_id: Region the circle lies in, see :func:`add_agent`.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Id of the new stage.</span>
@@ -274,7 +259,7 @@
 <span class="sd">        Raises:</span>
 <span class="sd">            ValueError: If an area has holes.</span>
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_waypoint_stage</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_waypoint_stage</span><span class="p">(</span><span class="n">areas</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Simulation.add_exit_stage">
@@ -648,7 +633,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-10-14</footer>
+<footer class="report-footer">Last updated 2026-10-15</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

@@ -188,7 +188,7 @@ The figure below shows how a Waypoint is used in the simulation. Here the center
 </figcaption>
 </figure>
 <p>A Waypoint at <span class="math notranslate nohighlight">\((0.6, -1.4)\)</span> with an accepted distance of 2m can be added to the simulation via:</p>
-<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">waypoint_id</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_waypoint_stage</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.4</span><span class="p">],</span> <span class="n">distance</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">region_id</span><span class="o">=</span><span class="n">region_id</span><span class="p">)</span>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">waypoint_id</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_waypoint_stage</span><span class="p">([(</span><span class="n">jps</span><span class="o">.</span><span class="n">circle_to_polygon</span><span class="p">([</span><span class="mf">0.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.4</span><span class="p">],</span> <span class="mi">2</span><span class="p">),</span> <span class="n">region_id</span><span class="p">)])</span>
 </pre></div>
 </div>
 </section>
@@ -380,7 +380,7 @@ When multiple paths lead to the target, the shortest one will be preferred.</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-10-14</footer>
+<footer class="report-footer">Last updated 2026-10-15</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="geometry.html" rel="prev"><small>Previous</small>Geometry</a><a class="book-pagenav-next" href="custom_serialization.html" rel="next"><small>Next</small>Custom Serialization</a>
 </nav>

@@ -242,58 +242,61 @@
 <h3>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h3>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.disable_tracing" title="jupedsim.disable_tracing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">disable_tracing</span></code></a>(→ None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.circle_to_polygon" title="jupedsim.circle_to_polygon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">circle_to_polygon</span></code></a>(→ shapely.Polygon)</p></td>
+<td><p>Polygon approximating a circle, with its corners on the circle.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.disable_tracing" title="jupedsim.disable_tracing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">disable_tracing</span></code></a>(→ None)</p></td>
 <td><p>Disable the profiler.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.distribute_by_density" title="jupedsim.distribute_by_density"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distribute_by_density</span></code></a>(→ list[tuple[float, float]])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.distribute_by_density" title="jupedsim.distribute_by_density"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distribute_by_density</span></code></a>(→ list[tuple[float, float]])</p></td>
 <td><p>Generates randomized 2D coordinates based on a desired agent density per</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.distribute_by_number" title="jupedsim.distribute_by_number"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distribute_by_number</span></code></a>(→ list[tuple[float, float]])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.distribute_by_number" title="jupedsim.distribute_by_number"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distribute_by_number</span></code></a>(→ list[tuple[float, float]])</p></td>
 <td><p>Generates specified number of randomized 2D coordinates.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.distribute_by_percentage" title="jupedsim.distribute_by_percentage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distribute_by_percentage</span></code></a>(*, polygon, percent, ...[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.distribute_by_percentage" title="jupedsim.distribute_by_percentage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distribute_by_percentage</span></code></a>(*, polygon, percent, ...[, ...])</p></td>
 <td><p>Generates randomized 2D coordinates that fill the specified area to a</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.distribute_in_circles_by_density" title="jupedsim.distribute_in_circles_by_density"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distribute_in_circles_by_density</span></code></a>(→ list[tuple[float, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.distribute_in_circles_by_density" title="jupedsim.distribute_in_circles_by_density"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distribute_in_circles_by_density</span></code></a>(→ list[tuple[float, ...)</p></td>
 <td><p>Generates randomized 2D coordinates in a user defined number of rings</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.distribute_in_circles_by_number" title="jupedsim.distribute_in_circles_by_number"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distribute_in_circles_by_number</span></code></a>(→ list[tuple[float, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.distribute_in_circles_by_number" title="jupedsim.distribute_in_circles_by_number"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distribute_in_circles_by_number</span></code></a>(→ list[tuple[float, ...)</p></td>
 <td><p>Generates randomized 2D coordinates in a user defined number of rings.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.distribute_until_filled" title="jupedsim.distribute_until_filled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distribute_until_filled</span></code></a>(→ list[tuple[float, float]])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.distribute_until_filled" title="jupedsim.distribute_until_filled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distribute_until_filled</span></code></a>(→ list[tuple[float, float]])</p></td>
 <td><p>Generates randomized 2D coordinates that fill the specified area.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.dump_traces" title="jupedsim.dump_traces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump_traces</span></code></a>(→ None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.dump_traces" title="jupedsim.dump_traces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump_traces</span></code></a>(→ None)</p></td>
 <td><p>Dump traces to file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.enable_tracing" title="jupedsim.enable_tracing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_tracing</span></code></a>(→ None)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.enable_tracing" title="jupedsim.enable_tracing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_tracing</span></code></a>(→ None)</p></td>
 <td><p>Enable the profiler.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.end_trace_event" title="jupedsim.end_trace_event"><code class="xref py py-obj docutils literal notranslate"><span class="pre">end_trace_event</span></code></a>(→ None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.end_trace_event" title="jupedsim.end_trace_event"><code class="xref py py-obj docutils literal notranslate"><span class="pre">end_trace_event</span></code></a>(→ None)</p></td>
 <td><p>Ends the last started trace event on the calling thread.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.get_build_info" title="jupedsim.get_build_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_build_info</span></code></a>(→ BuildInfo)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.get_build_info" title="jupedsim.get_build_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_build_info</span></code></a>(→ BuildInfo)</p></td>
 <td><p>Get build information about jupedsim.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.is_tracing_enabled" title="jupedsim.is_tracing_enabled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_tracing_enabled</span></code></a>(→ bool)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.is_tracing_enabled" title="jupedsim.is_tracing_enabled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_tracing_enabled</span></code></a>(→ bool)</p></td>
 <td><p>Check if the profiler is enabled.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.make_portal_boundary_index" title="jupedsim.make_portal_boundary_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_portal_boundary_index</span></code></a>(→ BoundaryIndex)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.make_portal_boundary_index" title="jupedsim.make_portal_boundary_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_portal_boundary_index</span></code></a>(→ BoundaryIndex)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.set_debug_callback" title="jupedsim.set_debug_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_debug_callback</span></code></a>(→ None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.set_debug_callback" title="jupedsim.set_debug_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_debug_callback</span></code></a>(→ None)</p></td>
 <td><p>Set receiver for debug messages.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.set_error_callback" title="jupedsim.set_error_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_error_callback</span></code></a>(→ None)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.set_error_callback" title="jupedsim.set_error_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_error_callback</span></code></a>(→ None)</p></td>
 <td><p>Set receiver for error messages.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.set_info_callback" title="jupedsim.set_info_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_info_callback</span></code></a>(→ None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.set_info_callback" title="jupedsim.set_info_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_info_callback</span></code></a>(→ None)</p></td>
 <td><p>Set receiver for info messages.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.set_warning_callback" title="jupedsim.set_warning_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_warning_callback</span></code></a>(→ None)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.set_warning_callback" title="jupedsim.set_warning_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_warning_callback</span></code></a>(→ None)</p></td>
 <td><p>Set receiver for warning messages.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.start_trace_event" title="jupedsim.start_trace_event"><code class="xref py py-obj docutils literal notranslate"><span class="pre">start_trace_event</span></code></a>(→ None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.start_trace_event" title="jupedsim.start_trace_event"><code class="xref py py-obj docutils literal notranslate"><span class="pre">start_trace_event</span></code></a>(→ None)</p></td>
 <td><p>Starts a named trace event.</p></td>
 </tr>
 </tbody>
@@ -1718,23 +1721,14 @@ region belongs to the exit.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="jupedsim.Simulation.add_waypoint_stage">
-<span class="sig-name descname"><span class="pre">add_waypoint_stage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">areas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.15)"><span class="pre">collections.abc.Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://shapely.readthedocs.io/en/2.0.1/reference/shapely.Polygon.html#shapely.Polygon" title="(in Shapely)"><span class="pre">shapely.Polygon</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.15)"><span class="pre">collections.abc.Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/simulation.html#Simulation.add_waypoint_stage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Simulation.add_waypoint_stage" title="Link to this definition">#</a></dt>
-<dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">add_waypoint_stage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></span></dt>
+<span class="sig-name descname"><span class="pre">add_waypoint_stage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">areas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.15)"><span class="pre">collections.abc.Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://shapely.readthedocs.io/en/2.0.1/reference/shapely.Polygon.html#shapely.Polygon" title="(in Shapely)"><span class="pre">shapely.Polygon</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.15)"><span class="pre">collections.abc.Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/simulation.html#Simulation.add_waypoint_stage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Simulation.add_waypoint_stage" title="Link to this definition">#</a></dt>
 <dd><p>Add a waypoint stage to the simulation.</p>
-<p>The waypoint is given either by its areas, or as a circle around
-<code class="docutils literal notranslate"><span class="pre">position</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>areas</strong> – Pairs of an area and the region it lies in. An area is a
+<dd class="field-odd"><p><strong>areas</strong> – Pairs of an area and the region it lies in. An area is a
 <a class="reference external" href="https://shapely.readthedocs.io/en/2.0.1/reference/shapely.Polygon.html#shapely.Polygon" title="(in Shapely)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polygon</span></code></a> without holes or a list of 2D points
 describing its boundary. Only the part of an area inside its
-region belongs to the waypoint.</p></li>
-<li><p><strong>position</strong> – Center of the circle.</p></li>
-<li><p><strong>distance</strong> – Radius of the circle. Must be positive.</p></li>
-<li><p><strong>region_id</strong> – Region the circle lies in, see <a class="reference internal" href="#jupedsim.Simulation.add_agent" title="jupedsim.Simulation.add_agent"><code class="xref py py-func docutils literal notranslate"><span class="pre">add_agent()</span></code></a>.</p></li>
-</ul>
+region belongs to the waypoint.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Id of the new stage.</p>
@@ -2519,6 +2513,27 @@ distance to the waypoint.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="jupedsim.circle_to_polygon">
+<span class="sig-name descname"><span class="pre">circle_to_polygon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">center</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://shapely.readthedocs.io/en/2.0.1/reference/shapely.Polygon.html#shapely.Polygon" title="(in Shapely)"><span class="pre">shapely.Polygon</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/convenience.html#circle_to_polygon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.circle_to_polygon" title="Link to this definition">#</a></dt>
+<dd><p>Polygon approximating a circle, with its corners on the circle.</p>
+<p>The edges are at most 0.4 long, and there are at least four corners.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>center</strong> – Center of the circle.</p></li>
+<li><p><strong>radius</strong> – Radius of the circle. Must be positive.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The polygon.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">radius</span></code> is not positive.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="jupedsim.disable_tracing">
 <span class="sig-name descname"><span class="pre">disable_tracing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#jupedsim.disable_tracing" title="Link to this definition">#</a></dt>
 <dd><p>Disable the profiler.</p>
@@ -2887,7 +2902,7 @@ basic information about this library.</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-10-14</footer>
+<footer class="report-footer">Last updated 2026-10-15</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="../../disclaimer.html" rel="prev"><small>Previous</small>Disclaimer</a><a class="book-pagenav-next" href="../../citation/citation.html" rel="next"><small>Next</small>Cite JuPedSim</a>
 </nav>
@@ -3167,6 +3182,7 @@ basic information about this library.</p>
 <li><a class="reference internal" href="#jupedsim.WaypointStage.count_targeting"><code class="docutils literal notranslate"><span class="pre">WaypointStage.count_targeting()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#jupedsim.circle_to_polygon"><code class="docutils literal notranslate"><span class="pre">circle_to_polygon()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.disable_tracing"><code class="docutils literal notranslate"><span class="pre">disable_tracing()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.distribute_by_density"><code class="docutils literal notranslate"><span class="pre">distribute_by_density()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.distribute_by_number"><code class="docutils literal notranslate"><span class="pre">distribute_by_number()</span></code></a></li>
