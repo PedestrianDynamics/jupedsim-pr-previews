@@ -103,10 +103,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../disclaimer.html">Disclaimer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/jupedsim/index.html">API reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../api/jupedsim/models/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">jupedsim.models</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/jupedsim/index.html">API reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citation/citation.html">Cite JuPedSim</a></li>
 </ul>
 
@@ -122,12 +119,7 @@
 <h1>Source code for jupedsim.routing</h1><div class="highlight"><pre>
 <span></span><span class="c1"># SPDX-License-Identifier: LGPL-3.0-or-later</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">jupedsim.native</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">py_jps</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.geometry_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_geometry</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.pyjupedsim</span><span class="w"> </span><span class="kn">import</span> <span class="n">Geometry</span><span class="p">,</span> <span class="n">SurfaceMeshShortestPathRoutingEngine</span>
 
 
 <div class="viewcode-block" id="RoutingEngine">
@@ -135,20 +127,15 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">RoutingEngine</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""RoutingEngine to compute the shortest paths with navigation meshes."""</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">geometry</span><span class="p">:</span> <span class="p">(</span>
-            <span class="nb">str</span>
-            <span class="o">|</span> <span class="n">shapely</span><span class="o">.</span><span class="n">GeometryCollection</span>
-            <span class="o">|</span> <span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span>
-            <span class="o">|</span> <span class="n">shapely</span><span class="o">.</span><span class="n">MultiPolygon</span>
-            <span class="o">|</span> <span class="n">shapely</span><span class="o">.</span><span class="n">MultiPoint</span>
-            <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
-        <span class="p">),</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_geometry</span> <span class="o">=</span> <span class="n">build_geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">SurfaceMeshShortestPathRoutingEngine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_geometry</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geometry</span><span class="p">:</span> <span class="n">Geometry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Creates a RoutingEngine.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            geometry: The walkable area, see</span>
+<span class="sd">                :meth:`~jupedsim.WalkableSurface.create_geometry`.</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_geometry</span> <span class="o">=</span> <span class="n">geometry</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">SurfaceMeshShortestPathRoutingEngine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_geometry</span><span class="p">)</span>
 
 <div class="viewcode-block" id="RoutingEngine.compute_waypoints">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.RoutingEngine.compute_waypoints">[docs]</a>
@@ -158,27 +145,8 @@
 <span class="w">        </span><span class="sd">"""Computes shortest path between specified points.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            geometry: Data to create the geometry out of. Data may be supplied as:</span>
-
-<span class="sd">                * list of 2d points describing the outer boundary, holes may be added with use of `excluded_areas` kw-argument</span>
-
-<span class="sd">                * :class:`~shapely.GeometryCollection` consisting only out of :class:`Polygons &lt;shapely.Polygon&gt;`, :class:`MultiPolygons &lt;shapely.MultiPolygon&gt;` and :class:`MultiPoints &lt;shapely.MultiPoint&gt;`</span>
-
-<span class="sd">                * :class:`~shapely.MultiPolygon`</span>
-
-<span class="sd">                * :class:`~shapely.Polygon`</span>
-
-<span class="sd">                * :class:`~shapely.MultiPoint` forming a "simple" polygon when points are interpreted as linear ring without repetition of the start/end point.</span>
-
-<span class="sd">                * str with a valid Well Known Text. In this format the same WKT types as mentioned for the shapely types are supported: GEOMETRYCOLLETION, MULTIPOLYGON, POLYGON, MULTIPOINT. The same restrictions as mentioned for the shapely types apply.</span>
-
 <span class="sd">            frm: point from which to find the shortest path</span>
 <span class="sd">            to: point to which to find the shortest path</span>
-
-<span class="sd">        Keyword Args:</span>
-<span class="sd">            excluded_areas: describes exclusions</span>
-<span class="sd">                from the walkable area. Only use this argument if `geometry` was</span>
-<span class="sd">                provided as list[tuple[float, float]].</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            List of points (path) from 'frm' to 'to' including from and to.</span>
@@ -234,7 +202,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-10-14</footer>
+<footer class="report-footer">Last updated 2026-10-15</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

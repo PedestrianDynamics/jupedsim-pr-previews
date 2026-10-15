@@ -103,10 +103,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../disclaimer.html">Disclaimer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/jupedsim/index.html">API reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../api/jupedsim/models/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">jupedsim.models</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/jupedsim/index.html">API reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../citation/citation.html">Cite JuPedSim</a></li>
 </ul>
 
@@ -123,6 +120,7 @@
 <span></span><span class="c1"># SPDX-License-Identifier: LGPL-3.0-or-later</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.agent</span><span class="w"> </span><span class="kn">import</span> <span class="n">Agent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.custom_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">CustomOperationalModel</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.distributions</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AgentNumberError</span><span class="p">,</span>
     <span class="n">IncorrectParameterError</span><span class="p">,</span>
@@ -138,48 +136,34 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.hdf5_serialization</span><span class="w"> </span><span class="kn">import</span> <span class="n">Hdf5TrajectoryWriter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.internal.tracing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Timer</span><span class="p">,</span> <span class="n">trace_event</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.journey</span><span class="w"> </span><span class="kn">import</span> <span class="n">JourneyDescription</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.anticipation_velocity_model</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">AnticipationVelocityModel</span><span class="p">,</span>
-    <span class="n">AnticipationVelocityModelState</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.collision_free_speed</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">CollisionFreeSpeedModel</span><span class="p">,</span>
-    <span class="n">CollisionFreeSpeedModelState</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.collision_free_speed_v2</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">CollisionFreeSpeedModelV2</span><span class="p">,</span>
-    <span class="n">CollisionFreeSpeedModelV2State</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.collision_free_speed_v3</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">CollisionFreeSpeedModelV3</span><span class="p">,</span>
-    <span class="n">CollisionFreeSpeedModelV3State</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.custom_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">CustomOperationalModel</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.generalized_centrifugal_force</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">GeneralizedCentrifugalForceModel</span><span class="p">,</span>
-    <span class="n">GeneralizedCentrifugalForceModelState</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.social_force</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">SocialForceModel</span><span class="p">,</span>
-    <span class="n">SocialForceModelState</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.warp_driver</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">WarpDriverModel</span><span class="p">,</span>
-    <span class="n">WarpDriverModelState</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.native</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.pyjupedsim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AgentStep</span><span class="p">,</span>
     <span class="n">AgentView</span><span class="p">,</span>
+    <span class="n">AnticipationVelocityModel</span><span class="p">,</span>
+    <span class="n">AnticipationVelocityModelState</span><span class="p">,</span>
     <span class="n">BuildInfo</span><span class="p">,</span>
+    <span class="n">CollisionFreeSpeedModel</span><span class="p">,</span>
+    <span class="n">CollisionFreeSpeedModelState</span><span class="p">,</span>
+    <span class="n">CollisionFreeSpeedModelV2</span><span class="p">,</span>
+    <span class="n">CollisionFreeSpeedModelV2State</span><span class="p">,</span>
+    <span class="n">CollisionFreeSpeedModelV3</span><span class="p">,</span>
+    <span class="n">CollisionFreeSpeedModelV3State</span><span class="p">,</span>
     <span class="n">DirectSteeringStage</span><span class="p">,</span>
     <span class="n">ExitStage</span><span class="p">,</span>
+    <span class="n">GeneralizedCentrifugalForceModel</span><span class="p">,</span>
+    <span class="n">GeneralizedCentrifugalForceModelState</span><span class="p">,</span>
     <span class="n">Geometry</span><span class="p">,</span>
     <span class="n">Location</span><span class="p">,</span>
     <span class="n">NeighborView</span><span class="p">,</span>
     <span class="n">SimulationError</span><span class="p">,</span>
+    <span class="n">SocialForceModel</span><span class="p">,</span>
+    <span class="n">SocialForceModelState</span><span class="p">,</span>
+    <span class="n">SurfaceMeshShortestPathRoutingEngine</span><span class="p">,</span>
     <span class="n">Transition</span><span class="p">,</span>
     <span class="n">WalkableSurface</span><span class="p">,</span>
     <span class="n">WallView</span><span class="p">,</span>
+    <span class="n">WarpDriverModel</span><span class="p">,</span>
+    <span class="n">WarpDriverModelState</span><span class="p">,</span>
     <span class="n">WaypointStage</span><span class="p">,</span>
     <span class="n">disable_tracing</span><span class="p">,</span>
     <span class="n">dump_traces</span><span class="p">,</span>
@@ -187,13 +171,13 @@
     <span class="n">end_trace_event</span><span class="p">,</span>
     <span class="n">get_build_info</span><span class="p">,</span>
     <span class="n">is_tracing_enabled</span><span class="p">,</span>
+    <span class="n">make_portal_boundary_index</span><span class="p">,</span>
     <span class="n">set_debug_callback</span><span class="p">,</span>
     <span class="n">set_error_callback</span><span class="p">,</span>
     <span class="n">set_info_callback</span><span class="p">,</span>
     <span class="n">set_warning_callback</span><span class="p">,</span>
     <span class="n">start_trace_event</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.recording</span><span class="w"> </span><span class="kn">import</span> <span class="n">Recording</span><span class="p">,</span> <span class="n">RecordingAgent</span><span class="p">,</span> <span class="n">RecordingFrame</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.routing</span><span class="w"> </span><span class="kn">import</span> <span class="n">RoutingEngine</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.serialization</span><span class="w"> </span><span class="kn">import</span> <span class="n">TrajectoryWriter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.simulation</span><span class="w"> </span><span class="kn">import</span> <span class="n">Simulation</span>
@@ -244,15 +228,13 @@
     <span class="s2">"NegativeValueError"</span><span class="p">,</span>
     <span class="s2">"NeighborView"</span><span class="p">,</span>
     <span class="s2">"OverlappingCirclesError"</span><span class="p">,</span>
-    <span class="s2">"Recording"</span><span class="p">,</span>
-    <span class="s2">"RecordingAgent"</span><span class="p">,</span>
-    <span class="s2">"RecordingFrame"</span><span class="p">,</span>
     <span class="s2">"RoutingEngine"</span><span class="p">,</span>
     <span class="s2">"Simulation"</span><span class="p">,</span>
     <span class="s2">"SimulationError"</span><span class="p">,</span>
     <span class="s2">"SocialForceModel"</span><span class="p">,</span>
     <span class="s2">"SocialForceModelState"</span><span class="p">,</span>
     <span class="s2">"SqliteTrajectoryWriter"</span><span class="p">,</span>
+    <span class="s2">"SurfaceMeshShortestPathRoutingEngine"</span><span class="p">,</span>
     <span class="s2">"Timer"</span><span class="p">,</span>
     <span class="s2">"TrajectoryWriter"</span><span class="p">,</span>
     <span class="s2">"Transition"</span><span class="p">,</span>
@@ -276,6 +258,7 @@
     <span class="s2">"end_trace_event"</span><span class="p">,</span>
     <span class="s2">"get_build_info"</span><span class="p">,</span>
     <span class="s2">"is_tracing_enabled"</span><span class="p">,</span>
+    <span class="s2">"make_portal_boundary_index"</span><span class="p">,</span>
     <span class="s2">"set_debug_callback"</span><span class="p">,</span>
     <span class="s2">"set_error_callback"</span><span class="p">,</span>
     <span class="s2">"set_info_callback"</span><span class="p">,</span>
@@ -285,7 +268,7 @@
 <span class="p">]</span>
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-10-14</footer>
+<footer class="report-footer">Last updated 2026-10-15</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

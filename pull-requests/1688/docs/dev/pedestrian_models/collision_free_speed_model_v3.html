@@ -111,10 +111,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../disclaimer.html">Disclaimer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/jupedsim/index.html">API reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../api/jupedsim/models/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">jupedsim.models</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/jupedsim/index.html">API reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../citation/citation.html">Cite JuPedSim</a></li>
 </ul>
 
@@ -304,14 +301,14 @@ agent handle (<code class="docutils literal notranslate"><span class="pre">sim.a
 <div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">jupedsim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jps</span>
 
 <span class="n">sim</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span>
-    <span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModelV3</span><span class="p">(),</span> <span class="n">geometry</span><span class="o">=</span><span class="n">area</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModelV3</span><span class="p">(),</span> <span class="n">geometry</span><span class="o">=</span><span class="n">surface</span>
 <span class="p">)</span>
 <span class="n">agent_id</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">add_agent</span><span class="p">(</span>
     <span class="n">journey_id</span><span class="o">=</span><span class="n">journey_id</span><span class="p">,</span>
     <span class="n">stage_id</span><span class="o">=</span><span class="n">stage_id</span><span class="p">,</span>
     <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
     <span class="n">state</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModelV3State</span><span class="p">(),</span>
-    <span class="n">region_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">region_id</span><span class="o">=</span><span class="n">region_id</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># modify at runtime</span>
@@ -520,7 +517,7 @@ agent handle (<code class="docutils literal notranslate"><span class="pre">sim.a
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-10-14</footer>
+<footer class="report-footer">Last updated 2026-10-15</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="index.html" rel="prev"><small>Previous</small>Pedestrian Models</a><a class="book-pagenav-next" href="warp_driver_model.html" rel="next"><small>Next</small>WarpDriver Model</a>
 </nav>

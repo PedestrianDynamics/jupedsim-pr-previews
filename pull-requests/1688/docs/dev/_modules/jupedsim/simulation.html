@@ -103,10 +103,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../disclaimer.html">Disclaimer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/jupedsim/index.html">API reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../api/jupedsim/models/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">jupedsim.models</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/jupedsim/index.html">API reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citation/citation.html">Cite JuPedSim</a></li>
 </ul>
 
@@ -126,39 +123,35 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">jupedsim.native</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">py_jps</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.agent</span><span class="w"> </span><span class="kn">import</span> <span class="n">Agent</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.geometry_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_geometry</span><span class="p">,</span> <span class="n">build_polygon</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.custom_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">CustomOperationalModel</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.internal.tracing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Timer</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.journey</span><span class="w"> </span><span class="kn">import</span> <span class="n">JourneyDescription</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.anticipation_velocity_model</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.pyjupedsim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AnticipationVelocityModel</span><span class="p">,</span>
     <span class="n">AnticipationVelocityModelState</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.collision_free_speed</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">CollisionFreeSpeedModel</span><span class="p">,</span>
     <span class="n">CollisionFreeSpeedModelState</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.collision_free_speed_v2</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">CollisionFreeSpeedModelV2</span><span class="p">,</span>
     <span class="n">CollisionFreeSpeedModelV2State</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.collision_free_speed_v3</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">CollisionFreeSpeedModelV3</span><span class="p">,</span>
     <span class="n">CollisionFreeSpeedModelV3State</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.custom_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">CustomOperationalModel</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.generalized_centrifugal_force</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DirectSteeringStage</span><span class="p">,</span>
+    <span class="n">ExitStage</span><span class="p">,</span>
     <span class="n">GeneralizedCentrifugalForceModel</span><span class="p">,</span>
     <span class="n">GeneralizedCentrifugalForceModelState</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.social_force</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Geometry</span><span class="p">,</span>
+    <span class="n">Location</span><span class="p">,</span>
+    <span class="n">OperationalModel</span><span class="p">,</span>
     <span class="n">SocialForceModel</span><span class="p">,</span>
     <span class="n">SocialForceModelState</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.models.warp_driver</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">WalkableSurface</span><span class="p">,</span>
     <span class="n">WarpDriverModel</span><span class="p">,</span>
     <span class="n">WarpDriverModelState</span><span class="p">,</span>
+    <span class="n">WaypointStage</span><span class="p">,</span>
+    <span class="n">_CustomModelState</span><span class="p">,</span>
+    <span class="n">_PythonModel</span><span class="p">,</span>
+    <span class="n">_Simulation</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.serialization</span><span class="w"> </span><span class="kn">import</span> <span class="n">TrajectoryWriter</span>
 
@@ -171,18 +164,6 @@
     <span class="n">SocialForceModelState</span><span class="p">,</span>
     <span class="n">WarpDriverModelState</span><span class="p">,</span>
 <span class="p">)</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">_as_geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">Geometry</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">"""Convert to native geometry.</span>
-
-<span class="sd">    A geometry is used untouched; fallback to build from 2D.</span>
-<span class="sd">    """</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">Geometry</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">geometry</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">WalkableSurface</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">geometry</span><span class="o">.</span><span class="n">create_geometry</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">build_geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Simulation">
@@ -209,19 +190,10 @@
             <span class="o">|</span> <span class="n">WarpDriverModel</span>
             <span class="o">|</span> <span class="n">CustomOperationalModel</span>
         <span class="p">),</span>
-        <span class="n">geometry</span><span class="p">:</span> <span class="p">(</span>
-            <span class="nb">str</span>
-            <span class="o">|</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">WalkableSurface</span>
-            <span class="o">|</span> <span class="n">shapely</span><span class="o">.</span><span class="n">GeometryCollection</span>
-            <span class="o">|</span> <span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span>
-            <span class="o">|</span> <span class="n">shapely</span><span class="o">.</span><span class="n">MultiPolygon</span>
-            <span class="o">|</span> <span class="n">shapely</span><span class="o">.</span><span class="n">MultiPoint</span>
-            <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
-        <span class="p">),</span>
+        <span class="n">geometry</span><span class="p">:</span> <span class="n">WalkableSurface</span> <span class="o">|</span> <span class="n">Geometry</span><span class="p">,</span>
         <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
         <span class="n">trajectory_writer</span><span class="p">:</span> <span class="n">TrajectoryWriter</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">timer_log_level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Creates a Simulation.</span>
 
@@ -238,46 +210,20 @@
 <span class="sd">                    Model instances are consumed by this constructor and must not be reused</span>
 <span class="sd">                    afterwards.</span>
 <span class="sd">            geometry:</span>
-<span class="sd">                Data to create the geometry out of. Data may be supplied as:</span>
-
-<span class="sd">                * list of 2d points describing the outer boundary, holes may be added with use of</span>
-<span class="sd">                  `excluded_areas` kw-argument</span>
-
-<span class="sd">                * :class:`~shapely.GeometryCollection` consisting only out of</span>
-<span class="sd">                  :class:`Polygons &lt;shapely.Polygon&gt;`, :class:`MultiPolygons &lt;shapely.MultiPolygon&gt;`</span>
-<span class="sd">                  and :class:`MultiPoints &lt;shapely.MultiPoint&gt;`</span>
-
-<span class="sd">                * :class:`~shapely.MultiPolygon`</span>
-
-<span class="sd">                * :class:`~shapely.Polygon`</span>
-
-<span class="sd">                * :class:`~shapely.MultiPoint` forming a "simple" polygon when points are</span>
-<span class="sd">                  interpreted as linear ring without repetition of the start/end point.</span>
-
-<span class="sd">                * str with a valid Well Known Text. In this format the same WKT types as mentioned</span>
-<span class="sd">                  for the shapely types are supported: GEOMETRYCOLLETION, MULTIPOLYGON, POLYGON,</span>
-<span class="sd">                  MULTIPOINT. The same restrictions as mentioned for the shapely types apply.</span>
-
-<span class="sd">                * :class:`~jupedsim.WalkableSurface` made of regions, which may be stacked into</span>
-<span class="sd">                  floors and joined by stairs or ramps.</span>
-
-<span class="sd">                A walkable area given as a polygon (all forms but the WalkableSurface) is a single</span>
-<span class="sd">                region with id ``0``.</span>
+<span class="sd">                The walkable area: a :class:`~jupedsim.WalkableSurface` made of regions, which</span>
+<span class="sd">                may be stacked into floors and joined by stairs or ramps, or a</span>
+<span class="sd">                :class:`~jupedsim.Geometry` created from one.</span>
 
 <span class="sd">            dt: Iteration step size in seconds. It is recommended to leave this at its default</span>
 <span class="sd">                value.</span>
 <span class="sd">            trajectory_writer: Any object implementing the TrajectoryWriter interface. JuPedSim</span>
 <span class="sd">                provides a writer that outputs trajectory data in a sqlite database. If you want</span>
 <span class="sd">                other formats such as CSV you need to provide your own custom implementation.</span>
-
-<span class="sd">        Keyword Args:</span>
-<span class="sd">            excluded_areas: describes exclusions from the walkable area. Only use this argument if</span>
-<span class="sd">                `geometry` was provided as list[tuple[float, float]].</span>
 <span class="sd">        """</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">OperationalModel</span><span class="p">):</span>
-            <span class="n">py_jps_model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">OperationalModel</span><span class="p">):</span>
+            <span class="n">the_model</span> <span class="o">=</span> <span class="n">model</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CustomOperationalModel</span><span class="p">):</span>
-            <span class="n">py_jps_model</span> <span class="o">=</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">_PythonModel</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+            <span class="n">the_model</span> <span class="o">=</span> <span class="n">_PythonModel</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
                 <span class="s2">"model must be a built-in operational model instance or a "</span>
@@ -285,8 +231,9 @@
                 <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="o">=</span> <span class="n">trajectory_writer</span>
-        <span class="n">geo</span> <span class="o">=</span> <span class="n">_as_geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">py_jps_model</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geo</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">WalkableSurface</span><span class="p">):</span>
+            <span class="n">geometry</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">create_geometry</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">_Simulation</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">the_model</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_timer</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="n">timer_log_level</span><span class="o">=</span><span class="n">timer_log_level</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Simulation.add_waypoint_stage">
@@ -317,49 +264,24 @@
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.add_exit_stage">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_exit_stage</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">polygon</span><span class="p">:</span> <span class="p">(</span>
-            <span class="nb">str</span>
-            <span class="o">|</span> <span class="n">shapely</span><span class="o">.</span><span class="n">GeometryCollection</span>
-            <span class="o">|</span> <span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span>
-            <span class="o">|</span> <span class="n">shapely</span><span class="o">.</span><span class="n">MultiPolygon</span>
-            <span class="o">|</span> <span class="n">shapely</span><span class="o">.</span><span class="n">MultiPoint</span>
-            <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
-        <span class="p">),</span>
+        <span class="n">polygon</span><span class="p">:</span> <span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Add an exit stage to the simulation.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            polygon:</span>
-<span class="sd">                Polygon without holes representing the exit stage. Polygon can be passed as:</span>
-
-<span class="sd">                * list of 2d points describing the outer boundary</span>
-
-<span class="sd">                * :class:`~shapely.GeometryCollection` consisting only out of</span>
-<span class="sd">                  :class:`Polygons &lt;shapely.Polygon&gt;`, :class:`MultiPolygons &lt;shapely.MultiPolygon&gt;`</span>
-<span class="sd">                  and :class:`MultiPoints &lt;shapely.MultiPoint&gt;`</span>
-
-<span class="sd">                * :class:`~shapely.MultiPolygon`</span>
-
-<span class="sd">                * :class:`~shapely.Polygon`</span>
-
-<span class="sd">                * :class:`~shapely.MultiPoint` forming a "simple" polygon when points are</span>
-<span class="sd">                  interpreted as linear ring without repetition of the start/end point.</span>
-
-<span class="sd">                * str with a valid Well Known Text. In this format the same WKT types as mentioned</span>
-<span class="sd">                  for the shapely types are supported: GEOMETRYCOLLETION, MULTIPOLYGON, POLYGON,</span>
-<span class="sd">                  MULTIPOINT. The same restrictions as mentioned for the shapely types apply.</span>
-
+<span class="sd">            polygon: Area of the exit, as a :class:`~shapely.Polygon` without</span>
+<span class="sd">                holes or as a list of 2D points describing its boundary.</span>
 <span class="sd">            region_id: Region the exit lies in, see :func:`add_agent`.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Id of the added exit stage.</span>
 
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the polygon has holes.</span>
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_exit_stage</span><span class="p">(</span>
-            <span class="n">build_polygon</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span><span class="o">.</span><span class="n">boundary</span><span class="p">(),</span> <span class="n">region_id</span>
-        <span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_exit_stage</span><span class="p">(</span><span class="n">polygon</span><span class="p">,</span> <span class="n">region_id</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Simulation.add_direct_steering_stage">
@@ -447,16 +369,14 @@
             <span class="n">journey_id</span><span class="o">=</span><span class="n">journey_id</span><span class="p">,</span>
             <span class="n">stage_id</span><span class="o">=</span><span class="n">stage_id</span><span class="p">,</span>
             <span class="n">position</span><span class="o">=</span><span class="n">position</span><span class="p">,</span>
-            <span class="n">state</span><span class="o">=</span><span class="n">py_jps</span><span class="o">.</span><span class="n">_CustomModelState</span><span class="p">(</span><span class="n">state</span><span class="p">),</span>
+            <span class="n">state</span><span class="o">=</span><span class="n">_CustomModelState</span><span class="p">(</span><span class="n">state</span><span class="p">),</span>
             <span class="n">region_id</span><span class="o">=</span><span class="n">region_id</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Simulation.get_location">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.get_location">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_location</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">Location</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Location</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Get the location at ``(x, y)`` in region ``region_id``.</span>
 
 <span class="sd">        The location stays valid as long as this simulation exists.</span>
@@ -645,47 +565,24 @@
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.agents_in_polygon">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">agents_in_polygon</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">poly</span><span class="p">:</span> <span class="p">(</span>
-            <span class="nb">str</span>
-            <span class="o">|</span> <span class="n">shapely</span><span class="o">.</span><span class="n">GeometryCollection</span>
-            <span class="o">|</span> <span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span>
-            <span class="o">|</span> <span class="n">shapely</span><span class="o">.</span><span class="n">MultiPolygon</span>
-            <span class="o">|</span> <span class="n">shapely</span><span class="o">.</span><span class="n">MultiPoint</span>
-            <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
-        <span class="p">),</span>
+        <span class="n">poly</span><span class="p">:</span> <span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Agent</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Handles to all agents inside the given polygon.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            poly:</span>
-<span class="sd">                Polygon without holes in which to check for pedestrians. Polygon can be passed as:</span>
-
-<span class="sd">                * list of 2d points describing the outer boundary</span>
-
-<span class="sd">                * :class:`~shapely.GeometryCollection` consisting only out of</span>
-<span class="sd">                  :class:`Polygons &lt;shapely.Polygon&gt;`, :class:`MultiPolygons &lt;shapely.MultiPolygon&gt;`</span>
-<span class="sd">                  and :class:`MultiPoints &lt;shapely.MultiPoint&gt;`</span>
-
-<span class="sd">                * :class:`~shapely.MultiPolygon`</span>
-
-<span class="sd">                * :class:`~shapely.Polygon`</span>
-
-<span class="sd">                * :class:`~shapely.MultiPoint` forming a "simple" polygon when points are</span>
-<span class="sd">                  interpreted as linear ring without repetition of the start/end point.</span>
-
-<span class="sd">                * str with a valid Well Known Text. In this format the same WKT types as mentioned</span>
-<span class="sd">                  for the shapely types are supported: GEOMETRYCOLLETION, MULTIPOLYGON, POLYGON,</span>
-<span class="sd">                  MULTIPOINT. The same restrictions as mentioned for the shapely types apply.</span>
+<span class="sd">            poly: Convex polygon in which to look for agents, as a</span>
+<span class="sd">                :class:`~shapely.Polygon` without holes or as a list of 2D</span>
+<span class="sd">                points describing its boundary.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            List of handles to all agents inside the given polygon.</span>
 
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the polygon has holes.</span>
 <span class="sd">        """</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="n">Agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">agent_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">agents_in_polygon</span><span class="p">(</span>
-                <span class="n">build_polygon</span><span class="p">(</span><span class="n">poly</span><span class="p">)</span><span class="o">.</span><span class="n">boundary</span><span class="p">()</span>
-            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">agent_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">agents_in_polygon</span><span class="p">(</span><span class="n">poly</span><span class="p">)</span>
         <span class="p">]</span></div>
 
 
@@ -693,7 +590,7 @@
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.get_stage">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_stage</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">stage_id</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">WaypointStage</span> <span class="o">|</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">ExitStage</span> <span class="o">|</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">DirectSteeringStage</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WaypointStage</span> <span class="o">|</span> <span class="n">ExitStage</span> <span class="o">|</span> <span class="n">DirectSteeringStage</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Get the stage with the given id.</span>
 
 <span class="sd">        Args:</span>
@@ -713,7 +610,7 @@
 
 <div class="viewcode-block" id="Simulation.get_geometry">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.get_geometry">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">Geometry</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Geometry</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Current geometry of the simulation.</span>
 
 <span class="sd">        Returns:</span>
@@ -733,7 +630,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-10-14</footer>
+<footer class="report-footer">Last updated 2026-10-15</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

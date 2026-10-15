@@ -103,10 +103,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../disclaimer.html">Disclaimer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/jupedsim/index.html">API reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../api/jupedsim/models/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">jupedsim.models</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/jupedsim/index.html">API reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citation/citation.html">Cite JuPedSim</a></li>
 </ul>
 
@@ -126,7 +123,7 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">jupedsim.native</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">py_jps</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.pyjupedsim</span><span class="w"> </span><span class="kn">import</span> <span class="n">Location</span><span class="p">,</span> <span class="n">_CustomModelState</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.simulation</span><span class="w"> </span><span class="kn">import</span> <span class="n">Simulation</span>
@@ -257,7 +254,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__resolve</span><span class="p">()</span><span class="o">.</span><span class="n">position</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">Location</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Location</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Current location of the agent.</span>
 
 <span class="sd">        Same as :attr:`position`, plus the region and the height of the surface.</span>
@@ -267,7 +264,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__resolve</span><span class="p">()</span><span class="o">.</span><span class="n">location</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">final_target</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">Location</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">final_target</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Location</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Current final target of the agent.</span>
 
 <span class="sd">        Can be used to directly steer an agent towards the given coordinate.</span>
@@ -297,7 +294,7 @@
 
     <span class="nd">@final_target</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">final_target</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">final_target</span><span class="p">:</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">Location</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">final_target</span><span class="p">:</span> <span class="n">Location</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__simulation</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">set_agent_target</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__id</span><span class="p">,</span> <span class="n">final_target</span><span class="p">)</span>
 
@@ -320,7 +317,7 @@
 <span class="sd">        returns the user supplied state object.</span>
 <span class="sd">        """</span>
         <span class="n">raw_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__resolve</span><span class="p">()</span><span class="o">.</span><span class="n">state</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_state</span><span class="p">,</span> <span class="n">py_jps</span><span class="o">.</span><span class="n">_CustomModelState</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_state</span><span class="p">,</span> <span class="n">_CustomModelState</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">raw_state</span><span class="o">.</span><span class="n">model</span>
         <span class="k">return</span> <span class="n">_ModelStateHandle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__simulation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__id</span><span class="p">)</span>
 
@@ -329,7 +326,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-10-14</footer>
+<footer class="report-footer">Last updated 2026-10-15</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

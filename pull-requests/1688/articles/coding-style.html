@@ -74,7 +74,7 @@
 <p class="report-kicker">Article</p>
 <h1 class="report-title">Coding style</h1>
 <p class="report-subtitle">The C++ naming convention of JuPedSim, why it mirrors the Python API, and how clang-format and clang-tidy enforce it.</p>
-<p class="report-meta"><span class="meta-item">JuPedSim team</span><span class="meta-item"><time datetime="2026-10-09" data-pagefind-meta="date[datetime]">2026-10-09</time></span><span class="meta-item">765 words</span><span class="meta-item">4 min read</span>
+<p class="report-meta"><span class="meta-item">JuPedSim team</span><span class="meta-item"><time datetime="2026-10-09" data-pagefind-meta="date[datetime]">2026-10-09</time></span><span class="meta-item">800 words</span><span class="meta-item">4 min read</span>
 </p>
 </header>
 <div class="report-body" data-pagefind-body>
@@ -223,11 +223,13 @@ are never checked.</p></li>
 and <code class="docutils literal notranslate"><span class="pre">ninja</span> <span class="pre">check-tidy</span></code>. <code class="docutils literal notranslate"><span class="pre">ninja</span> <span class="pre">reformat</span></code> and <code class="docutils literal notranslate"><span class="pre">ninja</span> <span class="pre">tidy-fix</span></code> apply the fixes. On macOS
 a Homebrew clang-tidy older than the installed SDK may fail to parse it (LLVM 21 with the
 macOS 27 SDK did); point <code class="docutils literal notranslate"><span class="pre">-DCLANG_TIDY_SYSROOT=</span></code> at an older SDK then, e.g. <code class="docutils literal notranslate"><span class="pre">MacOSX26.sdk</span></code>.</p></li>
-<li><p>CI: the jobs “Check Format” (<code class="docutils literal notranslate"><span class="pre">scripts/ci/check_format.sh</span></code>) and “Check clang-tidy”
+<li><p>CI: the jobs “Check Format” (<code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">run</span> <span class="pre">--all-files</span></code>) and “Check clang-tidy”
 (<code class="docutils literal notranslate"><span class="pre">scripts/ci/check_tidy.sh</span></code>) run on every push and pull request to <code class="docutils literal notranslate"><span class="pre">master</span></code> and the
-release branches.</p></li>
+release branches. “Check Format” runs the same hooks as <code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">install</span></code> sets up
+locally, so the clang-format and ruff versions pinned in <code class="docutils literal notranslate"><span class="pre">.pre-commit-config.yaml</span></code> decide
+for both.</p></li>
 <li><p>Python is covered by ruff (<code class="docutils literal notranslate"><span class="pre">ruff</span> <span class="pre">check</span></code>, <code class="docutils literal notranslate"><span class="pre">ruff</span> <span class="pre">format</span> <span class="pre">--check</span></code>), configured in
-<code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>.</p></li>
+<code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>. ruff also formats the Python blocks in Markdown files.</p></li>
 </ul>
 <p>A failing “Check clang-tidy” job prints <code class="docutils literal notranslate"><span class="pre">invalid</span> <span class="pre">case</span> <span class="pre">style</span> <span class="pre">for</span> <span class="pre">&lt;kind&gt;</span> <span class="pre">'&lt;name&gt;'</span></code> with the
 file and line. Rename, or run <code class="docutils literal notranslate"><span class="pre">ninja</span> <span class="pre">tidy-fix</span></code> followed by <code class="docutils literal notranslate"><span class="pre">ninja</span> <span class="pre">reformat</span></code>. If the name is

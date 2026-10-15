@@ -111,10 +111,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../disclaimer.html">Disclaimer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/jupedsim/index.html">API reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../api/jupedsim/models/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">jupedsim.models</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/jupedsim/index.html">API reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../citation/citation.html">Cite JuPedSim</a></li>
 </ul>
 
@@ -409,7 +406,7 @@ the user.</p>
     <span class="n">rng_seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">sim</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">area</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="n">sim</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">surface</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
 
 <span class="c1"># Agent-level parameters: pass a state object to add_agent</span>
 <span class="n">agent_id</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">add_agent</span><span class="p">(</span>
@@ -417,7 +414,7 @@ the user.</p>
     <span class="n">stage_id</span><span class="o">=</span><span class="n">stage_id</span><span class="p">,</span>
     <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span> 
     <span class="n">state</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">WarpDriverModelState</span><span class="p">(</span><span class="n">orientation</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">desired_speed</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.15</span><span class="p">),</span>
-    <span class="n">region_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">region_id</span><span class="o">=</span><span class="n">region_id</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Runtime state access through the agent handle. The handle resolves the</span>
@@ -463,7 +460,7 @@ the user.</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-10-14</footer>
+<footer class="report-footer">Last updated 2026-10-15</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="collision_free_speed_model_v3.html" rel="prev"><small>Previous</small>CollisionFreeSpeedModelV3 (Rotational Steering)</a><a class="book-pagenav-next" href="../notebooks/index.html" rel="next"><small>Next</small>Notebooks</a>
 </nav>

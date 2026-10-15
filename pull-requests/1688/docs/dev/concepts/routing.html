@@ -111,10 +111,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../disclaimer.html">Disclaimer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/jupedsim/index.html">API reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../api/jupedsim/models/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">jupedsim.models</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/jupedsim/index.html">API reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../citation/citation.html">Cite JuPedSim</a></li>
 </ul>
 
@@ -175,6 +172,8 @@ The various types of stages will be explained below.</p>
 <p>All stages added to the simulation need to be inside the walkable area.
 This needs to be uphold when the geometry is changed.</p>
 </div>
+<p>Each stage lies in one region of the walkable area. Its <code class="docutils literal notranslate"><span class="pre">region_id</span></code> is the id
+<a class="reference internal" href="../api/jupedsim/index.html#jupedsim.WalkableSurface.add_region" title="jupedsim.WalkableSurface.add_region"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_region()</span></code></a> returned for that region, see <a class="reference internal" href="geometry.html"><span class="doc">Geometry</span></a>.</p>
 <section id="waypoint">
 <h4>Waypoint<a class="headerlink" href="#waypoint" title="Link to this heading">#</a></h4>
 <p>The most fundamental kind of stage is a <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.WaypointStage" title="jupedsim.WaypointStage"><code class="xref py py-class docutils literal notranslate"><span class="pre">Waypoint</span></code></a>. It represents a target the agent needs to reach.
@@ -189,7 +188,7 @@ The figure below shows how a Waypoint is used in the simulation. Here the center
 </figcaption>
 </figure>
 <p>A Waypoint at <span class="math notranslate nohighlight">\((0.6, -1.4)\)</span> with an accepted distance of 2m can be added to the simulation via:</p>
-<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">waypoint_id</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_waypoint_stage</span><span class="p">([</span><span class="mf">0.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.4</span><span class="p">],</span> <span class="mi">2</span><span class="p">,</span> <span class="n">region_id</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">waypoint_id</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_waypoint_stage</span><span class="p">([</span><span class="mf">0.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.4</span><span class="p">],</span> <span class="mi">2</span><span class="p">,</span> <span class="n">region_id</span><span class="o">=</span><span class="n">region_id</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -212,11 +211,11 @@ As a target the agents will aim for the center of the exit polygon.</p>
 </figure>
 <p>An exit located in the polygon <span class="math notranslate nohighlight">\((-0.2, -1.9), (0.2, -1.9), (0.2, -1.7), (-0.2, -1.7)\)</span> can be added to the simulation via:</p>
 <div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="c1"># create exit from coordinates</span>
-<span class="n">exit_id</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_exit_stage</span><span class="p">([(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.7</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.7</span><span class="p">)],</span> <span class="n">region_id</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">exit_id</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_exit_stage</span><span class="p">([(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.7</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.7</span><span class="p">)],</span> <span class="n">region_id</span><span class="o">=</span><span class="n">region_id</span><span class="p">)</span>
 
 <span class="c1"># create exit from shapely.Polygon</span>
 <span class="n">exit_polygon</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.7</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.7</span><span class="p">)])</span>
-<span class="n">exit_id</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_exit_stage</span><span class="p">(</span><span class="n">exit_polygon</span><span class="p">,</span> <span class="n">region_id</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">exit_id</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_exit_stage</span><span class="p">(</span><span class="n">exit_polygon</span><span class="p">,</span> <span class="n">region_id</span><span class="o">=</span><span class="n">region_id</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -381,7 +380,7 @@ When multiple paths lead to the target, the shortest one will be preferred.</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-10-14</footer>
+<footer class="report-footer">Last updated 2026-10-15</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="geometry.html" rel="prev"><small>Previous</small>Geometry</a><a class="book-pagenav-next" href="custom_serialization.html" rel="next"><small>Next</small>Custom Serialization</a>
 </nav>

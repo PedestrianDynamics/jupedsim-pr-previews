@@ -109,10 +109,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../disclaimer.html">Disclaimer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/jupedsim/index.html">API reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../api/jupedsim/models/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">jupedsim.models</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/jupedsim/index.html">API reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../citation/citation.html">Cite JuPedSim</a></li>
 </ul>
 
@@ -127,7 +124,7 @@
 <div class="report-body" data-pagefind-body>
 <section id="geometry">
 <h1>Geometry<a class="headerlink" href="#geometry" title="Link to this heading">#</a></h1>
-<p>When setting up a pedestrian dynamics simulation, one of the most fundamental parts, is to define where the agens can move.
+<p>When setting up a pedestrian dynamics simulation, one of the most fundamental parts, is to define where the agents can move.
 <em>JuPedSim</em> works with a walkable area, which means that every point inside this region can be reached by the agents and every point outside is not included in the simulation code.
 The borders of the walkable area may not be crossed by any agent.</p>
 <figure class="align-center" id="id1">
@@ -139,8 +136,9 @@ The borders of the walkable area may not be crossed by any agent.</p>
 </figure>
 <section id="walkable-area">
 <h2>Walkable area<a class="headerlink" href="#walkable-area" title="Link to this heading">#</a></h2>
-<p>The walkable area in <em>JuPedSim</em> is defined as one simple, e.g., non self intersecting polygon covering a non-zero area.
-This can be either directly defined via <em>Shapely</em> as a <a class="reference external" href="https://shapely.readthedocs.io/en/2.0.1/reference/shapely.Polygon.html#shapely.Polygon" title="(in Shapely)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polygon</span></code></a> or as a <a class="reference external" href="https://shapely.readthedocs.io/en/2.0.1/reference/shapely.GeometryCollection.html#shapely.GeometryCollection" title="(in Shapely)"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeometryCollection</span></code></a> containing multiple Polygons.</p>
+<p>The walkable area is built with a <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.WalkableSurface" title="jupedsim.WalkableSurface"><code class="xref py py-class docutils literal notranslate"><span class="pre">WalkableSurface</span></code></a> out of regions.
+Each region is one simple, i.e., non self intersecting polygon covering a non-zero area.
+It is added either as a <em>Shapely</em> <a class="reference external" href="https://shapely.readthedocs.io/en/2.0.1/reference/shapely.Polygon.html#shapely.Polygon" title="(in Shapely)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polygon</span></code></a> or as a list of points describing its boundary.</p>
 <figure class="align-center" id="id2">
 <a class="reference internal image-reference" href="../_images/simple-polygon.svg"><img alt="A simple polygon representing the walkable area of a simulation" src="../_images/simple-polygon.svg" style="width: 80%;" />
 </a>
@@ -148,30 +146,51 @@ This can be either directly defined via <em>Shapely</em> as a <a class="referenc
 <p><span class="caption-text">A simple polygon, which can be used to model the walkable area of a simulation.</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Such polygons can be created like:</p>
-<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">shapely</span><span class="w"> </span><span class="kn">import</span> <span class="n">GeometryCollection</span><span class="p">,</span> <span class="n">Polygon</span>
+<p>Such a region can be added like:</p>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">jupedsim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jps</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
 
-<span class="n">walkable_area</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)])</span>
+<span class="n">surface</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">WalkableSurface</span><span class="p">()</span>
+<span class="n">room</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">add_region</span><span class="p">(</span><span class="n">polygon</span><span class="o">=</span><span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)]))</span>
+
+<span class="c1"># or, equivalently, from the points of the boundary</span>
+<span class="n">room</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">add_region</span><span class="p">(</span><span class="n">boundary</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)])</span>
 </pre></div>
 </div>
-<p>When using the collection approach, <em>JuPedSim</em> will try to build the union of all polygon contained in the collection.
-This union <strong>must</strong> result in exactly one polygon, otherwise it is not possible to start a simulation.</p>
+<p><a class="reference internal" href="../api/jupedsim/index.html#jupedsim.WalkableSurface.add_region" title="jupedsim.WalkableSurface.add_region"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_region()</span></code></a> returns the id of the new region.
+Agents and stages are placed in a region by this id, see <a class="reference internal" href="routing.html"><span class="doc">Routing</span></a>.</p>
+<p>A walkable area may consist of several regions, e.g. floors at different heights joined by stairs.
+Each of them is added with its own call to <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.WalkableSurface.add_region" title="jupedsim.WalkableSurface.add_region"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_region()</span></code></a>.</p>
+<section id="preparing-polygons">
+<h3>Preparing polygons<a class="headerlink" href="#preparing-polygons" title="Link to this heading">#</a></h3>
+<p><em>JuPedSim</em> takes each region as-is. If the walkable area is made of several overlapping polygons,
+build their union with <em>Shapely</em> first. The union <strong>must</strong> result in exactly one polygon.</p>
 <figure class="align-center" id="id3">
 <a class="reference internal image-reference" href="../_images/collection.svg"><img alt="Combining multiple polygons, to one polygon which represents the walkable area." src="../_images/collection.svg" style="width: 80%;" />
 </a>
 <figcaption>
-<p><span class="caption-text">Combining two overlapping polygons to one, which then can be used to model teh walkable area of a simulation.</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+<p><span class="caption-text">Combining two overlapping polygons to one, which then can be used to model the walkable area of a simulation.</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Such polygons can be created with:</p>
-<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">shapely</span><span class="w"> </span><span class="kn">import</span> <span class="n">GeometryCollection</span><span class="p">,</span> <span class="n">Polygon</span>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
 
-<span class="n">first_polygon</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)])</span>
-<span class="n">second_polygon</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">)])</span>
+<span class="n">first_polygon</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)])</span>
+<span class="n">second_polygon</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">)])</span>
 
-<span class="n">walkable_area</span> <span class="o">=</span> <span class="n">GeometryCollection</span><span class="p">(</span><span class="n">first_polygon</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">second_polygon</span><span class="p">))</span>
+<span class="n">walkable_area</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">union_all</span><span class="p">([</span><span class="n">first_polygon</span><span class="p">,</span> <span class="n">second_polygon</span><span class="p">])</span>
 </pre></div>
 </div>
+<p>The same applies to a walkable area read from a WKT file.
+Such files often hold a <code class="docutils literal notranslate"><span class="pre">GEOMETRYCOLLECTION</span></code>, which has to be turned into a single polygon:</p>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
+
+<span class="n">wkt</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">from_wkt</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">"walkable_area.wkt"</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+<span class="n">walkable_area</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">union_all</span><span class="p">(</span><span class="n">shapely</span><span class="o">.</span><span class="n">get_parts</span><span class="p">(</span><span class="n">wkt</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="obstacles">
 <h2>Obstacles<a class="headerlink" href="#obstacles" title="Link to this heading">#</a></h2>
@@ -186,29 +205,38 @@ These unreachable regions can be added as holes to a polygon.</p>
 </figcaption>
 </figure>
 <p>For creating walkable areas with holes you can use:</p>
-<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">shapely</span><span class="w"> </span><span class="kn">import</span> <span class="n">Polygon</span>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
 
-<span class="n">walkable_area</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span>
-    <span class="p">[</span>
-        <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
-    <span class="p">],</span>
+<span class="n">walkable_area</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span><span class="p">(</span>
+    <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)],</span>
     <span class="c1"># now come the holes/obstacles</span>
     <span class="p">[</span>
         <span class="c1"># first hole/obstacle</span>
-        <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+        <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
         <span class="c1"># second hole/obstacle</span>
-        <span class="p">[(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+        <span class="p">[(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+<span class="n">room</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">add_region</span><span class="p">(</span><span class="n">polygon</span><span class="o">=</span><span class="n">walkable_area</span><span class="p">)</span>
+
+<span class="c1"># or, equivalently, from points</span>
+<span class="n">room</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">add_region</span><span class="p">(</span>
+    <span class="n">boundary</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)],</span>
+    <span class="n">holes</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
+        <span class="p">[(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
     <span class="p">],</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>Or you can “subtract” the hole from the walkable area, which will also work, when the touches the boundary of the geometry:</p>
-<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">shapely</span><span class="w"> </span><span class="kn">import</span> <span class="n">Polygon</span><span class="p">,</span> <span class="n">difference</span>
+<p>Holes have to lie strictly inside the boundary.
+An obstacle that touches the boundary is instead “subtracted” from the walkable area:</p>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
 
-<span class="n">walkable_area</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)])</span>
-<span class="n">obstacle</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
+<span class="n">walkable_area</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)])</span>
+<span class="n">obstacle</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 
-<span class="n">walkable_area</span> <span class="o">=</span> <span class="n">walkable</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">obstacle</span><span class="p">)</span>
+<span class="n">walkable_area</span> <span class="o">=</span> <span class="n">walkable_area</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">obstacle</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition warning">
@@ -224,17 +252,20 @@ These unreachable regions can be added as holes to a polygon.</p>
 <h2>Adding a walkable area to the simulation<a class="headerlink" href="#adding-a-walkable-area-to-the-simulation" title="Link to this heading">#</a></h2>
 <p>After creating the walkable area, it now needs to be passed to the simulation.
 This can be done with:</p>
-<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">jupedsim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jps</span>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">jupedsim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jps</span>
 
 <span class="c1"># define walkable area</span>
-<span class="n">walkable_area</span> <span class="o">=</span> <span class="o">...</span>
+<span class="n">surface</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">WalkableSurface</span><span class="p">()</span>
+<span class="n">room</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">add_region</span><span class="p">(</span><span class="n">polygon</span><span class="o">=...</span><span class="p">)</span>
 
 <span class="n">simulation</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span>
     <span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModel</span><span class="p">(),</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">area</span><span class="p">,</span>
+    <span class="n">geometry</span><span class="o">=</span><span class="n">surface</span><span class="p">,</span>
     <span class="n">trajectory_writer</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">SqliteTrajectoryWriter</span><span class="p">(</span>
         <span class="n">output_file</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">"traj.sqlite"</span><span class="p">)</span>
-    <span class="p">)</span>
+    <span class="p">),</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -242,7 +273,7 @@ This can be done with:</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-10-14</footer>
+<footer class="report-footer">Last updated 2026-10-15</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="index.html" rel="prev"><small>Previous</small>Concepts</a><a class="book-pagenav-next" href="routing.html" rel="next"><small>Next</small>Routing</a>
 </nav>
@@ -252,7 +283,10 @@ This can be done with:</p>
 <nav id="TableOfContents">
 <ul>
 <li><a class="reference internal" href="#">Geometry</a><ul>
-<li><a class="reference internal" href="#walkable-area">Walkable area</a></li>
+<li><a class="reference internal" href="#walkable-area">Walkable area</a><ul>
+<li><a class="reference internal" href="#preparing-polygons">Preparing polygons</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#obstacles">Obstacles</a></li>
 <li><a class="reference internal" href="#adding-a-walkable-area-to-the-simulation">Adding a walkable area to the simulation</a></li>
 </ul>
