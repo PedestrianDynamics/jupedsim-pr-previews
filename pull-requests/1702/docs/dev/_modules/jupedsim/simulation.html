@@ -223,8 +223,9 @@
 <span class="sd">                stage areas. Defaults to :class:`~jupedsim.FloorfieldOptions` with its default</span>
 <span class="sd">                values.</span>
 <span class="sd">            trajectory_writer: Any object implementing the TrajectoryWriter interface. JuPedSim</span>
-<span class="sd">                provides a writer that outputs trajectory data in a sqlite database. If you want</span>
-<span class="sd">                other formats such as CSV you need to provide your own custom implementation.</span>
+<span class="sd">                provides :class:`~jupedsim.Hdf5TrajectoryWriter`, which writes HDF5 files. If</span>
+<span class="sd">                you want other formats such as CSV you need to provide your own custom</span>
+<span class="sd">                implementation.</span>
 <span class="sd">        """</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">OperationalModel</span><span class="p">):</span>
             <span class="n">the_model</span> <span class="o">=</span> <span class="n">model</span>

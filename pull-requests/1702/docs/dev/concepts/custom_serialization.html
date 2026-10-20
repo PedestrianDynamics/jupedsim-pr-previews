@@ -124,9 +124,9 @@
 <div class="report-body" data-pagefind-body>
 <section id="custom-serialization">
 <h1>Custom Serialization<a class="headerlink" href="#custom-serialization" title="Link to this heading">#</a></h1>
-<p><em>JuPedSim</em> provides a built-in SQLite trajectory writer, but it is also
-possible to write your own serializer to output trajectory data in any format you need
-(CSV, JSON, HDF5, a remote API, etc.).</p>
+<p><em>JuPedSim</em> provides a built-in HDF5 trajectory writer (see <a class="reference internal" href="#hdf5-writer"><span class="std std-ref">Built-in HDF5 writer</span></a>),
+but it is also possible to write your own serializer to output trajectory data in
+any format you need (CSV, JSON, a remote API, etc.).</p>
 <p>This guide explains the serialization interface and shows how to implement a
 custom writer.</p>
 <section id="how-serialization-works">
@@ -299,7 +299,7 @@ of a region.</p></td>
             <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="o">=</span> <span class="kc">None</span>
 </pre></div>
 </div>
-<p>Using the custom writer is identical to using the built-in SQLite writer:</p>
+<p>Using the custom writer is identical to using the built-in HDF5 writer:</p>
 <div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">jupedsim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jps</span>
 
 <span class="c1"># Leaving the block calls close(), which flushes the remaining data</span>
@@ -332,7 +332,7 @@ block calls <code class="docutils literal notranslate"><span class="pre">close()
 <code class="docutils literal notranslate"><span class="pre">write_iteration_state</span></code> — the simulation calls this method every iteration
 regardless of your interval setting.</p></li>
 <li><p><strong>Buffering</strong>: For performance, consider buffering writes in memory and
-flushing periodically, as the built-in SQLite writer does.</p></li>
+flushing periodically, as the built-in HDF5 writer does.</p></li>
 <li><p><strong>Resource cleanup</strong>: Override <code class="docutils literal notranslate"><span class="pre">close()</span></code> if your writer buffers data or
 opens files, connections, or other resources. It is called when leaving a
 <code class="docutils literal notranslate"><span class="pre">with</span></code> block and must be safe to call more than once.</p></li>
@@ -364,6 +364,30 @@ as 2D regions for easy analysis with pedpy and as full 3D mesh.</p>
 <p>The last buffered rows and the frame index are only written when the
 writer is closed, i.e. when leaving the <code class="docutils literal notranslate"><span class="pre">with</span></code> block. Without a <code class="docutils literal notranslate"><span class="pre">with</span></code>
 block, call <code class="docutils literal notranslate"><span class="pre">writer.close()</span></code> once the simulation is done.</p>
+<section id="reading-the-file">
+<h3>Reading the file<a class="headerlink" href="#reading-the-file" title="Link to this heading">#</a></h3>
+<p><a class="reference internal" href="../api/jupedsim/index.html#jupedsim.Hdf5TrajectoryLoader" title="jupedsim.Hdf5TrajectoryLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">jupedsim.Hdf5TrajectoryLoader</span></code></a> reads the files back. Trajectories are
+loaded per region; the result plugs straight into
+<a class="reference external" href="https://pedpy.readthedocs.io">PedPy</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">jupedsim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jps</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pedpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="k">with</span> <span class="n">jps</span><span class="o">.</span><span class="n">Hdf5TrajectoryLoader</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">"traj.h5"</span><span class="p">))</span> <span class="k">as</span> <span class="n">loader</span><span class="p">:</span>
+    <span class="p">(</span><span class="n">region_id</span><span class="p">,)</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_region_ids</span><span class="p">()</span>  <span class="c1"># single-region geometry</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_region_trajectory</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">region_id</span><span class="p">))</span>
+
+<span class="n">trajectory</span> <span class="o">=</span> <span class="n">pedpy</span><span class="o">.</span><span class="n">TrajectoryData</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="o">**</span><span class="n">result</span><span class="p">[</span><span class="s2">"frame"</span><span class="p">]),</span> <span class="n">frame_rate</span><span class="o">=</span><span class="n">result</span><span class="p">[</span><span class="s2">"fps"</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">walkable_area</span> <span class="o">=</span> <span class="n">pedpy</span><span class="o">.</span><span class="n">WalkableArea</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">"wkt"</span><span class="p">])</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">result[&quot;frame&quot;][&quot;data&quot;]</span></code> is a structured array with the columns <code class="docutils literal notranslate"><span class="pre">id</span></code>,
+<code class="docutils literal notranslate"><span class="pre">frame</span></code>, <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> holding only the rows recorded while the agent was
+inside that region.</p>
+</section>
 <section id="file-layout">
 <h3>File layout<a class="headerlink" href="#file-layout" title="Link to this heading">#</a></h3>
 <ul class="simple">
@@ -414,6 +438,7 @@ reading the file with h5py:</p>
 <li><a class="reference internal" href="#example-csv-writer">Example: CSV writer</a></li>
 <li><a class="reference internal" href="#tips-for-custom-writers">Tips for custom writers</a></li>
 <li><a class="reference internal" href="#built-in-hdf5-writer">Built-in HDF5 writer</a><ul>
+<li><a class="reference internal" href="#reading-the-file">Reading the file</a></li>
 <li><a class="reference internal" href="#file-layout">File layout</a></li>
 </ul>
 </li>

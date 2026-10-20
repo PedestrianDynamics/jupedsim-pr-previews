@@ -187,29 +187,29 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.Geometry" title="jupedsim.Geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Geometry</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.Hdf5TrajectoryWriter" title="jupedsim.Hdf5TrajectoryWriter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Hdf5TrajectoryWriter</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader" title="jupedsim.Hdf5TrajectoryLoader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Hdf5TrajectoryLoader</span></code></a></p></td>
+<td><p>HDF5 trajectory loader.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.Hdf5TrajectoryWriter" title="jupedsim.Hdf5TrajectoryWriter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Hdf5TrajectoryWriter</span></code></a></p></td>
 <td><p>Write trajectory data to an HDF5 file, see the module docs for the layout.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.JourneyDescription" title="jupedsim.JourneyDescription"><code class="xref py py-obj docutils literal notranslate"><span class="pre">JourneyDescription</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.JourneyDescription" title="jupedsim.JourneyDescription"><code class="xref py py-obj docutils literal notranslate"><span class="pre">JourneyDescription</span></code></a></p></td>
 <td><p>Used to describe a journey for construction by the <code class="xref py py-class docutils literal notranslate"><span class="pre">Simulation</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.Location" title="jupedsim.Location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Location</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.Location" title="jupedsim.Location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Location</span></code></a></p></td>
 <td><p>A point on the walkable surface, together with the region it lies in.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.NeighborView" title="jupedsim.NeighborView"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NeighborView</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.NeighborView" title="jupedsim.NeighborView"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NeighborView</span></code></a></p></td>
 <td><p>A neighboring agent as seen from the agent that asked for it.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.Simulation" title="jupedsim.Simulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Simulation</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.Simulation" title="jupedsim.Simulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Simulation</span></code></a></p></td>
 <td><p>Defines a simulation of pedestrian movement over a continuous walkable area.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.SocialForceModel" title="jupedsim.SocialForceModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SocialForceModel</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.SocialForceModel" title="jupedsim.SocialForceModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SocialForceModel</span></code></a></p></td>
 <td><p>Social Force Model.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.SocialForceModelState" title="jupedsim.SocialForceModelState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SocialForceModelState</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.SocialForceModelState" title="jupedsim.SocialForceModelState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SocialForceModelState</span></code></a></p></td>
 <td><p>Per-agent state of the Social Force Model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.SqliteTrajectoryWriter" title="jupedsim.SqliteTrajectoryWriter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SqliteTrajectoryWriter</span></code></a></p></td>
-<td><p>Write trajectory data into a sqlite db</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.SurfaceMeshShortestPathRoutingEngine" title="jupedsim.SurfaceMeshShortestPathRoutingEngine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SurfaceMeshShortestPathRoutingEngine</span></code></a></p></td>
 <td><p></p></td>
@@ -1446,6 +1446,55 @@ movement vector [m].</p></li>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryLoader">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Hdf5TrajectoryLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.15)"><span class="pre">pathlib.Path</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/jupedsim/hdf5_serialization.html#Hdf5TrajectoryLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Hdf5TrajectoryLoader" title="Link to this definition">#</a></dt>
+<dd><p>HDF5 trajectory loader.</p>
+<p>Loads files written by <a class="reference internal" href="#jupedsim.Hdf5TrajectoryWriter" title="jupedsim.Hdf5TrajectoryWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Hdf5TrajectoryWriter</span></code></a>. The file is opened
+read-only on construction and validated against the schema; use
+<a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.close" title="jupedsim.Hdf5TrajectoryLoader.close"><code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code></a> or a <code class="docutils literal notranslate"><span class="pre">with</span></code> block to release it.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryLoader.Error">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Error</span></span><a class="headerlink" href="#jupedsim.Hdf5TrajectoryLoader.Error" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#Exception" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Type for all errors raised while loading a trajectory from an HDF5 file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryLoader.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/hdf5_serialization.html#Hdf5TrajectoryLoader.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Hdf5TrajectoryLoader.close" title="Link to this definition">#</a></dt>
+<dd><p>Closes the underlying HDF5 file. Safe to call more than once.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryLoader.load_region_ids">
+<span class="sig-name descname"><span class="pre">load_region_ids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/jupedsim/hdf5_serialization.html#Hdf5TrajectoryLoader.load_region_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Hdf5TrajectoryLoader.load_region_ids" title="Link to this definition">#</a></dt>
+<dd><p>Returns the ids of all regions stored in the file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryLoader.load_region_trajectory">
+<span class="sig-name descname"><span class="pre">load_region_trajectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/jupedsim/hdf5_serialization.html#Hdf5TrajectoryLoader.load_region_trajectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Hdf5TrajectoryLoader.load_region_trajectory" title="Link to this definition">#</a></dt>
+<dd><p>Loads the trajectory of all agents while inside one region.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>region_id</strong> – id of the region, see <a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.load_region_ids" title="jupedsim.Hdf5TrajectoryLoader.load_region_ids"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load_region_ids()</span></code></a>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dict with keys <code class="docutils literal notranslate"><span class="pre">wkt</span></code> (the region polygon as WKT string),
+<code class="docutils literal notranslate"><span class="pre">fps</span></code> (recorded frames per second) and <code class="docutils literal notranslate"><span class="pre">frame</span></code>, a dict with
+<code class="docutils literal notranslate"><span class="pre">columns</span></code> (<code class="docutils literal notranslate"><span class="pre">[&quot;id&quot;,</span> <span class="pre">&quot;frame&quot;,</span> <span class="pre">&quot;x&quot;,</span> <span class="pre">&quot;y&quot;]</span></code>) and <code class="docutils literal notranslate"><span class="pre">data</span></code> (a
+structured array with exactly these fields) suitable for
+<code class="docutils literal notranslate"><span class="pre">pandas.DataFrame(**result[&quot;frame&quot;])</span></code>.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.Error" title="jupedsim.Hdf5TrajectoryLoader.Error"><strong>Hdf5TrajectoryLoader.Error</strong></a> – if <code class="docutils literal notranslate"><span class="pre">region_id</span></code> is not in the file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryWriter">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Hdf5TrajectoryWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.15)"><span class="pre">pathlib.Path</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">every_nth_frame</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/jupedsim/hdf5_serialization.html#Hdf5TrajectoryWriter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Hdf5TrajectoryWriter" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">jupedsim.serialization.TrajectoryWriter</span></code></p>
@@ -1470,6 +1519,11 @@ and the frame index, or use the writer in a <code class="docutils literal notran
 <p>This method is intended to handle all data writing that has to be done
 once before the trajectory data can be written. E.g. Meta information
 such as frame rate etc…</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>simulation</strong> – Simulation object to query for data.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1492,11 +1546,28 @@ written and so on.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryWriter.regions_dtype">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">regions_dtype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.dtype</span></span></span><a class="reference internal" href="../../_modules/jupedsim/hdf5_serialization.html#Hdf5TrajectoryWriter.regions_dtype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Hdf5TrajectoryWriter.regions_dtype" title="Link to this definition">#</a></dt>
+<dd><p>Compound dtype of the /regions dataset.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryWriter.trajectory_dtype">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trajectory_dtype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.dtype</span></span></span><a class="reference internal" href="../../_modules/jupedsim/hdf5_serialization.html#Hdf5TrajectoryWriter.trajectory_dtype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Hdf5TrajectoryWriter.trajectory_dtype" title="Link to this definition">#</a></dt>
+<dd><p>Compound dtype of the /trajectory dataset.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryWriter.write_iteration_state">
 <span class="sig-name descname"><span class="pre">write_iteration_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jupedsim.simulation.Simulation</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/hdf5_serialization.html#Hdf5TrajectoryWriter.write_iteration_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Hdf5TrajectoryWriter.write_iteration_state" title="Link to this definition">#</a></dt>
 <dd><p>Write trajectory data of one simulation iteration.</p>
 <p>This method is intended to handle serialization of the trajectory data
 of a single iteration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>simulation</strong> – Simulation object to query.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -2046,55 +2117,6 @@ neighbors influences the social forces [m] (B).</p></li>
 <dt class="sig sig-object py" id="jupedsim.SocialForceModelState.velocity">
 <span class="sig-name descname"><span class="pre">velocity</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#jupedsim.SocialForceModelState.velocity" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="jupedsim.SqliteTrajectoryWriter">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SqliteTrajectoryWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.15)"><span class="pre">pathlib.Path</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">every_nth_frame</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">commit_every_nth_write</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/jupedsim/sqlite_serialization.html#SqliteTrajectoryWriter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.SqliteTrajectoryWriter" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">jupedsim.serialization.TrajectoryWriter</span></code></p>
-<p>Write trajectory data into a sqlite db</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="jupedsim.SqliteTrajectoryWriter.begin_writing">
-<span class="sig-name descname"><span class="pre">begin_writing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jupedsim.simulation.Simulation</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/sqlite_serialization.html#SqliteTrajectoryWriter.begin_writing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.SqliteTrajectoryWriter.begin_writing" title="Link to this definition">#</a></dt>
-<dd><p>Begin writing trajectory data.</p>
-<p>This method is intended to handle all data writing that has to be done
-once before the trajectory data can be written. E.g. Meta information
-such as framerate etc…</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="jupedsim.SqliteTrajectoryWriter.close">
-<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/sqlite_serialization.html#SqliteTrajectoryWriter.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.SqliteTrajectoryWriter.close" title="Link to this definition">#</a></dt>
-<dd><p>Flush buffer and close DB connection. Call at simulation end.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="jupedsim.SqliteTrajectoryWriter.connection">
-<span class="sig-name descname"><span class="pre">connection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection" title="(in Python v3.15)"><span class="pre">sqlite3.Connection</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/sqlite_serialization.html#SqliteTrajectoryWriter.connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.SqliteTrajectoryWriter.connection" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="jupedsim.SqliteTrajectoryWriter.every_nth_frame">
-<span class="sig-name descname"><span class="pre">every_nth_frame</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/sqlite_serialization.html#SqliteTrajectoryWriter.every_nth_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.SqliteTrajectoryWriter.every_nth_frame" title="Link to this definition">#</a></dt>
-<dd><p>Returns the interval of this writer in frames between writes.</p>
-<p>1 indicates all frames are written, 10 indicates every 10th frame is
-writen and so on.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number of frames between writes as int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="jupedsim.SqliteTrajectoryWriter.write_iteration_state">
-<span class="sig-name descname"><span class="pre">write_iteration_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jupedsim.simulation.Simulation</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/sqlite_serialization.html#SqliteTrajectoryWriter.write_iteration_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.SqliteTrajectoryWriter.write_iteration_state" title="Link to this definition">#</a></dt>
-<dd><p>Write trajectory data of one simulation iteration.</p>
-<p>This method is intended to handle serialization of the trajectory data
-of a single iteration. The default behaviour is to buffer frames in memory
-and only writing to disk when the buffer is full or close() is called.</p>
-</dd></dl>
 
 </dd></dl>
 
@@ -3029,10 +3051,19 @@ basic information about this library.</p>
 <li><a class="reference internal" href="#jupedsim.Geometry.vertices"><code class="docutils literal notranslate"><span class="pre">Geometry.vertices()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryLoader</span></code></a><ul>
+<li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.Error"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryLoader.Error</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.close"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryLoader.close()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.load_region_ids"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryLoader.load_region_ids()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.load_region_trajectory"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryLoader.load_region_trajectory()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryWriter"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryWriter</span></code></a><ul>
 <li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryWriter.begin_writing"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryWriter.begin_writing()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryWriter.close"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryWriter.close()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryWriter.every_nth_frame"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryWriter.every_nth_frame()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryWriter.regions_dtype"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryWriter.regions_dtype()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryWriter.trajectory_dtype"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryWriter.trajectory_dtype()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryWriter.write_iteration_state"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryWriter.write_iteration_state()</span></code></a></li>
 </ul>
 </li>
@@ -3088,14 +3119,6 @@ basic information about this library.</p>
 <li><a class="reference internal" href="#jupedsim.SocialForceModelState.radius"><code class="docutils literal notranslate"><span class="pre">SocialForceModelState.radius</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.SocialForceModelState.reaction_time"><code class="docutils literal notranslate"><span class="pre">SocialForceModelState.reaction_time</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.SocialForceModelState.velocity"><code class="docutils literal notranslate"><span class="pre">SocialForceModelState.velocity</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#jupedsim.SqliteTrajectoryWriter"><code class="docutils literal notranslate"><span class="pre">SqliteTrajectoryWriter</span></code></a><ul>
-<li><a class="reference internal" href="#jupedsim.SqliteTrajectoryWriter.begin_writing"><code class="docutils literal notranslate"><span class="pre">SqliteTrajectoryWriter.begin_writing()</span></code></a></li>
-<li><a class="reference internal" href="#jupedsim.SqliteTrajectoryWriter.close"><code class="docutils literal notranslate"><span class="pre">SqliteTrajectoryWriter.close()</span></code></a></li>
-<li><a class="reference internal" href="#jupedsim.SqliteTrajectoryWriter.connection"><code class="docutils literal notranslate"><span class="pre">SqliteTrajectoryWriter.connection()</span></code></a></li>
-<li><a class="reference internal" href="#jupedsim.SqliteTrajectoryWriter.every_nth_frame"><code class="docutils literal notranslate"><span class="pre">SqliteTrajectoryWriter.every_nth_frame()</span></code></a></li>
-<li><a class="reference internal" href="#jupedsim.SqliteTrajectoryWriter.write_iteration_state"><code class="docutils literal notranslate"><span class="pre">SqliteTrajectoryWriter.write_iteration_state()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#jupedsim.SurfaceMeshShortestPathRoutingEngine"><code class="docutils literal notranslate"><span class="pre">SurfaceMeshShortestPathRoutingEngine</span></code></a><ul>

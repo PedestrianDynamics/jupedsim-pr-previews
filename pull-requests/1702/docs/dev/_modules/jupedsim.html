@@ -134,7 +134,10 @@
     <span class="n">distribute_in_circles_by_number</span><span class="p">,</span>
     <span class="n">distribute_until_filled</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.hdf5_serialization</span><span class="w"> </span><span class="kn">import</span> <span class="n">Hdf5TrajectoryWriter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.hdf5_serialization</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Hdf5TrajectoryLoader</span><span class="p">,</span>
+    <span class="n">Hdf5TrajectoryWriter</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.internal.tracing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Timer</span><span class="p">,</span> <span class="n">trace_event</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.journey</span><span class="w"> </span><span class="kn">import</span> <span class="n">JourneyDescription</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.pyjupedsim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
@@ -182,7 +185,6 @@
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.serialization</span><span class="w"> </span><span class="kn">import</span> <span class="n">TrajectoryWriter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.simulation</span><span class="w"> </span><span class="kn">import</span> <span class="n">Simulation</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.sqlite_serialization</span><span class="w"> </span><span class="kn">import</span> <span class="n">SqliteTrajectoryWriter</span>
 
 <span class="n">__version__</span> <span class="o">=</span> <span class="n">get_build_info</span><span class="p">()</span><span class="o">.</span><span class="n">library_version</span>
 <span class="sd">"""</span>
@@ -223,6 +225,7 @@
     <span class="s2">"GeneralizedCentrifugalForceModel"</span><span class="p">,</span>
     <span class="s2">"GeneralizedCentrifugalForceModelState"</span><span class="p">,</span>
     <span class="s2">"Geometry"</span><span class="p">,</span>
+    <span class="s2">"Hdf5TrajectoryLoader"</span><span class="p">,</span>
     <span class="s2">"Hdf5TrajectoryWriter"</span><span class="p">,</span>
     <span class="s2">"IncorrectParameterError"</span><span class="p">,</span>
     <span class="s2">"JourneyDescription"</span><span class="p">,</span>
@@ -234,7 +237,6 @@
     <span class="s2">"SimulationError"</span><span class="p">,</span>
     <span class="s2">"SocialForceModel"</span><span class="p">,</span>
     <span class="s2">"SocialForceModelState"</span><span class="p">,</span>
-    <span class="s2">"SqliteTrajectoryWriter"</span><span class="p">,</span>
     <span class="s2">"SurfaceMeshShortestPathRoutingEngine"</span><span class="p">,</span>
     <span class="s2">"Timer"</span><span class="p">,</span>
     <span class="s2">"TrajectoryWriter"</span><span class="p">,</span>
