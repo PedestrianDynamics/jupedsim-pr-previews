@@ -224,7 +224,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_output_file</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">output_file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_every_nth_frame</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">every_nth_frame</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_records_to_cache</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">16</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">trajectory_dtype</span><span class="p">()</span><span class="o">.</span><span class="n">itemsize</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_trajectory_buffer</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_trajectory_buffer</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_records_to_cache</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">trajectory_dtype</span><span class="p">()</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_record_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
@@ -459,7 +459,6 @@
         <span class="n">dset</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">],</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Append data to a Hdf5 dataset.</span>
-<span class="sd">        Helper funtion to append data to a Hdf5 dataset.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            dset: dataset to append to</span>
@@ -628,7 +627,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-10-19</footer>
+<footer class="report-footer">Last updated 2026-10-20</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">
