@@ -140,7 +140,7 @@
 <span class="w">    </span><span class="sd">"""Interface for trajectory serialization</span>
 
 <span class="sd">    Writers are context managers: leaving a ``with`` block calls</span>
-<span class="sd">    :meth:`close`, also when the block raises::</span>
+<span class="sd">    :meth:`close`, or :meth:`close_after_error` when the block raises::</span>
 
 <span class="sd">        with jps.Hdf5TrajectoryWriter(output_file=path) as writer:</span>
 <span class="sd">            sim = jps.Simulation(..., trajectory_writer=writer)</span>
@@ -157,7 +157,10 @@
         <span class="n">exc_value</span><span class="p">:</span> <span class="ne">BaseException</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">traceback</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">TracebackType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">exc_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close_after_error</span><span class="p">()</span>
 
 <div class="viewcode-block" id="TrajectoryWriter.close">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.TrajectoryWriter.close">[docs]</a>
@@ -168,6 +171,18 @@
 <span class="sd">        once. Does nothing by default; override it if the writer buffers data</span>
 <span class="sd">        or holds resources such as open files.</span>
 <span class="sd">        """</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryWriter.close_after_error">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.TrajectoryWriter.close_after_error">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">close_after_error</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Called instead of :meth:`close` when a ``with`` block ends on an</span>
+<span class="sd">        exception.</span>
+
+<span class="sd">        The error is still propagating, so do only what keeps the output</span>
+<span class="sd">        usable and skip expensive extras. Calls :meth:`close` by default.</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="TrajectoryWriter.begin_writing">
@@ -219,7 +234,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-10-22</footer>
+<footer class="report-footer">Last updated 2026-10-23</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

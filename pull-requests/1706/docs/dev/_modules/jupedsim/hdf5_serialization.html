@@ -161,16 +161,44 @@
 <span class="sd">    │   │  @id  str "id of the region"</span>
 <span class="sd">    │   └─ @wkt str "2D WKT describing the region polygon."</span>
 <span class="sd">    │               "This is always a projection onto X/Y for connectors."</span>
-<span class="sd">    └── mesh</span>
-<span class="sd">        ├── vertices</span>
-<span class="sd">        │   │  All vertices of the geometry</span>
-<span class="sd">        │   └─ [N, 3] &lt;f4</span>
-<span class="sd">        ├── triangles</span>
-<span class="sd">        │   │  Vertex indices of each triangle</span>
-<span class="sd">        │   └─ [M, 3] &lt;u8</span>
-<span class="sd">        └── regions</span>
-<span class="sd">            │  Region id of each triangle</span>
-<span class="sd">            └─ [M] &lt;u8</span>
+<span class="sd">    ├── mesh</span>
+<span class="sd">    │   ├── vertices</span>
+<span class="sd">    │   │   │  All vertices of the geometry</span>
+<span class="sd">    │   │   └─ [N, 3] &lt;f4</span>
+<span class="sd">    │   ├── triangles</span>
+<span class="sd">    │   │   │  Vertex indices of each triangle</span>
+<span class="sd">    │   │   └─ [M, 3] &lt;u8</span>
+<span class="sd">    │   └── regions</span>
+<span class="sd">    │       │  Region id of each triangle</span>
+<span class="sd">    │       └─ [M] &lt;u8</span>
+<span class="sd">    └── travel_times   only with write_travel_times=True, written on close</span>
+<span class="sd">        │  Floor field travel times to every waypoint and exit stage, one</span>
+<span class="sd">        │  grid per stage and region</span>
+<span class="sd">        ├── grids</span>
+<span class="sd">        │   │  One row per grid, ordered by stage id, then region id</span>
+<span class="sd">        │   │  type compound {</span>
+<span class="sd">        │   │    stage_id  &lt;u8 stage the travel times lead to</span>
+<span class="sd">        │   │    region_id &lt;u8 region the grid covers, see /regions</span>
+<span class="sd">        │   │    origin_x  &lt;f8 x of the lower-left corner of cell (0, 0) [m]</span>
+<span class="sd">        │   │    origin_y  &lt;f8 y of the lower-left corner of cell (0, 0) [m]</span>
+<span class="sd">        │   │    width     &lt;u4 cells along x</span>
+<span class="sd">        │   │    height    &lt;u4 cells along y</span>
+<span class="sd">        │   │    cell_size &lt;f8 edge length of a cell [m]</span>
+<span class="sd">        │   │    offset    &lt;u8 first element of the grid in /travel_times/values</span>
+<span class="sd">        │   │  }</span>
+<span class="sd">        │   └─ @&lt;field&gt;   str description of each field, as for /trajectory</span>
+<span class="sd">        ├── values</span>
+<span class="sd">        │   │  &lt;f4, shuffle + zstd</span>
+<span class="sd">        │   │  Travel times [s] of all grids, one after another, each</span>
+<span class="sd">        │   │  row-major from its lowest row: grid i is</span>
+<span class="sd">        │   │  values[offset:offset + width * height].reshape(height, width)</span>
+<span class="sd">        │   └─ Zero inside the stage's area, inf where a cell is not walkable</span>
+<span class="sd">        └── directions</span>
+<span class="sd">            │  [N, 2] &lt;f4, shuffle + zstd, row k belongs to values[k]</span>
+<span class="sd">            │  Walking direction (x, y) at each cell's centre, the unit</span>
+<span class="sd">            │  vector an agent there is sent along: grid i is</span>
+<span class="sd">            │  directions[offset:offset + width * height].reshape(height, width, 2)</span>
+<span class="sd">            └─ Zero inside the stage's area, nan where a cell is not walkable</span>
 <span class="sd">```</span>
 
 <span class="sd">Reading the file requires the Zstd filter: ``import hdf5plugin`` before</span>
@@ -179,6 +207,7 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">dataclasses</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">types</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">typing</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
@@ -211,6 +240,12 @@
 <span class="sd">    Args:</span>
 <span class="sd">        output_file: File to write to; an existing file is overwritten.</span>
 <span class="sd">        every_nth_frame: Record every n-th iteration, 1 records all of them.</span>
+<span class="sd">        write_travel_times: Also store the floor field travel times to every</span>
+<span class="sd">            waypoint and exit stage in /travel_times. They are written by</span>
+<span class="sd">            :meth:`close`, so stages added during the run are included, and</span>
+<span class="sd">            fields no agent needed are solved then. Not written when a</span>
+<span class="sd">            ``with`` block ends on an exception, see</span>
+<span class="sd">            :meth:`close_after_error`.</span>
 <span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -218,11 +253,14 @@
         <span class="o">*</span><span class="p">,</span>
         <span class="n">output_file</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
         <span class="n">every_nth_frame</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="n">write_travel_times</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="k">if</span> <span class="n">every_nth_frame</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">TrajectoryWriter</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span><span class="s2">"'every_nth_frame' has to be &gt; 0"</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_output_file</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">output_file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_every_nth_frame</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">every_nth_frame</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_travel_times</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">write_travel_times</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span><span class="p">:</span> <span class="n">Simulation</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_records_to_cache</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">16</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">trajectory_dtype</span><span class="p">()</span><span class="o">.</span><span class="n">itemsize</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_trajectory_buffer</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_records_to_cache</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">trajectory_dtype</span><span class="p">()</span>
@@ -260,6 +298,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_records_written</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_frame_idx</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_is_writing</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_travel_times</span><span class="p">:</span>
+            <span class="c1"># Kept until close, which writes the travel times.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span> <span class="o">=</span> <span class="n">simulation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
 
 
@@ -402,7 +443,8 @@
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Hdf5TrajectoryWriter.close">[docs]</a>
     <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Write the remaining rows and the frame index, then close the file."""</span>
+<span class="w">        </span><span class="sd">"""Write the remaining rows, the frame index and, if requested, the</span>
+<span class="sd">        travel times, then close the file."""</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_writing</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_is_writing</span> <span class="o">=</span> <span class="kc">False</span>
@@ -420,9 +462,96 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">_trajectory_buffer</span><span class="p">,</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_record_idx</span><span class="p">,</span>
                 <span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_write_travel_time_grids</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
+                    <span class="c1"># All or nothing: no values without the grids that index them.</span>
+                    <span class="k">if</span> <span class="s2">"travel_times"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">:</span>
+                        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">[</span><span class="s2">"travel_times"</span><span class="p">]</span>
+                    <span class="k">raise</span>
         <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
+
+<div class="viewcode-block" id="Hdf5TrajectoryWriter.close_after_error">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Hdf5TrajectoryWriter.close_after_error">[docs]</a>
+    <span class="nd">@override</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">close_after_error</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Write the remaining rows and the frame index, but no travel times:</span>
+<span class="sd">        solving every floor field while an error propagates would delay it and</span>
+<span class="sd">        could replace it with an error of its own."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_write_travel_time_grids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simulation</span><span class="p">:</span> <span class="n">Simulation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Write /travel_times for every stage with an area and every region.</span>
+
+<span class="sd">        Each grid is appended as soon as it is computed, so memory holds one grid at a</span>
+<span class="sd">        time rather than all of them.</span>
+<span class="sd">        """</span>
+        <span class="n">values_ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span>
+            <span class="s2">"travel_times/values"</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,),</span>
+            <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,),</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="s2">"&lt;f4"</span><span class="p">,</span>
+            <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">16</span><span class="p">,),</span>
+            <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">hdf5plugin</span><span class="o">.</span><span class="n">Zstd</span><span class="p">(</span><span class="n">clevel</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>  <span class="c1"># pyright: ignore[reportUnknownArgumentType]</span>
+        <span class="p">)</span>
+        <span class="n">values_ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"unit"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"s"</span>
+        <span class="n">directions_ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span>
+            <span class="s2">"travel_times/directions"</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="s2">"&lt;f4"</span><span class="p">,</span>
+            <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">15</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">hdf5plugin</span><span class="o">.</span><span class="n">Zstd</span><span class="p">(</span><span class="n">clevel</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>  <span class="c1"># pyright: ignore[reportUnknownArgumentType]</span>
+        <span class="p">)</span>
+
+        <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># A stage without an area, such as direct steering, has no grids.</span>
+        <span class="k">for</span> <span class="n">stage_id</span> <span class="ow">in</span> <span class="n">simulation</span><span class="o">.</span><span class="n">stage_ids</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">region_id</span><span class="p">,</span> <span class="n">grid</span> <span class="ow">in</span> <span class="n">simulation</span><span class="o">.</span><span class="n">travel_times</span><span class="p">(</span><span class="n">stage_id</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">(</span>
+                        <span class="n">stage_id</span><span class="p">,</span>
+                        <span class="n">region_id</span><span class="p">,</span>
+                        <span class="o">*</span><span class="n">grid</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span>
+                        <span class="n">grid</span><span class="o">.</span><span class="n">width</span><span class="p">,</span>
+                        <span class="n">grid</span><span class="o">.</span><span class="n">height</span><span class="p">,</span>
+                        <span class="n">grid</span><span class="o">.</span><span class="n">cell_size</span><span class="p">,</span>
+                        <span class="n">offset</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"&lt;f4"</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_append</span><span class="p">(</span><span class="n">values_ds</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
+                <span class="n">directions</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">directions</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"&lt;f4"</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_append</span><span class="p">(</span><span class="n">directions_ds</span><span class="p">,</span> <span class="n">directions</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">directions</span><span class="p">))</span>
+                <span class="n">offset</span> <span class="o">+=</span> <span class="n">grid</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">grid</span><span class="o">.</span><span class="n">height</span>
+
+        <span class="n">grids_ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span>
+            <span class="s2">"travel_times/grids"</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">travel_time_grid_dtype</span><span class="p">()),</span>
+        <span class="p">)</span>
+        <span class="n">grids_ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"stage_id"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Stage the travel times lead to"</span>
+        <span class="n">grids_ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"region_id"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Region the grid covers"</span>
+        <span class="n">grids_ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"origin_x"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">"X of the lower-left corner of cell (0, 0) [m]"</span>
+        <span class="p">)</span>
+        <span class="n">grids_ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"origin_y"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">"Y of the lower-left corner of cell (0, 0) [m]"</span>
+        <span class="p">)</span>
+        <span class="n">grids_ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"width"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Number of cells along x"</span>
+        <span class="n">grids_ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"height"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Number of cells along y"</span>
+        <span class="n">grids_ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"cell_size"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Edge length of a cell [m]"</span>
+        <span class="n">grids_ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"offset"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">"First element of the grid in /travel_times/values"</span>
+        <span class="p">)</span>
 
 <div class="viewcode-block" id="Hdf5TrajectoryWriter.trajectory_dtype">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Hdf5TrajectoryWriter.trajectory_dtype">[docs]</a>
@@ -452,6 +581,26 @@
         <span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="Hdf5TrajectoryWriter.travel_time_grid_dtype">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Hdf5TrajectoryWriter.travel_time_grid_dtype">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">travel_time_grid_dtype</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s2">"np.dtype"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Compound dtype of the /travel_times/grids dataset."""</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">(</span><span class="s2">"stage_id"</span><span class="p">,</span> <span class="s2">"&lt;u8"</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">"region_id"</span><span class="p">,</span> <span class="s2">"&lt;u8"</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">"origin_x"</span><span class="p">,</span> <span class="s2">"&lt;f8"</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">"origin_y"</span><span class="p">,</span> <span class="s2">"&lt;f8"</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">"width"</span><span class="p">,</span> <span class="s2">"&lt;u4"</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">"height"</span><span class="p">,</span> <span class="s2">"&lt;u4"</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">"cell_size"</span><span class="p">,</span> <span class="s2">"&lt;f8"</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">"offset"</span><span class="p">,</span> <span class="s2">"&lt;u8"</span><span class="p">),</span>
+            <span class="p">],</span>
+            <span class="n">align</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_append</span><span class="p">(</span>
         <span class="n">dset</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">],</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span>
@@ -477,11 +626,51 @@
 
 <span class="sd">    Loads files written by :class:`Hdf5TrajectoryWriter`. The file is opened</span>
 <span class="sd">    read-only on construction and validated against the schema; use</span>
-<span class="sd">    :meth:`close` or a ``with`` block to release it.</span>
+<span class="sd">    :meth:`close` or a ``with`` block to release it. Travel times are only in</span>
+<span class="sd">    files written with ``write_travel_times=True``, see</span>
+<span class="sd">    :meth:`has_travel_times`.</span>
 <span class="sd">    """</span>
 
     <span class="k">class</span><span class="w"> </span><span class="nc">Error</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Type for all errors raised while loading a trajectory from an HDF5 file."""</span>
+
+    <span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">TravelTimeGrid</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Travel times and walking directions to one stage over the floor field</span>
+<span class="sd">        grid of one region, as stored in /travel_times.</span>
+
+<span class="sd">        Has the fields of :class:`~jupedsim.TravelTimeGrid`, so code written</span>
+<span class="sd">        against :meth:`~jupedsim.Simulation.travel_times` works on a loaded file</span>
+<span class="sd">        too. Values and directions are stored as 32-bit floats.</span>
+<span class="sd">        """</span>
+
+        <span class="n">origin</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+<span class="w">        </span><span class="sd">"""Lower-left corner of cell (0, 0) in metres."""</span>
+        <span class="n">width</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">        </span><span class="sd">"""Number of cells along x."""</span>
+        <span class="n">height</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">        </span><span class="sd">"""Number of cells along y."""</span>
+        <span class="n">cell_size</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">        </span><span class="sd">"""Edge length of a cell in metres."""</span>
+        <span class="n">values</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">]</span>
+<span class="w">        </span><span class="sd">"""Travel times in seconds, shape ``(height, width)``; row 0 is the</span>
+<span class="sd">        lowest. Zero inside the stage's area, ``inf`` where a cell is not</span>
+<span class="sd">        walkable."""</span>
+        <span class="n">directions</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">]</span>
+<span class="w">        </span><span class="sd">"""Walking direction at each cell's centre, shape ``(height, width, 2)``.</span>
+<span class="sd">        Zero inside the stage's area, ``nan`` where a cell is not walkable."""</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">extent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">            </span><span class="sd">"""``(x_min, x_max, y_min, y_max)`` of the grid in metres, as</span>
+<span class="sd">            matplotlib's ``extent`` expects it."""</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="n">x</span><span class="p">,</span>
+                <span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_size</span><span class="p">,</span>
+                <span class="n">y</span><span class="p">,</span>
+                <span class="n">y</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_size</span><span class="p">,</span>
+            <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Opens and validates an HDF5 trajectory file.</span>
@@ -542,6 +731,56 @@
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_trajectory</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span> <span class="o">=</span> <span class="n">trajectory_ds</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_regions</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span> <span class="o">=</span> <span class="n">regions_ds</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_grids</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="s2">"travel_times"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_validate_travel_times</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_travel_times</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">dataset</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">"travel_times/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">Hdf5TrajectoryLoader</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"Travel times dataset '</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">' missing."</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="n">ds</span>
+
+        <span class="n">grids_ds</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">(</span><span class="s2">"grids"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">grids_ds</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">Hdf5TrajectoryWriter</span><span class="o">.</span><span class="n">travel_time_grid_dtype</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">Hdf5TrajectoryLoader</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Travel times grids dataset has wrong datatype: </span><span class="si">{</span><span class="n">grids_ds</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">, expected </span><span class="si">{</span><span class="n">Hdf5TrajectoryWriter</span><span class="o">.</span><span class="n">travel_time_grid_dtype</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+        <span class="n">values_ds</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">(</span><span class="s2">"values"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">values_ds</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">values_ds</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">"&lt;f4"</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">Hdf5TrajectoryLoader</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Travel times values dataset has to be 1-D &lt;f4, found </span><span class="si">{</span><span class="n">values_ds</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2">-D </span><span class="si">{</span><span class="n">values_ds</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+        <span class="n">directions_ds</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">(</span><span class="s2">"directions"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">directions_ds</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span>
+            <span class="ow">or</span> <span class="n">directions_ds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">2</span>
+            <span class="ow">or</span> <span class="n">directions_ds</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">"&lt;f4"</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="n">Hdf5TrajectoryLoader</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Travel times directions dataset has to be [N, 2] &lt;f4, found </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">directions_ds</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">directions_ds</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">directions_ds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">values_ds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="n">Hdf5TrajectoryLoader</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Travel times hold </span><span class="si">{</span><span class="n">values_ds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> values but </span><span class="si">{</span><span class="n">directions_ds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> directions"</span>
+            <span class="p">)</span>
+
+        <span class="c1"># One row per grid, small enough to keep: loading a stage then needs no</span>
+        <span class="c1"># second read of /travel_times/grids.</span>
+        <span class="n">grids</span> <span class="o">=</span> <span class="n">grids_ds</span><span class="p">[:]</span>
+        <span class="n">ends</span> <span class="o">=</span> <span class="n">grids</span><span class="p">[</span><span class="s2">"offset"</span><span class="p">]</span> <span class="o">+</span> <span class="n">grids</span><span class="p">[</span><span class="s2">"width"</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"&lt;u8"</span><span class="p">)</span> <span class="o">*</span> <span class="n">grids</span><span class="p">[</span><span class="s2">"height"</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">grids</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ends</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">values_ds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">bad</span> <span class="o">=</span> <span class="n">grids</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">ends</span> <span class="o">&gt;</span> <span class="n">values_ds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+            <span class="k">raise</span> <span class="n">Hdf5TrajectoryLoader</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Travel time grid of stage_id=</span><span class="si">{</span><span class="n">bad</span><span class="p">[</span><span class="s1">'stage_id'</span><span class="p">]</span><span class="si">}</span><span class="s2">, region_id=</span><span class="si">{</span><span class="n">bad</span><span class="p">[</span><span class="s1">'region_id'</span><span class="p">]</span><span class="si">}</span><span class="s2"> runs past the </span><span class="si">{</span><span class="n">values_ds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> stored values"</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_grids</span> <span class="o">=</span> <span class="n">grids</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_values</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span> <span class="o">=</span> <span class="n">values_ds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_directions</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span> <span class="o">=</span> <span class="n">directions_ds</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_read_root_attr</span><span class="p">[</span><span class="n">T</span><span class="p">](</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cast</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Callable</span><span class="p">[[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">],</span> <span class="n">T</span><span class="p">]</span>
@@ -621,11 +860,82 @@
             <span class="s2">"fps"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fps</span><span class="p">,</span>
             <span class="s2">"frame"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"columns"</span><span class="p">:</span> <span class="n">column_index</span><span class="p">,</span> <span class="s2">"data"</span><span class="p">:</span> <span class="n">data</span><span class="p">},</span>
         <span class="p">}</span></div>
-</div>
+
+
+<div class="viewcode-block" id="Hdf5TrajectoryLoader.has_travel_times">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Hdf5TrajectoryLoader.has_travel_times">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_travel_times</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Whether the file holds /travel_times, i.e. was written with</span>
+<span class="sd">        ``write_travel_times=True`` and closed without an error."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_grids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Hdf5TrajectoryLoader.load_travel_time_stage_ids">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Hdf5TrajectoryLoader.load_travel_time_stage_ids">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_travel_time_stage_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Returns the ids of all stages with travel times in the file, ascending.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            Hdf5TrajectoryLoader.Error: if the file holds no travel times.</span>
+<span class="sd">        """</span>
+        <span class="n">grids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_travel_time_grids</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">grids</span><span class="p">[</span><span class="s2">"stage_id"</span><span class="p">])</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Hdf5TrajectoryLoader.load_travel_times">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Hdf5TrajectoryLoader.load_travel_times">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_travel_times</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">stage_id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Hdf5TrajectoryLoader</span><span class="o">.</span><span class="n">TravelTimeGrid</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Loads the travel times to one stage, the counterpart of</span>
+<span class="sd">        :meth:`~jupedsim.Simulation.travel_times`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            stage_id: id of the stage, see :meth:`load_travel_time_stage_ids`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The grid of every region by region id, in ascending order.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            Hdf5TrajectoryLoader.Error: if the file holds no travel times, or none</span>
+<span class="sd">                for ``stage_id``.</span>
+<span class="sd">        """</span>
+        <span class="n">grids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_travel_time_grids</span><span class="p">()</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="n">grids</span><span class="p">[</span><span class="n">grids</span><span class="p">[</span><span class="s2">"stage_id"</span><span class="p">]</span> <span class="o">==</span> <span class="n">stage_id</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">Hdf5TrajectoryLoader</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"No travel times for stage_id=</span><span class="si">{</span><span class="n">stage_id</span><span class="si">}</span><span class="s2">, found stages </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">load_travel_time_stage_ids</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+        <span class="n">result</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Hdf5TrajectoryLoader</span><span class="o">.</span><span class="n">TravelTimeGrid</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">"region_id"</span><span class="p">):</span>
+            <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">"width"</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">"height"</span><span class="p">])</span>
+            <span class="n">begin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">"offset"</span><span class="p">])</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">begin</span> <span class="o">+</span> <span class="n">width</span> <span class="o">*</span> <span class="n">height</span>
+            <span class="n">result</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">"region_id"</span><span class="p">])]</span> <span class="o">=</span> <span class="n">Hdf5TrajectoryLoader</span><span class="o">.</span><span class="n">TravelTimeGrid</span><span class="p">(</span>
+                <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">"origin_x"</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">"origin_y"</span><span class="p">])),</span>
+                <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
+                <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span>
+                <span class="n">cell_size</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">"cell_size"</span><span class="p">]),</span>
+                <span class="n">values</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_values</span><span class="p">[</span><span class="n">begin</span><span class="p">:</span><span class="n">end</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                    <span class="n">height</span><span class="p">,</span> <span class="n">width</span>
+                <span class="p">),</span>
+                <span class="n">directions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_directions</span><span class="p">[</span><span class="n">begin</span><span class="p">:</span><span class="n">end</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                    <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="mi">2</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_require_travel_time_grids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_grids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">Hdf5TrajectoryLoader</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
+                <span class="s2">"File holds no travel times; write it with write_travel_times=True."</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_grids</span></div>
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-10-22</footer>
+<footer class="report-footer">Last updated 2026-10-23</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

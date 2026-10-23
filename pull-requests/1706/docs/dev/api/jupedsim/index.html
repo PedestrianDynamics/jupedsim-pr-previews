@@ -220,19 +220,22 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.Transition" title="jupedsim.Transition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Transition</span></code></a></p></td>
 <td><p>Describes the Transition at a stage.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.WalkableSurface" title="jupedsim.WalkableSurface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WalkableSurface</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.TravelTimeGrid" title="jupedsim.TravelTimeGrid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TravelTimeGrid</span></code></a></p></td>
+<td><p>Travel times and walking directions to one stage over the floor field grid of one</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.WalkableSurface" title="jupedsim.WalkableSurface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WalkableSurface</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.WallView" title="jupedsim.WallView"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WallView</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.WallView" title="jupedsim.WallView"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WallView</span></code></a></p></td>
 <td><p>A wall segment as seen from the agent that asked for it.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.WarpDriverModel" title="jupedsim.WarpDriverModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WarpDriverModel</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.WarpDriverModel" title="jupedsim.WarpDriverModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WarpDriverModel</span></code></a></p></td>
 <td><p>WarpDriver Model.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.WarpDriverModelState" title="jupedsim.WarpDriverModelState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WarpDriverModelState</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.WarpDriverModelState" title="jupedsim.WarpDriverModelState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WarpDriverModelState</span></code></a></p></td>
 <td><p>Per-agent state of the WarpDriver Model.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.WaypointStage" title="jupedsim.WaypointStage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WaypointStage</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.WaypointStage" title="jupedsim.WaypointStage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WaypointStage</span></code></a></p></td>
 <td><p>Models a waypoint.</p></td>
 </tr>
 </tbody>
@@ -1451,7 +1454,9 @@ movement vector [m].</p></li>
 <dd><p>HDF5 trajectory loader.</p>
 <p>Loads files written by <a class="reference internal" href="#jupedsim.Hdf5TrajectoryWriter" title="jupedsim.Hdf5TrajectoryWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Hdf5TrajectoryWriter</span></code></a>. The file is opened
 read-only on construction and validated against the schema; use
-<a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.close" title="jupedsim.Hdf5TrajectoryLoader.close"><code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code></a> or a <code class="docutils literal notranslate"><span class="pre">with</span></code> block to release it.</p>
+<a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.close" title="jupedsim.Hdf5TrajectoryLoader.close"><code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code></a> or a <code class="docutils literal notranslate"><span class="pre">with</span></code> block to release it. Travel times are only in
+files written with <code class="docutils literal notranslate"><span class="pre">write_travel_times=True</span></code>, see
+<a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.has_travel_times" title="jupedsim.Hdf5TrajectoryLoader.has_travel_times"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_travel_times()</span></code></a>.</p>
 <dl class="py exception">
 <dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryLoader.Error">
 <em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Error</span></span><a class="headerlink" href="#jupedsim.Hdf5TrajectoryLoader.Error" title="Link to this definition">#</a></dt>
@@ -1459,10 +1464,73 @@ read-only on construction and validated against the schema; use
 <p>Type for all errors raised while loading a trajectory from an HDF5 file.</p>
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TravelTimeGrid</span></span><a class="headerlink" href="#jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid" title="Link to this definition">#</a></dt>
+<dd><p>Travel times and walking directions to one stage over the floor field
+grid of one region, as stored in /travel_times.</p>
+<p>Has the fields of <a class="reference internal" href="#jupedsim.TravelTimeGrid" title="jupedsim.TravelTimeGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">TravelTimeGrid</span></code></a>, so code written
+against <a class="reference internal" href="#jupedsim.Simulation.travel_times" title="jupedsim.Simulation.travel_times"><code class="xref py py-meth docutils literal notranslate"><span class="pre">travel_times()</span></code></a> works on a loaded file
+too. Values and directions are stored as 32-bit floats.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid.cell_size">
+<span class="sig-name descname"><span class="pre">cell_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></em><a class="headerlink" href="#jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid.cell_size" title="Link to this definition">#</a></dt>
+<dd><p>Edge length of a cell in metres.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid.directions">
+<span class="sig-name descname"><span class="pre">directions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float32</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid.directions" title="Link to this definition">#</a></dt>
+<dd><p>Walking direction at each cell’s centre, shape <code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">width,</span> <span class="pre">2)</span></code>.
+Zero inside the stage’s area, <code class="docutils literal notranslate"><span class="pre">nan</span></code> where a cell is not walkable.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid.extent">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid.extent" title="Link to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">(x_min,</span> <span class="pre">x_max,</span> <span class="pre">y_min,</span> <span class="pre">y_max)</span></code> of the grid in metres, as
+matplotlib’s <code class="docutils literal notranslate"><span class="pre">extent</span></code> expects it.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid.height">
+<span class="sig-name descname"><span class="pre">height</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></em><a class="headerlink" href="#jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid.height" title="Link to this definition">#</a></dt>
+<dd><p>Number of cells along y.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid.origin">
+<span class="sig-name descname"><span class="pre">origin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid.origin" title="Link to this definition">#</a></dt>
+<dd><p>Lower-left corner of cell (0, 0) in metres.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid.values">
+<span class="sig-name descname"><span class="pre">values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float32</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid.values" title="Link to this definition">#</a></dt>
+<dd><p>Travel times in seconds, shape <code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">width)</span></code>; row 0 is the
+lowest. Zero inside the stage’s area, <code class="docutils literal notranslate"><span class="pre">inf</span></code> where a cell is not
+walkable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid.width">
+<span class="sig-name descname"><span class="pre">width</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></em><a class="headerlink" href="#jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid.width" title="Link to this definition">#</a></dt>
+<dd><p>Number of cells along x.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryLoader.close">
 <span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/hdf5_serialization.html#Hdf5TrajectoryLoader.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Hdf5TrajectoryLoader.close" title="Link to this definition">#</a></dt>
 <dd><p>Closes the underlying HDF5 file. Safe to call more than once.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryLoader.has_travel_times">
+<span class="sig-name descname"><span class="pre">has_travel_times</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/hdf5_serialization.html#Hdf5TrajectoryLoader.has_travel_times"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Hdf5TrajectoryLoader.has_travel_times" title="Link to this definition">#</a></dt>
+<dd><p>Whether the file holds /travel_times, i.e. was written with
+<code class="docutils literal notranslate"><span class="pre">write_travel_times=True</span></code> and closed without an error.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1492,11 +1560,41 @@ structured array with exactly these fields) suitable for
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryLoader.load_travel_time_stage_ids">
+<span class="sig-name descname"><span class="pre">load_travel_time_stage_ids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/jupedsim/hdf5_serialization.html#Hdf5TrajectoryLoader.load_travel_time_stage_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Hdf5TrajectoryLoader.load_travel_time_stage_ids" title="Link to this definition">#</a></dt>
+<dd><p>Returns the ids of all stages with travel times in the file, ascending.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.Error" title="jupedsim.Hdf5TrajectoryLoader.Error"><strong>Hdf5TrajectoryLoader.Error</strong></a> – if the file holds no travel times.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryLoader.load_travel_times">
+<span class="sig-name descname"><span class="pre">load_travel_times</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stage_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader" title="jupedsim.Hdf5TrajectoryLoader"><span class="pre">Hdf5TrajectoryLoader</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/jupedsim/hdf5_serialization.html#Hdf5TrajectoryLoader.load_travel_times"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Hdf5TrajectoryLoader.load_travel_times" title="Link to this definition">#</a></dt>
+<dd><p>Loads the travel times to one stage, the counterpart of
+<a class="reference internal" href="#jupedsim.Simulation.travel_times" title="jupedsim.Simulation.travel_times"><code class="xref py py-meth docutils literal notranslate"><span class="pre">travel_times()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stage_id</strong> – id of the stage, see <a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.load_travel_time_stage_ids" title="jupedsim.Hdf5TrajectoryLoader.load_travel_time_stage_ids"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load_travel_time_stage_ids()</span></code></a>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The grid of every region by region id, in ascending order.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.Error" title="jupedsim.Hdf5TrajectoryLoader.Error"><strong>Hdf5TrajectoryLoader.Error</strong></a> – if the file holds no travel times, or none
+for <code class="docutils literal notranslate"><span class="pre">stage_id</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryWriter">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Hdf5TrajectoryWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.15)"><span class="pre">pathlib.Path</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">every_nth_frame</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/jupedsim/hdf5_serialization.html#Hdf5TrajectoryWriter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Hdf5TrajectoryWriter" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Hdf5TrajectoryWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.15)"><span class="pre">pathlib.Path</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">every_nth_frame</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_travel_times</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/jupedsim/hdf5_serialization.html#Hdf5TrajectoryWriter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Hdf5TrajectoryWriter" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">jupedsim.serialization.TrajectoryWriter</span></code></p>
 <p>Write trajectory data to an HDF5 file, see the module docs for the layout.</p>
 <p>Rows are buffered and written in chunks of 64 KiB. The file is flushed after
@@ -1509,6 +1607,12 @@ and the frame index, or use the writer in a <code class="docutils literal notran
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>output_file</strong> – File to write to; an existing file is overwritten.</p></li>
 <li><p><strong>every_nth_frame</strong> – Record every n-th iteration, 1 records all of them.</p></li>
+<li><p><strong>write_travel_times</strong> – Also store the floor field travel times to every
+waypoint and exit stage in /travel_times. They are written by
+<a class="reference internal" href="#jupedsim.Hdf5TrajectoryWriter.close" title="jupedsim.Hdf5TrajectoryWriter.close"><code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code></a>, so stages added during the run are included, and
+fields no agent needed are solved then. Not written when a
+<code class="docutils literal notranslate"><span class="pre">with</span></code> block ends on an exception, see
+<a class="reference internal" href="#jupedsim.Hdf5TrajectoryWriter.close_after_error" title="jupedsim.Hdf5TrajectoryWriter.close_after_error"><code class="xref py py-meth docutils literal notranslate"><span class="pre">close_after_error()</span></code></a>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1529,7 +1633,16 @@ such as frame rate etc…</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryWriter.close">
 <span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/hdf5_serialization.html#Hdf5TrajectoryWriter.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Hdf5TrajectoryWriter.close" title="Link to this definition">#</a></dt>
-<dd><p>Write the remaining rows and the frame index, then close the file.</p>
+<dd><p>Write the remaining rows, the frame index and, if requested, the
+travel times, then close the file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryWriter.close_after_error">
+<span class="sig-name descname"><span class="pre">close_after_error</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/hdf5_serialization.html#Hdf5TrajectoryWriter.close_after_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Hdf5TrajectoryWriter.close_after_error" title="Link to this definition">#</a></dt>
+<dd><p>Write the remaining rows and the frame index, but no travel times:
+solving every floor field while an error propagates would delay it and
+could replace it with an error of its own.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1555,6 +1668,12 @@ written and so on.</p>
 <dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryWriter.trajectory_dtype">
 <em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trajectory_dtype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.dtype</span></span></span><a class="reference internal" href="../../_modules/jupedsim/hdf5_serialization.html#Hdf5TrajectoryWriter.trajectory_dtype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Hdf5TrajectoryWriter.trajectory_dtype" title="Link to this definition">#</a></dt>
 <dd><p>Compound dtype of the /trajectory dataset.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.Hdf5TrajectoryWriter.travel_time_grid_dtype">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">travel_time_grid_dtype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.dtype</span></span></span><a class="reference internal" href="../../_modules/jupedsim/hdf5_serialization.html#Hdf5TrajectoryWriter.travel_time_grid_dtype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Hdf5TrajectoryWriter.travel_time_grid_dtype" title="Link to this definition">#</a></dt>
+<dd><p>Compound dtype of the /travel_times/grids dataset.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1980,6 +2099,17 @@ are can no longer be accessed.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.Simulation.stage_ids">
+<span class="sig-name descname"><span class="pre">stage_ids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/jupedsim/simulation.html#Simulation.stage_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Simulation.stage_ids" title="Link to this definition">#</a></dt>
+<dd><p>Get the ids of all stages.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The ids of all stages in ascending order.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="jupedsim.Simulation.switch_agent_journey">
 <span class="sig-name descname"><span class="pre">switch_agent_journey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">journey_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">stage_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/simulation.html#Simulation.switch_agent_journey"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Simulation.switch_agent_journey" title="Link to this definition">#</a></dt>
 <dd><p>Switch agent to the given journey at the given stage.</p>
@@ -1990,6 +2120,27 @@ are can no longer be accessed.</p>
 <li><p><strong>journey_id</strong> – Id of the new journey to follow</p></li>
 <li><p><strong>stage_id</strong> – Id of the stage in the new journey the agent continues with</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.Simulation.travel_times">
+<span class="sig-name descname"><span class="pre">travel_times</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stage_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">jupedsim.pyjupedsim.TravelTimeGrid</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/jupedsim/simulation.html#Simulation.travel_times"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Simulation.travel_times" title="Link to this definition">#</a></dt>
+<dd><p>Get the travel times to a stage’s area over the floor field grid of every region.</p>
+<p>Every region has its own grid. Solves the stage’s floor field if no agent has
+needed it yet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stage_id</strong> – Id of the stage.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The grid of every region by region id, in ascending order, each with its
+placement, travel times in seconds and walking directions. Empty for a
+stage without an area to route to, such as a direct steering stage.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#jupedsim.SimulationError" title="jupedsim.SimulationError"><strong>SimulationError</strong></a> – if the stage does not exist.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2150,7 +2301,7 @@ neighbors influences the social forces [m] (B).</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TrajectoryWriter</span></span><a class="reference internal" href="../../_modules/jupedsim/serialization.html#TrajectoryWriter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.TrajectoryWriter" title="Link to this definition">#</a></dt>
 <dd><p>Interface for trajectory serialization</p>
 <p>Writers are context managers: leaving a <code class="docutils literal notranslate"><span class="pre">with</span></code> block calls
-<a class="reference internal" href="#jupedsim.TrajectoryWriter.close" title="jupedsim.TrajectoryWriter.close"><code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code></a>, also when the block raises:</p>
+<a class="reference internal" href="#jupedsim.TrajectoryWriter.close" title="jupedsim.TrajectoryWriter.close"><code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code></a>, or <a class="reference internal" href="#jupedsim.TrajectoryWriter.close_after_error" title="jupedsim.TrajectoryWriter.close_after_error"><code class="xref py py-meth docutils literal notranslate"><span class="pre">close_after_error()</span></code></a> when the block raises:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">jps</span><span class="o">.</span><span class="n">Hdf5TrajectoryWriter</span><span class="p">(</span><span class="n">output_file</span><span class="o">=</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
     <span class="n">sim</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">trajectory_writer</span><span class="o">=</span><span class="n">writer</span><span class="p">)</span>
     <span class="k">while</span> <span class="n">sim</span><span class="o">.</span><span class="n">agent_count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -2180,6 +2331,15 @@ such as frame rate etc…</p>
 <p>Called when leaving a <code class="docutils literal notranslate"><span class="pre">with</span></code> block. Must be safe to call more than
 once. Does nothing by default; override it if the writer buffers data
 or holds resources such as open files.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.TrajectoryWriter.close_after_error">
+<span class="sig-name descname"><span class="pre">close_after_error</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/serialization.html#TrajectoryWriter.close_after_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.TrajectoryWriter.close_after_error" title="Link to this definition">#</a></dt>
+<dd><p>Called instead of <a class="reference internal" href="#jupedsim.TrajectoryWriter.close" title="jupedsim.TrajectoryWriter.close"><code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code></a> when a <code class="docutils literal notranslate"><span class="pre">with</span></code> block ends on an
+exception.</p>
+<p>The error is still propagating, so do only what keeps the output
+usable and skip expensive extras. Calls <a class="reference internal" href="#jupedsim.TrajectoryWriter.close" title="jupedsim.TrajectoryWriter.close"><code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code></a> by default.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -2300,6 +2460,71 @@ first stage, and so on…</p>
 <dd class="field-odd"><p><a class="reference internal" href="#jupedsim.SimulationError" title="jupedsim.SimulationError"><strong>SimulationError</strong></a> – If a stage id is not a valid stage id.</p>
 </dd>
 </dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="jupedsim.TravelTimeGrid">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TravelTimeGrid</span></span><a class="headerlink" href="#jupedsim.TravelTimeGrid" title="Link to this definition">#</a></dt>
+<dd><p>Travel times and walking directions to one stage over the floor field grid of one
+region.</p>
+<p>Get one from <a class="reference internal" href="#jupedsim.Simulation.travel_times" title="jupedsim.Simulation.travel_times"><code class="xref py py-func docutils literal notranslate"><span class="pre">travel_times()</span></code></a>. All regions share one
+lattice, so the grids of neighbouring regions line up cell for cell. Plot one
+with matplotlib:</p>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">travel_times</span><span class="p">(</span><span class="n">exit_id</span><span class="p">)[</span><span class="n">room</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+    <span class="n">numpy</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">values</span><span class="p">),</span>
+    <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">,</span>
+    <span class="n">extent</span><span class="o">=</span><span class="n">grid</span><span class="o">.</span><span class="n">extent</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py property">
+<dt class="sig sig-object py" id="jupedsim.TravelTimeGrid.cell_size">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cell_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></em><a class="headerlink" href="#jupedsim.TravelTimeGrid.cell_size" title="Link to this definition">#</a></dt>
+<dd><p>Edge length of a cell in metres.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="jupedsim.TravelTimeGrid.directions">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">directions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#jupedsim.TravelTimeGrid.directions" title="Link to this definition">#</a></dt>
+<dd><p>the direction an agent at a cell’s centre is sent along. Zero inside the stage’s area, <code class="docutils literal notranslate"><span class="pre">nan</span></code> where a cell is not walkable. Each access returns a new copy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Walking directions as unit vectors <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> in an array of shape <code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">width,</span> <span class="pre">2)</span></code>, laid out like <a class="reference internal" href="#jupedsim.TravelTimeGrid.values" title="jupedsim.TravelTimeGrid.values"><code class="xref py py-attr docutils literal notranslate"><span class="pre">values</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="jupedsim.TravelTimeGrid.extent">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#jupedsim.TravelTimeGrid.extent" title="Link to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">(x_min,</span> <span class="pre">x_max,</span> <span class="pre">y_min,</span> <span class="pre">y_max)</span></code> of the grid in metres, as matplotlib’s <code class="docutils literal notranslate"><span class="pre">extent</span></code> expects it.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="jupedsim.TravelTimeGrid.height">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">height</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></em><a class="headerlink" href="#jupedsim.TravelTimeGrid.height" title="Link to this definition">#</a></dt>
+<dd><p>Number of cells along y.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="jupedsim.TravelTimeGrid.origin">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">origin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#jupedsim.TravelTimeGrid.origin" title="Link to this definition">#</a></dt>
+<dd><p>Lower-left corner of cell (0, 0) in metres.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="jupedsim.TravelTimeGrid.values">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#jupedsim.TravelTimeGrid.values" title="Link to this definition">#</a></dt>
+<dd><p>Travel times in seconds as an array of shape <code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">width)</span></code>; row 0 is the lowest. Zero inside the stage’s area, <code class="docutils literal notranslate"><span class="pre">inf</span></code> where a cell is not walkable. Each access returns a new copy.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="jupedsim.TravelTimeGrid.width">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">width</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></em><a class="headerlink" href="#jupedsim.TravelTimeGrid.width" title="Link to this definition">#</a></dt>
+<dd><p>Number of cells along x.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2892,7 +3117,7 @@ basic information about this library.</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-10-22</footer>
+<footer class="report-footer">Last updated 2026-10-23</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="../../disclaimer.html" rel="prev"><small>Previous</small>Disclaimer</a><a class="book-pagenav-next" href="../../citation/citation.html" rel="next"><small>Next</small>Cite JuPedSim</a>
 </nav>
@@ -3053,17 +3278,32 @@ basic information about this library.</p>
 </li>
 <li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryLoader</span></code></a><ul>
 <li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.Error"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryLoader.Error</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryLoader.TravelTimeGrid</span></code></a><ul>
+<li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid.cell_size"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryLoader.TravelTimeGrid.cell_size</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid.directions"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryLoader.TravelTimeGrid.directions</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid.extent"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryLoader.TravelTimeGrid.extent</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid.height"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryLoader.TravelTimeGrid.height</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid.origin"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryLoader.TravelTimeGrid.origin</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid.values"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryLoader.TravelTimeGrid.values</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.TravelTimeGrid.width"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryLoader.TravelTimeGrid.width</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.close"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryLoader.close()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.has_travel_times"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryLoader.has_travel_times()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.load_region_ids"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryLoader.load_region_ids()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.load_region_trajectory"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryLoader.load_region_trajectory()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.load_travel_time_stage_ids"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryLoader.load_travel_time_stage_ids()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryLoader.load_travel_times"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryLoader.load_travel_times()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryWriter"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryWriter</span></code></a><ul>
 <li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryWriter.begin_writing"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryWriter.begin_writing()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryWriter.close"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryWriter.close()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryWriter.close_after_error"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryWriter.close_after_error()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryWriter.every_nth_frame"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryWriter.every_nth_frame()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryWriter.regions_dtype"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryWriter.regions_dtype()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryWriter.trajectory_dtype"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryWriter.trajectory_dtype()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryWriter.travel_time_grid_dtype"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryWriter.travel_time_grid_dtype()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Hdf5TrajectoryWriter.write_iteration_state"><code class="docutils literal notranslate"><span class="pre">Hdf5TrajectoryWriter.write_iteration_state()</span></code></a></li>
 </ul>
 </li>
@@ -3104,7 +3344,9 @@ basic information about this library.</p>
 <li><a class="reference internal" href="#jupedsim.Simulation.iteration_count"><code class="docutils literal notranslate"><span class="pre">Simulation.iteration_count()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.mark_agent_for_removal"><code class="docutils literal notranslate"><span class="pre">Simulation.mark_agent_for_removal()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.removed_agents"><code class="docutils literal notranslate"><span class="pre">Simulation.removed_agents()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Simulation.stage_ids"><code class="docutils literal notranslate"><span class="pre">Simulation.stage_ids()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.switch_agent_journey"><code class="docutils literal notranslate"><span class="pre">Simulation.switch_agent_journey()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Simulation.travel_times"><code class="docutils literal notranslate"><span class="pre">Simulation.travel_times()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.timer"><code class="docutils literal notranslate"><span class="pre">Simulation.timer</span></code></a></li>
 </ul>
 </li>
@@ -3132,6 +3374,7 @@ basic information about this library.</p>
 <li><a class="reference internal" href="#jupedsim.TrajectoryWriter.Error"><code class="docutils literal notranslate"><span class="pre">TrajectoryWriter.Error</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.TrajectoryWriter.begin_writing"><code class="docutils literal notranslate"><span class="pre">TrajectoryWriter.begin_writing()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.TrajectoryWriter.close"><code class="docutils literal notranslate"><span class="pre">TrajectoryWriter.close()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.TrajectoryWriter.close_after_error"><code class="docutils literal notranslate"><span class="pre">TrajectoryWriter.close_after_error()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.TrajectoryWriter.every_nth_frame"><code class="docutils literal notranslate"><span class="pre">TrajectoryWriter.every_nth_frame()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.TrajectoryWriter.write_iteration_state"><code class="docutils literal notranslate"><span class="pre">TrajectoryWriter.write_iteration_state()</span></code></a></li>
 </ul>
@@ -3141,6 +3384,16 @@ basic information about this library.</p>
 <li><a class="reference internal" href="#jupedsim.Transition.create_least_targeted_transition"><code class="docutils literal notranslate"><span class="pre">Transition.create_least_targeted_transition()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Transition.create_none_transition"><code class="docutils literal notranslate"><span class="pre">Transition.create_none_transition()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Transition.create_round_robin_transition"><code class="docutils literal notranslate"><span class="pre">Transition.create_round_robin_transition()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#jupedsim.TravelTimeGrid"><code class="docutils literal notranslate"><span class="pre">TravelTimeGrid</span></code></a><ul>
+<li><a class="reference internal" href="#jupedsim.TravelTimeGrid.cell_size"><code class="docutils literal notranslate"><span class="pre">TravelTimeGrid.cell_size</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.TravelTimeGrid.directions"><code class="docutils literal notranslate"><span class="pre">TravelTimeGrid.directions</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.TravelTimeGrid.extent"><code class="docutils literal notranslate"><span class="pre">TravelTimeGrid.extent</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.TravelTimeGrid.height"><code class="docutils literal notranslate"><span class="pre">TravelTimeGrid.height</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.TravelTimeGrid.origin"><code class="docutils literal notranslate"><span class="pre">TravelTimeGrid.origin</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.TravelTimeGrid.values"><code class="docutils literal notranslate"><span class="pre">TravelTimeGrid.values</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.TravelTimeGrid.width"><code class="docutils literal notranslate"><span class="pre">TravelTimeGrid.width</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#jupedsim.WalkableSurface"><code class="docutils literal notranslate"><span class="pre">WalkableSurface</span></code></a><ul>
