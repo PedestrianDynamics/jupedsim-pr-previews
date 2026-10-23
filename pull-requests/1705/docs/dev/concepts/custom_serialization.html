@@ -393,6 +393,32 @@ loaded per region; the result plugs straight into
 <code class="docutils literal notranslate"><span class="pre">frame</span></code>, <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> holding only the rows recorded while the agent was
 inside that region.</p>
 </section>
+<section id="travel-times">
+<h3>Travel times<a class="headerlink" href="#travel-times" title="Link to this heading">#</a></h3>
+<p>With <code class="docutils literal notranslate"><span class="pre">write_travel_times=True</span></code> the writer also stores the floor field travel
+times and walking directions to every waypoint and exit stage when it is
+closed. The loader returns them per stage in the same form as
+<a class="reference internal" href="../api/jupedsim/index.html#jupedsim.Simulation.travel_times" title="jupedsim.Simulation.travel_times"><code class="xref py py-meth docutils literal notranslate"><span class="pre">jupedsim.Simulation.travel_times()</span></code></a>, one grid per region:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="k">with</span> <span class="n">jps</span><span class="o">.</span><span class="n">Hdf5TrajectoryLoader</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">"traj.h5"</span><span class="p">))</span> <span class="k">as</span> <span class="n">loader</span><span class="p">:</span>
+    <span class="n">stage_id</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_travel_time_stage_ids</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">grids</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_travel_times</span><span class="p">(</span><span class="n">stage_id</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">region_id</span><span class="p">,</span> <span class="n">grid</span> <span class="ow">in</span> <span class="n">grids</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">values</span><span class="p">),</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">grid</span><span class="o">.</span><span class="n">extent</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>Each grid has <code class="docutils literal notranslate"><span class="pre">origin</span></code>, <code class="docutils literal notranslate"><span class="pre">width</span></code>, <code class="docutils literal notranslate"><span class="pre">height</span></code>, <code class="docutils literal notranslate"><span class="pre">cell_size</span></code>, <code class="docutils literal notranslate"><span class="pre">extent</span></code>,
+<code class="docutils literal notranslate"><span class="pre">values</span></code> (seconds, shape <code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">width)</span></code>) and <code class="docutils literal notranslate"><span class="pre">directions</span></code> (shape
+<code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">width,</span> <span class="pre">2)</span></code>), stored as 32-bit floats. The arrays are read into
+memory, so they stay usable after the loader is closed.
+<a class="reference internal" href="../api/jupedsim/index.html#jupedsim.Hdf5TrajectoryLoader.has_travel_times" title="jupedsim.Hdf5TrajectoryLoader.has_travel_times"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_travel_times()</span></code></a> tells whether a file
+holds travel times at all.</p>
+</section>
 <section id="file-layout">
 <h3>File layout<a class="headerlink" href="#file-layout" title="Link to this heading">#</a></h3>
 <ul class="simple">
@@ -427,7 +453,7 @@ reading the file with h5py:</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-10-21</footer>
+<footer class="report-footer">Last updated 2026-10-23</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="routing.html" rel="prev"><small>Previous</small>Routing</a><a class="book-pagenav-next" href="../pedestrian_models/index.html" rel="next"><small>Next</small>Pedestrian Models</a>
 </nav>
@@ -444,6 +470,7 @@ reading the file with h5py:</p>
 <li><a class="reference internal" href="#tips-for-custom-writers">Tips for custom writers</a></li>
 <li><a class="reference internal" href="#built-in-hdf5-writer">Built-in HDF5 writer</a><ul>
 <li><a class="reference internal" href="#reading-the-file">Reading the file</a></li>
+<li><a class="reference internal" href="#travel-times">Travel times</a></li>
 <li><a class="reference internal" href="#file-layout">File layout</a></li>
 </ul>
 </li>
