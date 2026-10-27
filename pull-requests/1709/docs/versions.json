@@ -1,8 +1,8 @@
 [
   {
-    "name": "dev",
-    "version": "dev",
-    "url": "/pull-requests/1709/docs/dev/",
+    "name": "stable",
+    "version": "stable",
+    "url": "/pull-requests/1709/docs/stable/",
     "preferred": true
   }
 ]

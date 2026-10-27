@@ -73,27 +73,27 @@
 <header class="report-header">
 <p class="report-kicker">Article</p>
 <h1 class="report-title">Writing for jupedsim.org</h1>
-<p class="report-subtitle">How to write articles and notes for jupedsim.org, and a live reference of the markup the site supports.</p>
-<p class="report-meta"><span class="meta-item">JuPedSim team</span><span class="meta-item"><time datetime="2026-09-28" data-pagefind-meta="date[datetime]">2026-09-28</time></span><span class="meta-item">741 words</span><span class="meta-item">4 min read</span>
+<p class="report-subtitle">How to write articles and notes for jupedsim.org, and a live reference of the markup the website supports.</p>
+<p class="report-meta"><span class="meta-item">JuPedSim team</span><span class="meta-item"><time datetime="2026-09-28" data-pagefind-meta="date[datetime]">2026-09-28</time></span><span class="meta-item">738 words</span><span class="meta-item">4 min read</span>
 </p>
 </header>
 <div class="report-body" data-pagefind-body>
 <!-- SPDX-License-Identifier: LGPL-3.0-or-later -->
 <section class="tex2jax_ignore mathjax_ignore" id="writing-for-jupedsim-org">
 <h1>Writing for jupedsim.org<a class="headerlink" href="#writing-for-jupedsim-org" title="Link to this heading">#</a></h1>
-<p>jupedsim.org is a Sphinx project in the <code class="docutils literal notranslate"><span class="pre">jupedsim.org/site/</span></code> folder of the
+<p>jupedsim.org is a Sphinx project in the <code class="docutils literal notranslate"><span class="pre">jupedsim.org/www/</span></code> folder of the
 <a class="reference external" href="https://github.com/PedestrianDynamics/jupedsim">JuPedSim repository</a>. Articles
-live in <code class="docutils literal notranslate"><span class="pre">jupedsim.org/site/articles/</span></code>, notes in <code class="docutils literal notranslate"><span class="pre">jupedsim.org/site/notes/</span></code>. Both are MyST Markdown (or
+live in <code class="docutils literal notranslate"><span class="pre">jupedsim.org/www/articles/</span></code>, notes in <code class="docutils literal notranslate"><span class="pre">jupedsim.org/www/notes/</span></code>. Both are MyST Markdown (or
 Jupyter notebooks for articles). This page is itself an article and shows every
-piece of markup the site supports, so you can compare source and rendering.</p>
+piece of markup the website supports, so you can compare source and rendering.</p>
 <section id="articles-and-notes">
 <h2>Articles and notes<a class="headerlink" href="#articles-and-notes" title="Link to this heading">#</a></h2>
-<p><strong>Articles</strong> are longer, curated pieces. Add the file to <code class="docutils literal notranslate"><span class="pre">jupedsim.org/site/articles/</span></code> and
-list it in the hidden toctree of <code class="docutils literal notranslate"><span class="pre">jupedsim.org/site/articles/index.md</span></code>; the order there is the
+<p><strong>Articles</strong> are longer, curated pieces. Add the file to <code class="docutils literal notranslate"><span class="pre">jupedsim.org/www/articles/</span></code> and
+list it in the hidden toctree of <code class="docutils literal notranslate"><span class="pre">jupedsim.org/www/articles/index.md</span></code>; the order there is the
 previous/next order. The list on <code class="docutils literal notranslate"><span class="pre">/articles/</span></code> itself is sorted by date, newest
 first.</p>
 <p><strong>Notes</strong> are short, dated news items. Name the file
-<code class="docutils literal notranslate"><span class="pre">jupedsim.org/site/notes/YYYY-MM-DD-slug.md</span></code>; the notes index picks it up automatically,
+<code class="docutils literal notranslate"><span class="pre">jupedsim.org/www/notes/YYYY-MM-DD-slug.md</span></code>; the notes index picks it up automatically,
 newest first, and the note appears in the RSS feed at <code class="docutils literal notranslate"><span class="pre">/notes/feed.xml</span></code> and on
 the landing page.</p>
 </section>
@@ -125,13 +125,13 @@ into the notebook metadata instead of a Markdown cell, as top-level keys:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The first Markdown cell starts with the <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">Title</span></code>. Notebooks stored without
-outputs are executed during the build (this needs an importable <code class="docutils literal notranslate"><span class="pre">jupedsim</span></code>;
-the timeout is 900 s per notebook), notebooks with outputs are used as they
-are. The published site executes notebooks against the latest <code class="docutils literal notranslate"><span class="pre">jupedsim</span></code>
-release on PyPI, not against master; commit the outputs of an article that
-needs unreleased features. Interactive outputs such as plotly figures are
-not supported and fail the build; save them as static images instead.</p>
+<p>The first Markdown cell starts with the <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">Title</span></code>. Notebook articles are never
+executed by the build: an article is not tied to a <code class="docutils literal notranslate"><span class="pre">jupedsim</span></code> version, so it
+is rendered with the outputs it was committed with. Run the notebook against
+the <code class="docutils literal notranslate"><span class="pre">jupedsim</span></code> version it is about and commit it with its outputs; a notebook
+without outputs shows its code only. Interactive outputs such as plotly
+figures are not supported and fail the build; save them as static images
+instead.</p>
 </section>
 <section id="headings">
 <h2>Headings<a class="headerlink" href="#headings" title="Link to this heading">#</a></h2>
@@ -146,7 +146,7 @@ not supported and fail the build; save them as static images instead.</p>
 <h2>Text<a class="headerlink" href="#text" title="Link to this heading">#</a></h2>
 <p>Paragraphs are separated by a blank line. Use <em>emphasis</em>, <strong>strong</strong>,
 <code class="docutils literal notranslate"><span class="pre">inline</span> <span class="pre">code</span></code> and <a class="reference external" href="https://www.jupedsim.org/">links</a>. Link to other pages of the
-site with relative paths, e.g. <a class="reference internal" href="../notes/index.html"><span class="std std-doc">the notes</span></a>, and to the
+website with relative paths, e.g. <a class="reference internal" href="../notes/index.html"><span class="std std-doc">the notes</span></a>, and to the
 documentation (which is a separate project) with an HTML link and an
 absolute path, <code class="docutils literal notranslate"><span class="pre">&lt;a</span> <span class="pre">href=&quot;/docs/stable/&quot;&gt;/docs/stable/&lt;/a&gt;</span></code>, which renders as
 <a href="/pull-requests/1709/docs/stable/">/docs/stable/</a>.</p>
@@ -441,7 +441,7 @@ is reported as a build warning with the file and line.</p>
 <a class="reference internal image-reference" href="../_images/jupedsim.svg"><img alt="The JuPedSim logo" src="../_images/jupedsim.svg" style="width: 160px;" />
 </a>
 <figcaption>
-<p><span class="caption-text">A figure with a caption. Put images next to the article or in <code class="docutils literal notranslate"><span class="pre">jupedsim.org/site/_static/</span></code>.</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
+<p><span class="caption-text">A figure with a caption. Put images next to the article or in <code class="docutils literal notranslate"><span class="pre">jupedsim.org/www/_static/</span></code>.</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
