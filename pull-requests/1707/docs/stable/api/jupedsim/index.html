@@ -1978,6 +1978,14 @@ points describing its boundary.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.Simulation.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/simulation.html#Simulation.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Simulation.close" title="Link to this definition">#</a></dt>
+<dd><p>Close the simulation and free its memory.</p>
+<p>The simulation cannot be used afterwards: any further use raises a
+SimulationError.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="jupedsim.Simulation.delta_time">
 <span class="sig-name descname"><span class="pre">delta_time</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/simulation.html#Simulation.delta_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Simulation.delta_time" title="Link to this definition">#</a></dt>
 <dd><p>Time step length in seconds of one iteration.</p>
@@ -3117,7 +3125,7 @@ basic information about this library.</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-10-27</footer>
+<footer class="report-footer">Last updated 2026-10-28</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="../../disclaimer.html" rel="prev"><small>Previous</small>Disclaimer</a><a class="book-pagenav-next" href="../../citation/citation.html" rel="next"><small>Next</small>Cite JuPedSim</a>
 </nav>
@@ -3335,6 +3343,7 @@ basic information about this library.</p>
 <li><a class="reference internal" href="#jupedsim.Simulation.agents"><code class="docutils literal notranslate"><span class="pre">Simulation.agents()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.agents_in_polygon"><code class="docutils literal notranslate"><span class="pre">Simulation.agents_in_polygon()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.agents_in_range"><code class="docutils literal notranslate"><span class="pre">Simulation.agents_in_range()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Simulation.close"><code class="docutils literal notranslate"><span class="pre">Simulation.close()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.delta_time"><code class="docutils literal notranslate"><span class="pre">Simulation.delta_time()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.elapsed_time"><code class="docutils literal notranslate"><span class="pre">Simulation.elapsed_time()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.get_geometry"><code class="docutils literal notranslate"><span class="pre">Simulation.get_geometry()</span></code></a></li>
