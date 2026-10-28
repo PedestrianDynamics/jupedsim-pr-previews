@@ -1,2 +1,0 @@
-jps_site_tooling 0.1.0
-pagefind 1.5.2
