@@ -1982,6 +1982,26 @@ points describing its boundary.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.Simulation.clear_custom_speed_field">
+<span class="sig-name descname"><span class="pre">clear_custom_speed_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stage_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/simulation.html#Simulation.clear_custom_speed_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Simulation.clear_custom_speed_field" title="Link to this definition">#</a></dt>
+<dd><p>Remove a stage’s own speed field in a region, so it uses the default again.</p>
+<p>The stage’s floor field is computed again when next needed. Nothing changes
+if the stage has no speed field of its own in this region.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stage_id</strong> – Stage whose speed field to remove.</p></li>
+<li><p><strong>region_id</strong> – Region whose speed field to remove.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#jupedsim.SimulationError" title="jupedsim.SimulationError"><strong>SimulationError</strong></a> – if the region or stage does not exist, or the stage has
+no area to route to.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="jupedsim.Simulation.close">
 <span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/simulation.html#Simulation.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Simulation.close" title="Link to this definition">#</a></dt>
 <dd><p>Close the simulation and free its memory.</p>
@@ -2152,11 +2172,12 @@ are can no longer be accessed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="jupedsim.Simulation.set_custom_speed_field">
-<span class="sig-name descname"><span class="pre">set_custom_speed_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stage_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/simulation.html#Simulation.set_custom_speed_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Simulation.set_custom_speed_field" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">set_custom_speed_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stage_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/simulation.html#Simulation.set_custom_speed_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Simulation.set_custom_speed_field" title="Link to this definition">#</a></dt>
 <dd><p>Set the walking speeds one stage’s floor field is computed with in a region.</p>
 <p>The stage then uses these speeds instead of the default in this region, for
 example where smoke only matters on the way to one exit. Other stages are not
-affected; the stage’s floor field is computed again when next needed.</p>
+affected; the stage’s floor field is computed again when next needed. Use
+<a class="reference internal" href="#jupedsim.Simulation.clear_custom_speed_field" title="jupedsim.Simulation.clear_custom_speed_field"><code class="xref py py-func docutils literal notranslate"><span class="pre">clear_custom_speed_field()</span></code></a> to go back to the default.</p>
 <p>The speeds only change the routes, not how fast agents walk.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2164,8 +2185,7 @@ affected; the stage’s floor field is computed again when next needed.</p>
 <li><p><strong>stage_id</strong> – Stage whose speed field to set.</p></li>
 <li><p><strong>region_id</strong> – Region whose speed field to set.</p></li>
 <li><p><strong>values</strong> – Speeds in m/s, with the same rules as for
-<a class="reference internal" href="#jupedsim.Simulation.set_default_speed_field" title="jupedsim.Simulation.set_default_speed_field"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_default_speed_field()</span></code></a>. <code class="docutils literal notranslate"><span class="pre">None</span></code> removes the stage’s own
-speed field, so it uses the default again.</p></li>
+<a class="reference internal" href="#jupedsim.Simulation.set_default_speed_field" title="jupedsim.Simulation.set_default_speed_field"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_default_speed_field()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
@@ -2415,7 +2435,7 @@ around smoke:</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="jupedsim.SpeedGrid.extent">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#jupedsim.SpeedGrid.extent" title="Link to this definition">#</a></dt>
-<dd><p><code class="docutils literal notranslate"><span class="pre">(x_min,</span> <span class="pre">x_max,</span> <span class="pre">y_min,</span> <span class="pre">y_max)</span></code> of the grid in metres, as matplotlib’s <code class="docutils literal notranslate"><span class="pre">extent</span></code> expects it.</p>
+<dd><p><code class="docutils literal notranslate"><span class="pre">(x_min,</span> <span class="pre">x_max,</span> <span class="pre">y_min,</span> <span class="pre">y_max)</span></code></p>
 </dd></dl>
 
 <dl class="py property">
@@ -2673,7 +2693,7 @@ with matplotlib:</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="jupedsim.TravelTimeGrid.extent">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#jupedsim.TravelTimeGrid.extent" title="Link to this definition">#</a></dt>
-<dd><p><code class="docutils literal notranslate"><span class="pre">(x_min,</span> <span class="pre">x_max,</span> <span class="pre">y_min,</span> <span class="pre">y_max)</span></code> of the grid in metres, as matplotlib’s <code class="docutils literal notranslate"><span class="pre">extent</span></code> expects it.</p>
+<dd><p><code class="docutils literal notranslate"><span class="pre">(x_min,</span> <span class="pre">x_max,</span> <span class="pre">y_min,</span> <span class="pre">y_max)</span></code></p>
 </dd></dl>
 
 <dl class="py property">
@@ -3290,7 +3310,7 @@ basic information about this library.</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-11-02</footer>
+<footer class="report-footer">Last updated 2026-11-04</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="../../disclaimer.html" rel="prev"><small>Previous</small>Disclaimer</a><a class="book-pagenav-next" href="../../citation/citation.html" rel="next"><small>Next</small>Cite JuPedSim</a>
 </nav>
@@ -3508,6 +3528,7 @@ basic information about this library.</p>
 <li><a class="reference internal" href="#jupedsim.Simulation.agents"><code class="docutils literal notranslate"><span class="pre">Simulation.agents()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.agents_in_polygon"><code class="docutils literal notranslate"><span class="pre">Simulation.agents_in_polygon()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.agents_in_range"><code class="docutils literal notranslate"><span class="pre">Simulation.agents_in_range()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Simulation.clear_custom_speed_field"><code class="docutils literal notranslate"><span class="pre">Simulation.clear_custom_speed_field()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.close"><code class="docutils literal notranslate"><span class="pre">Simulation.close()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.custom_speed_fields"><code class="docutils literal notranslate"><span class="pre">Simulation.custom_speed_fields()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.default_speed_fields"><code class="docutils literal notranslate"><span class="pre">Simulation.default_speed_fields()</span></code></a></li>

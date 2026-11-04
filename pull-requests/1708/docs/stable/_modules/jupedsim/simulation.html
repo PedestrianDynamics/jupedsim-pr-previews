@@ -508,13 +508,14 @@
 <div class="viewcode-block" id="Simulation.set_custom_speed_field">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.set_custom_speed_field">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_custom_speed_field</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">stage_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span> <span class="o">|</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">stage_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Set the walking speeds one stage's floor field is computed with in a region.</span>
 
 <span class="sd">        The stage then uses these speeds instead of the default in this region, for</span>
 <span class="sd">        example where smoke only matters on the way to one exit. Other stages are not</span>
-<span class="sd">        affected; the stage's floor field is computed again when next needed.</span>
+<span class="sd">        affected; the stage's floor field is computed again when next needed. Use</span>
+<span class="sd">        :func:`clear_custom_speed_field` to go back to the default.</span>
 
 <span class="sd">        The speeds only change the routes, not how fast agents walk.</span>
 
@@ -522,8 +523,7 @@
 <span class="sd">            stage_id: Stage whose speed field to set.</span>
 <span class="sd">            region_id: Region whose speed field to set.</span>
 <span class="sd">            values: Speeds in m/s, with the same rules as for</span>
-<span class="sd">                :func:`set_default_speed_field`. ``None`` removes the stage's own</span>
-<span class="sd">                speed field, so it uses the default again.</span>
+<span class="sd">                :func:`set_default_speed_field`.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            ValueError: if ``values`` has the wrong shape.</span>
@@ -531,6 +531,25 @@
 <span class="sd">                exist, or the stage has no area to route to.</span>
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">set_custom_speed_field</span><span class="p">(</span><span class="n">stage_id</span><span class="p">,</span> <span class="n">region_id</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Simulation.clear_custom_speed_field">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.clear_custom_speed_field">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clear_custom_speed_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stage_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Remove a stage's own speed field in a region, so it uses the default again.</span>
+
+<span class="sd">        The stage's floor field is computed again when next needed. Nothing changes</span>
+<span class="sd">        if the stage has no speed field of its own in this region.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            stage_id: Stage whose speed field to remove.</span>
+<span class="sd">            region_id: Region whose speed field to remove.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            SimulationError: if the region or stage does not exist, or the stage has</span>
+<span class="sd">                no area to route to.</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">clear_custom_speed_field</span><span class="p">(</span><span class="n">stage_id</span><span class="p">,</span> <span class="n">region_id</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Simulation.mark_agent_for_removal">
@@ -809,7 +828,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-11-02</footer>
+<footer class="report-footer">Last updated 2026-11-04</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">
