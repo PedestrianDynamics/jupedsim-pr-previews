@@ -379,6 +379,72 @@ exits in <code class="docutils literal notranslate"><span class="pre">avm-sharp-
 can differ from that step on.</p></li>
 </ul>
 </section>
+<section id="pitfalls">
+<h2>Pitfalls<a class="headerlink" href="#pitfalls" title="Link to this heading">#</a></h2>
+<p>Most of these do not raise an error: the simulation runs and gives
+numbers that look plausible.</p>
+<p><strong>Routes and rules</strong></p>
+<ul class="simple">
+<li><p>Route validation is structural. It checks that an exit or <code class="docutils literal notranslate"><span class="pre">STAY</span></code> can
+be reached along the transitions, not that agents get there.
+<code class="docutils literal notranslate"><span class="pre">LeastTravelTime</span></code> and <code class="docutils literal notranslate"><span class="pre">LeastTargeted</span></code> are deterministic, so in a
+cycle they can send agents round forever. A rule that lists its own
+stage as a candidate warns. An agent stuck in such a loop is neither
+<code class="docutils literal notranslate"><span class="pre">stranded</span></code> nor <code class="docutils literal notranslate"><span class="pre">arrived</span></code>, so check that <code class="docutils literal notranslate"><span class="pre">agent_count()</span></code> reaches zero.</p></li>
+<li><p>A weight of 0 is allowed. A route whose only exit has weight 0 is
+valid, and nobody leaves through it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">update_weights()</span></code> with changed weights starts the round-robin
+sequence afresh. Changing them at every step favours the target with
+the highest weight. Applying unchanged weights keeps the sequence.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">update_weights()</span></code> does not resume stranded agents; they decide again
+when an exit of their rule opens.</p></li>
+<li><p>One exit stage made of several areas is one exit: the areas close
+together and share one count in the removal records. Use one exit
+per door when doors must be closed or counted separately.</p></li>
+</ul>
+<p><strong>Timing</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">removed_agents()</span></code> holds the records of the most recent <code class="docutils literal notranslate"><span class="pre">iterate()</span></code>
+only. Read it after every <code class="docutils literal notranslate"><span class="pre">iterate()</span></code>, or removals are lost.</p></li>
+<li><p>An agent’s removal record appears one <code class="docutils literal notranslate"><span class="pre">iterate()</span></code> before its <code class="docutils literal notranslate"><span class="pre">alive</span></code>
+turns False. Records of <code class="docutils literal notranslate"><span class="pre">agent.remove()</span></code> appear after the next
+<code class="docutils literal notranslate"><span class="pre">iterate()</span></code>.</p></li>
+<li><p>A stage an agent starts inside completes in the first <code class="docutils literal notranslate"><span class="pre">iterate()</span></code>
+(see above), so holds and closures set up before it apply.</p></li>
+</ul>
+<p><strong>Holds and closures</strong></p>
+<ul class="simple">
+<li><p>Held agents stop where they first enter the waypoint area; they are
+not spread over it. They can block the entrance, so <code class="docutils literal notranslate"><span class="pre">held_at()</span></code> can
+count fewer agents than are queueing.</p></li>
+<li><p>With <code class="docutils literal notranslate"><span class="pre">close(informed=False)</span></code>, agents keep walking to the closed exit
+and are stranded there. <code class="docutils literal notranslate"><span class="pre">close(informed=True)</span></code> reassigns agents at
+once but leaves those already leaving through the exit alone.</p></li>
+</ul>
+<p><strong>Steering to a point</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">route_orientation</span></code> is (0, 0) at a <code class="docutils literal notranslate"><span class="pre">steer_to()</span></code> point only when the
+agent stands exactly on it; agents oscillate around the point. Use
+<code class="docutils literal notranslate"><span class="pre">agent.arrived</span></code>: the last step passed within 0.05 m of the point.</p></li>
+<li><p>When no candidate of <code class="docutils literal notranslate"><span class="pre">LeastTravelTime</span></code> can be reached, it picks the
+first open candidate.</p></li>
+</ul>
+<p><strong>Geometry and handles</strong></p>
+<ul class="simple">
+<li><p>The simulation keeps the surface as it was at <code class="docutils literal notranslate"><span class="pre">Simulation()</span></code>.
+Regions added later are rejected by that simulation.</p></li>
+<li><p>A connector’s edges snap to the corners of the regions it joins;
+its area is the snapped one, not the coordinates passed in.</p></li>
+<li><p>Stage names and region names must be unique; a repeated name raises
+<code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.</p></li>
+<li><p>A handle to a removed agent raises <code class="docutils literal notranslate"><span class="pre">RuntimeError</span></code> for everything but
+<code class="docutils literal notranslate"><span class="pre">id</span></code> and <code class="docutils literal notranslate"><span class="pre">alive</span></code>. Handles from another simulation are rejected.
+<code class="docutils literal notranslate"><span class="pre">sim.agents()</span></code> is a snapshot.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Simulation.close()</span></code> closes the trajectory writer and frees the
+simulation; it cannot be used afterwards. In notebooks, call it in
+the last cell that uses the simulation.</p></li>
+</ul>
+</section>
 <section id="removed-apis-at-a-glance">
 <h2>Removed APIs at a glance<a class="headerlink" href="#removed-apis-at-a-glance" title="Link to this heading">#</a></h2>
 <ul class="simple">
@@ -424,6 +490,7 @@ access raises <a class="reference internal" href="api/jupedsim/index.html#jupeds
 <li><a class="reference internal" href="#mutation-during-iterate-is-now-an-error">Mutation during iterate() is now an error</a></li>
 <li><a class="reference internal" href="#round-robin-order">Round-robin order</a></li>
 <li><a class="reference internal" href="#stage-completion-at-insertion">Stage completion at insertion</a></li>
+<li><a class="reference internal" href="#pitfalls">Pitfalls</a></li>
 <li><a class="reference internal" href="#removed-apis-at-a-glance">Removed APIs at a glance</a></li>
 </ul>
 </li>
