@@ -308,9 +308,9 @@
 <span class="sd">        steering to a point oscillate around it instead. Use ``arrived`` to</span>
 <span class="sd">        tell arrival.</span>
 
-<span class="sd">        It is computed in iterate(). follow() sets it for the new stage at</span>
-<span class="sd">        once; after steer_to() it refers to the previous target until the</span>
-<span class="sd">        next iterate()."""</span>
+<span class="sd">        It is computed in iterate(), and set at once by add_agent(),</span>
+<span class="sd">        follow() and steer_to(), and by close(informed=True), open() and</span>
+<span class="sd">        release() for the agents they reassign."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve</span><span class="p">()</span><span class="o">.</span><span class="n">route_orientation</span>
 
     <span class="nd">@property</span>

@@ -400,7 +400,9 @@
 <span class="sd">        follows ``route`` from ``start`` (default: the route's start) or</span>
 <span class="sd">        steers straight to ``target``; give one of them. ``state`` is the</span>
 <span class="sd">        agent's model state; built-in models default it, custom models must</span>
-<span class="sd">        pass it. Returns the agent handle.</span>
+<span class="sd">        pass it. Returns the agent handle. A stage the agent starts inside</span>
+<span class="sd">        is completed in the next iterate(), so right after add_agent()</span>
+<span class="sd">        ``agent.stage`` is still that stage.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            TypeError: If ``position`` or ``target`` is not a Location.</span>

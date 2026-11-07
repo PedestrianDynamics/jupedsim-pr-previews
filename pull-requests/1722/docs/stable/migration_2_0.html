@@ -363,6 +363,22 @@ blocks (e1 e1 e1 e2 e2). Each cycle has the same shares, but the order
 differs, so 1.x scenarios with round-robin transitions give different
 results.</p>
 </section>
+<section id="stage-completion-at-insertion">
+<h2>Stage completion at insertion<a class="headerlink" href="#stage-completion-at-insertion" title="Link to this heading">#</a></h2>
+<p>In 1.x, <code class="docutils literal notranslate"><span class="pre">add_agent</span></code> already completed a stage the agent was placed
+inside. In 2.0 that happens in the first <code class="docutils literal notranslate"><span class="pre">iterate()</span></code>:</p>
+<ul class="simple">
+<li><p>Right after <code class="docutils literal notranslate"><span class="pre">add_agent</span></code>, <code class="docutils literal notranslate"><span class="pre">agent.stage</span></code> is the stage the agent starts
+inside, not the next one.</p></li>
+<li><p>A <code class="docutils literal notranslate"><span class="pre">hold()</span></code> or <code class="docutils literal notranslate"><span class="pre">close()</span></code> set up between adding agents and the first
+<code class="docutils literal notranslate"><span class="pre">iterate()</span></code> now applies to agents placed inside that stage.</p></li>
+<li><p>An agent placed inside an exit takes one step and is then removed,
+with a removal record. 1.x removed it without a record, so exit
+counts can be higher than in 1.x (for example 500 instead of 497
+exits in <code class="docutils literal notranslate"><span class="pre">avm-sharp-corners.py</span></code>), and the motion of the other agents
+can differ from that step on.</p></li>
+</ul>
+</section>
 <section id="removed-apis-at-a-glance">
 <h2>Removed APIs at a glance<a class="headerlink" href="#removed-apis-at-a-glance" title="Link to this heading">#</a></h2>
 <ul class="simple">
@@ -407,6 +423,7 @@ access raises <a class="reference internal" href="api/jupedsim/index.html#jupeds
 <li><a class="reference internal" href="#agent-handles">Agent handles</a></li>
 <li><a class="reference internal" href="#mutation-during-iterate-is-now-an-error">Mutation during iterate() is now an error</a></li>
 <li><a class="reference internal" href="#round-robin-order">Round-robin order</a></li>
+<li><a class="reference internal" href="#stage-completion-at-insertion">Stage completion at insertion</a></li>
 <li><a class="reference internal" href="#removed-apis-at-a-glance">Removed APIs at a glance</a></li>
 </ul>
 </li>

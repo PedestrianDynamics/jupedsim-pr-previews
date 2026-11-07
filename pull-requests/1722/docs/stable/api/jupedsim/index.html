@@ -485,9 +485,9 @@ removed.</p>
 steer_to() point only where the agent stands exactly on it; agents
 steering to a point oscillate around it instead. Use <code class="docutils literal notranslate"><span class="pre">arrived</span></code> to
 tell arrival.</p>
-<p>It is computed in iterate(). follow() sets it for the new stage at
-once; after steer_to() it refers to the previous target until the
-next iterate().</p>
+<p>It is computed in iterate(), and set at once by add_agent(),
+follow() and steer_to(), and by close(informed=True), open() and
+release() for the agents they reassign.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -1967,7 +1967,9 @@ instances of simulation.</p>
 follows <code class="docutils literal notranslate"><span class="pre">route</span></code> from <code class="docutils literal notranslate"><span class="pre">start</span></code> (default: the route’s start) or
 steers straight to <code class="docutils literal notranslate"><span class="pre">target</span></code>; give one of them. <code class="docutils literal notranslate"><span class="pre">state</span></code> is the
 agent’s model state; built-in models default it, custom models must
-pass it. Returns the agent handle.</p>
+pass it. Returns the agent handle. A stage the agent starts inside
+is completed in the next iterate(), so right after add_agent()
+<code class="docutils literal notranslate"><span class="pre">agent.stage</span></code> is still that stage.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
