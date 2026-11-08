@@ -233,9 +233,12 @@ of a region.</p></td>
 <td><p>Unique numeric ID</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">agent.position</span></code></p></td>
-<td><p>a <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.Location" title="jupedsim.Location"><code class="xref py py-class docutils literal notranslate"><span class="pre">Location</span></code></a> with <code class="docutils literal notranslate"><span class="pre">.x</span></code> and <code class="docutils literal notranslate"><span class="pre">.y</span></code></p></td>
+<td><p>the <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> tuple</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">agent.state</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">agent.location</span></code></p></td>
+<td><p>a <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.Location" title="jupedsim.Location"><code class="xref py py-class docutils literal notranslate"><span class="pre">Location</span></code></a>: <code class="docutils literal notranslate"><span class="pre">.x</span></code>, <code class="docutils literal notranslate"><span class="pre">.y</span></code> and the <code class="docutils literal notranslate"><span class="pre">.region</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">agent.state</span></code></p></td>
 <td><p>Model-specific state (speed, radius, etc.)</p></td>
 </tr>
 </tbody>
@@ -280,8 +283,7 @@ of a region.</p></td>
             <span class="bp">self</span><span class="o">.</span><span class="n">_csv_writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span>
                 <span class="n">frame</span><span class="p">,</span>
                 <span class="n">agent</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-                <span class="n">agent</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
-                <span class="n">agent</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+                <span class="o">*</span><span class="n">agent</span><span class="o">.</span><span class="n">position</span><span class="p">,</span>
             <span class="p">])</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">every_nth_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>

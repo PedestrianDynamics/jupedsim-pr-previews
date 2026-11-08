@@ -154,6 +154,10 @@ It is added either as a <em>Shapely</em> <a class="reference external" href="htt
 <span class="n">room</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">add_region</span><span class="p">(</span><span class="n">polygon</span><span class="o">=</span><span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)]))</span>
 </pre></div>
 </div>
+<p>or, equivalently, from the boundary points:</p>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">room</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">add_region</span><span class="p">(</span><span class="n">boundary</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)])</span>
+</pre></div>
+</div>
 <p><a class="reference internal" href="../api/jupedsim/index.html#jupedsim.WalkableSurface.add_region" title="jupedsim.WalkableSurface.add_region"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_region()</span></code></a> returns a <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.Region" title="jupedsim.Region"><code class="xref py py-class docutils literal notranslate"><span class="pre">Region</span></code></a> handle.
 Agents and stages are placed in a region through this handle, see <a class="reference internal" href="routing.html"><span class="doc">Routing</span></a>.</p>
 <p>A walkable area may consist of several regions, e.g. floors at different heights joined by stairs.
@@ -215,6 +219,16 @@ These unreachable regions can be added as holes to a polygon.</p>
     <span class="p">],</span>
 <span class="p">)</span>
 <span class="n">room</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">add_region</span><span class="p">(</span><span class="n">polygon</span><span class="o">=</span><span class="n">walkable_area</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>or pass the rings directly:</p>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">room</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">add_region</span><span class="p">(</span>
+    <span class="n">boundary</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)],</span>
+    <span class="n">holes</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
+        <span class="p">[(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
+    <span class="p">],</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <p>Holes have to lie strictly inside the boundary.

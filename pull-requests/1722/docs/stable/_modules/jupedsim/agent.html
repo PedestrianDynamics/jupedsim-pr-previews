@@ -243,8 +243,16 @@
         <span class="k">return</span> <span class="kc">True</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">position</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_SurfaceLocation</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Current location of the agent, a snapshot."""</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">position</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Position of the agent as ``(x, y)``."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve</span><span class="p">()</span><span class="o">.</span><span class="n">position</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_SurfaceLocation</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Current location of the agent, a snapshot.</span>
+
+<span class="sd">        Same as :attr:`position`, plus the region the agent is on.</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_location</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_resolve</span><span class="p">()</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -332,7 +340,7 @@
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_resolve</span><span class="p">()</span>
         <span class="n">stage</span> <span class="o">=</span> <span class="n">first_stage</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span><span class="p">,</span> <span class="n">route</span><span class="p">,</span> <span class="n">start</span><span class="p">)</span>
-        <span class="n">check_reachable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span><span class="p">,</span> <span class="n">stage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+        <span class="n">check_reachable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span><span class="p">,</span> <span class="n">stage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">switch_agent_route</span><span class="p">(</span>
             <span class="n">agent_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">,</span> <span class="n">route_id</span><span class="o">=</span><span class="n">route</span><span class="o">.</span><span class="n">_native_id</span><span class="p">,</span> <span class="n">stage_id</span><span class="o">=</span><span class="n">stage</span><span class="o">.</span><span class="n">id</span>
         <span class="p">)</span></div>
@@ -353,7 +361,7 @@
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_resolve</span><span class="p">()</span>
         <span class="n">native</span> <span class="o">=</span> <span class="n">native_location</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="s2">"target"</span><span class="p">)</span>
-        <span class="n">check_target_reachable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+        <span class="n">check_target_reachable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
         <span class="n">route_id</span><span class="p">,</span> <span class="n">stage_id</span> <span class="o">=</span> <span class="n">direct_steering</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">switch_agent_route</span><span class="p">(</span>
             <span class="n">agent_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">,</span> <span class="n">route_id</span><span class="o">=</span><span class="n">route_id</span><span class="p">,</span> <span class="n">stage_id</span><span class="o">=</span><span class="n">stage_id</span>

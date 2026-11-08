@@ -243,11 +243,21 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">add_region</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">polygon</span><span class="p">:</span> <span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span><span class="p">,</span>
+        <span class="n">polygon</span><span class="p">:</span> <span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">boundary</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">holes</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="p">(),</span>
         <span class="n">height</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Region</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Add a region at ``height`` and return its handle."""</span>
+<span class="w">        </span><span class="sd">"""Add a region at ``height`` and return its handle.</span>
+
+<span class="sd">        Give either ``polygon`` or ``boundary`` (a sequence of points) with</span>
+<span class="sd">        optional ``holes`` (sequences of points).</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">polygon</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">boundary</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"give polygon or boundary, not both or neither"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">polygon</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">polygon</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span><span class="p">(</span><span class="n">boundary</span><span class="p">,</span> <span class="n">holes</span><span class="o">=</span><span class="n">holes</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_region_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="n">region_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_region</span><span class="p">(</span><span class="n">polygon</span><span class="o">=</span><span class="n">polygon</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_register</span><span class="p">(</span><span class="n">region_id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">polygon</span><span class="p">)</span></div>

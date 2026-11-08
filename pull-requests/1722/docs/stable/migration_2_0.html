@@ -339,6 +339,10 @@ has left the simulation raises <code class="docutils literal notranslate"><span 
 <span class="nb">print</span><span class="p">(</span><span class="n">agent</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>             <span class="c1"># still valid, freshly resolved</span>
 </pre></div>
 </div>
+<p><code class="docutils literal notranslate"><span class="pre">agent.position</span></code> is still the <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> tuple. <code class="docutils literal notranslate"><span class="pre">agent.location</span></code> is new and
+returns a <a class="reference internal" href="api/jupedsim/index.html#jupedsim.Location" title="jupedsim.Location"><code class="xref py py-class docutils literal notranslate"><span class="pre">Location</span></code></a>, the same point plus the region the
+agent is on; it can be passed wherever a location is accepted, for example
+to another agent’s <code class="docutils literal notranslate"><span class="pre">steer_to</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">agent.state</span></code> returns a per-model state handle with the same semantics: it
 resolves per access and raises once the agent is gone.</p>
 <p><code class="docutils literal notranslate"><span class="pre">agent.target</span></code> returns a <a class="reference internal" href="api/jupedsim/index.html#jupedsim.Location" title="jupedsim.Location"><code class="xref py py-class docutils literal notranslate"><span class="pre">Location</span></code></a> instead of an <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code>
