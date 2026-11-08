@@ -423,11 +423,6 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">_check_ending</span><span class="p">(</span>
     <span class="n">order</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">_Stage</span><span class="p">],</span> <span class="n">transitions</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">_Stage</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">endless</span><span class="p">:</span> <span class="nb">bool</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">terminals</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">order</span> <span class="k">if</span> <span class="n">_is_terminal</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">transitions</span><span class="p">)]</span>
-    <span class="k">if</span> <span class="n">endless</span> <span class="ow">and</span> <span class="n">terminals</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">"route can end at </span><span class="si">{</span><span class="n">_label</span><span class="p">(</span><span class="n">terminals</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">; drop endless=True"</span>
-        <span class="p">)</span>
     <span class="k">if</span> <span class="n">endless</span><span class="p">:</span>
         <span class="k">return</span>
     <span class="k">if</span> <span class="n">_stuck_stages</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">transitions</span><span class="p">):</span>
@@ -487,6 +482,11 @@
 <span class="sd">    A route is validated at construction and bound to the simulation that</span>
 <span class="sd">    owns its stages. ``steps`` is a list of stages, walked in order, or a</span>
 <span class="sd">    list of ``(from, to)`` pairs where ``to`` is a stage or a rule.</span>
+
+<span class="sd">    Every stage must be able to reach an exit or ``STAY`` through weights</span>
+<span class="sd">    &gt; 0. ``endless=True`` waives that: the route may run indefinitely.</span>
+<span class="sd">    Exits and ``STAY`` remain allowed, and agents leave or stay if the</span>
+<span class="sd">    route sends them there.</span>
 <span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>

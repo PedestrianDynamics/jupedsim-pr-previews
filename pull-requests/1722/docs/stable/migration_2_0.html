@@ -393,7 +393,14 @@ stage as a candidate warns. An agent stuck in such a loop is neither
 <code class="docutils literal notranslate"><span class="pre">stranded</span></code> nor <code class="docutils literal notranslate"><span class="pre">arrived</span></code>, so check that <code class="docutils literal notranslate"><span class="pre">agent_count()</span></code> reaches zero.</p></li>
 <li><p>A weight of 0 is allowed; nobody is sent along it. A route whose only
 exit has weight 0 is valid only if <code class="docutils literal notranslate"><span class="pre">STAY</span></code> or another exit can still be
-reached through positive weights; otherwise <code class="docutils literal notranslate"><span class="pre">Route()</span></code> raises.</p></li>
+reached through positive weights; otherwise <code class="docutils literal notranslate"><span class="pre">Route()</span></code> raises, unless
+<code class="docutils literal notranslate"><span class="pre">endless=True</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">endless=True</span></code> lets a route run indefinitely; exits and <code class="docutils literal notranslate"><span class="pre">STAY</span></code> stay
+allowed. To evacuate a circulating crowd later, give the exit a weight
+and set the loop target to 0, e.g.
+<code class="docutils literal notranslate"><span class="pre">route.update_weights(decision,</span> <span class="pre">{loop_target:</span> <span class="pre">0,</span> <span class="pre">exit:</span> <span class="pre">1})</span></code>: while the
+loop target keeps a weight, some agents keep circulating. Agents
+already assigned a target keep it until their next decision.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">update_weights()</span></code> with changed weights starts the round-robin
 sequence afresh. Changing them at every step favours the target with
 the highest weight. Applying unchanged weights keeps the sequence.</p></li>
