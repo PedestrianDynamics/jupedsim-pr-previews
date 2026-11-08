@@ -391,8 +391,9 @@ be reached along the transitions, not that agents get there.
 cycle they can send agents round forever. A rule that lists its own
 stage as a candidate warns. An agent stuck in such a loop is neither
 <code class="docutils literal notranslate"><span class="pre">stranded</span></code> nor <code class="docutils literal notranslate"><span class="pre">arrived</span></code>, so check that <code class="docutils literal notranslate"><span class="pre">agent_count()</span></code> reaches zero.</p></li>
-<li><p>A weight of 0 is allowed. A route whose only exit has weight 0 is
-valid, and nobody leaves through it.</p></li>
+<li><p>A weight of 0 is allowed; nobody is sent along it. A route whose only
+exit has weight 0 is valid only if <code class="docutils literal notranslate"><span class="pre">STAY</span></code> or another exit can still be
+reached through positive weights; otherwise <code class="docutils literal notranslate"><span class="pre">Route()</span></code> raises.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">update_weights()</span></code> with changed weights starts the round-robin
 sequence afresh. Changing them at every step favours the target with
 the highest weight. Applying unchanged weights keeps the sequence.</p></li>
@@ -412,6 +413,22 @@ turns False. Records of <code class="docutils literal notranslate"><span class="
 <li><p>A stage an agent starts inside completes in the first <code class="docutils literal notranslate"><span class="pre">iterate()</span></code>
 (see above), so holds and closures set up before it apply.</p></li>
 </ul>
+<p><strong>Stage areas</strong></p>
+<ul class="simple">
+<li><p>A waypoint or exit is reached on the floor field grid (0.2 m cells),
+not on its polygon: an agent arrives once it stands in a cell whose
+centre lies inside the area. Arrival can therefore happen up to half
+a cell outside the polygon, or only half a cell inside it.</p></li>
+<li><p>An area too thin to contain a cell centre is replaced by the cell
+nearest to its interior, so arrival can happen up to a whole cell
+away. Make areas at least one cell wide where exact counts or
+boundaries matter.</p></li>
+<li><p>Every stage can be reached from every walkable point: <code class="docutils literal notranslate"><span class="pre">Simulation()</span></code>
+rejects a surface with walkable parts that cannot be reached from the
+others, and speed fields cannot drop below a minimum speed. Later
+targets are therefore always reachable; agents are stranded only by
+closed exits.</p></li>
+</ul>
 <p><strong>Holds and closures</strong></p>
 <ul class="simple">
 <li><p>Held agents stop where they first enter the waypoint area; they are
@@ -426,8 +443,6 @@ once but leaves those already leaving through the exit alone.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">route_orientation</span></code> is (0, 0) at a <code class="docutils literal notranslate"><span class="pre">steer_to()</span></code> point only when the
 agent stands exactly on it; agents oscillate around the point. Use
 <code class="docutils literal notranslate"><span class="pre">agent.arrived</span></code>: the last step passed within 0.05 m of the point.</p></li>
-<li><p>When no candidate of <code class="docutils literal notranslate"><span class="pre">LeastTravelTime</span></code> can be reached, it picks the
-first open candidate.</p></li>
 </ul>
 <p><strong>Geometry and handles</strong></p>
 <ul class="simple">
@@ -472,7 +487,7 @@ access raises <a class="reference internal" href="api/jupedsim/index.html#jupeds
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-11-07</footer>
+<footer class="report-footer">Last updated 2026-11-08</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="notebooks/getting_started.html" rel="prev"><small>Previous</small>Getting started</a><a class="book-pagenav-next" href="concepts/index.html" rel="next"><small>Next</small>Concepts</a>
 </nav>
