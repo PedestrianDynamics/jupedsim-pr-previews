@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../_static/logo.png" sizes="482x536" rel="icon" type="image/png">
+    <title>Floor fields: how agents find their way in JuPedSim 2 &#8212; JuPedSim  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=29da98fa" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupedsim-style.css?v=df79899f" />
+    <link rel="stylesheet" type="text/css" href="../_static/chroma-dark.css?v=9526b014" />
+    <link rel="stylesheet" type="text/css" href="../_static/book.css?v=7f8b60bd" />
+    <link rel="stylesheet" type="text/css" href="../_static/site.css?v=34df8e08" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx.css?v=164699b4" />
+    <script src="../_static/documentation_options.js?v=7f41d439"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer="defer" src="../_static/theme.js?v=07cb4702"></script>
+    <script defer="defer" src="../_static/search.js?v=322617c8"></script>
+    <script defer="defer" src="../_static/switcher.js?v=bc5f7bca"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <link rel="canonical" href="https://www.jupedsim.org/articles/floor-fields.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Notes" href="../notes/index.html" />
+    <link rel="prev" title="Coding style" href="coding-style.html" />
+ 
+<script>(function(){var s=null;try{s=localStorage.getItem('theme')}catch(e){}var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var r=document.documentElement;r.dataset.theme=(s==='light'||s==='dark')?s:(d?'dark':'light');r.dataset.themeMode=(s==='light'||s==='dark')?s:'auto';})();</script>
+<link rel="alternate" type="application/rss+xml" href="/pull-requests/1727/notes/feed.xml" title="JuPedSim">
+  </head><body>
+<input type="checkbox" class="book-control" id="menu-control" aria-label="Toggle navigation" aria-controls="book-menu">
+<input type="checkbox" class="book-control" id="search-control" aria-label="Show search">
+<input type="checkbox" class="book-control" id="toc-control" aria-label="Toggle table of contents" aria-controls="book-toc">
+<label for="menu-control" class="book-overlay book-overlay-menu" aria-hidden="true"></label>
+<label for="toc-control" class="book-overlay book-overlay-toc" aria-hidden="true"></label>
+<header class="site-bar">
+<div class="site-bar-inner">
+<label for="menu-control" class="site-bar-btn site-bar-menu" aria-label="Open navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></label>
+<a class="book-brand" href="/pull-requests/1727/" aria-label="JuPedSim"><img class="book-logo book-logo-light" src="../_static/jupedsim-mark-light.svg" alt="JuPedSim" width="737" height="200"><img class="book-logo book-logo-dark" src="../_static/jupedsim-mark-dark.svg" alt="" aria-hidden="true" width="737" height="200"></a>
+<nav class="site-nav" aria-label="Site">
+<ul>
+<li><a class="bracket-label" href="/pull-requests/1727/articles/" aria-current="page">[Articles]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1727/notes/">[Notes]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1727/docs/stable/">[Docs]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1727/docs/v1x/v1.4.2/">[Docs v1&nbsp;<span aria-hidden="true">↗</span>]</a></li>
+</ul>
+</nav>
+<label for="search-control" class="site-bar-btn site-bar-search-btn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></label>
+<form class="book-search" action="../search.html" method="get" role="search">
+<input type="search" id="book-search-input" name="q" data-pagefind="/pull-requests/1727/pagefind/pagefind.js" placeholder="Search  /" aria-label="Search" autocomplete="off" spellcheck="false">
+<ul class="book-search-results" id="book-search-results" hidden></ul>
+</form>
+<button type="button" id="book-theme-toggle" class="book-theme-toggle bracket-label" aria-live="polite">Theme: auto</button>
+<label for="toc-control" class="site-bar-btn site-bar-toc" aria-label="On this page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></label>
+</div>
+</header>
+<main class="book book--no-tree">
+<aside class="book-menu" id="book-menu"><nav class="site-nav-drawer" aria-label="Site (menu)">
+<ul>
+<li><a class="bracket-label" href="/pull-requests/1727/articles/" aria-current="page">[Articles]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1727/notes/">[Notes]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1727/docs/stable/">[Docs]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1727/docs/v1x/v1.4.2/">[Docs v1&nbsp;<span aria-hidden="true">↗</span>]</a></li>
+</ul>
+</nav>
+</aside>
+<div class="book-page">
+<article class="report" data-pagefind-filter="section:Article" data-pagefind-meta="title:Floor fields: how agents find their way in JuPedSim 2">
+<header class="report-header">
+<p class="report-kicker">Article</p>
+<h1 class="report-title">Floor fields: how agents find their way in JuPedSim 2</h1>
+<p class="report-subtitle">How agents in JuPedSim 2 find their way to waypoints and exits with floor fields, what you can tune, how to look at the fields and how to reroute agents around congestion with speed fields.</p>
+<p class="report-meta"><span class="meta-item">JuPedSim team</span><span class="meta-item"><time datetime="2026-11-10" data-pagefind-meta="date[datetime]">2026-11-10</time></span><span class="meta-item">1753 words</span><span class="meta-item">9 min read</span>
+</p>
+</header>
+<div class="report-body" data-pagefind-body>
+<!-- SPDX-License-Identifier: LGPL-3.0-or-later -->
+<section class="tex2jax_ignore mathjax_ignore" id="floor-fields-how-agents-find-their-way-in-jupedsim-2">
+<h1>Floor fields: how agents find their way in JuPedSim 2<a class="headerlink" href="#floor-fields-how-agents-find-their-way-in-jupedsim-2" title="Link to this heading">#</a></h1>
+<p>In JuPedSim 2, agents walk to waypoints and exits along <em>floor fields</em>. A floor
+field is a map of how long it takes to reach one destination from every point of the
+walkable area. An agent simply walks down the gradient on that map, so it always heads for
+the part of the destination it can reach fastest, around walls and holes, through doors
+and up and down stairs.</p>
+<p>This article explains what that means for your models, which settings you have,
+how to look at the fields, and how to change them, for example to reroute agents
+around congestion. It ends with what we chose not to do (yet) and what comes next.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Everything here is part of the upcoming JuPedSim 2.0 and available on the
+<code class="docutils literal notranslate"><span class="pre">master</span></code> branch today. It is not in the 1.x releases.</p>
+</div>
+<section id="what-a-floor-field-is">
+<h2>What a floor field is<a class="headerlink" href="#what-a-floor-field-is" title="Link to this heading">#</a></h2>
+<p>A destination is the area of a waypoint or an exit; in the API it is identified by
+the id of its stage (<code class="docutils literal notranslate"><span class="pre">stage_id</span></code>). For every destination, JuPedSim covers each region of
+your walkable surface with a grid of square cells and computes, for every cell, the
+travel time to the destination. The computation follows a wave that starts in the
+destination’s area and spreads out at the local walking speed: around obstacles, through
+the openings between regions, and across stairs that connect floors. Mathematically
+it solves the eikonal equation with the fast sweeping method.</p>
+<p>Two consequences are worth knowing:</p>
+<ul class="simple">
+<li><p><strong>Agents head for the nearest part of a destination, not its centre.</strong> A wide exit
+or a destination made of several areas works as you would expect: every agent takes the part
+that is quickest to reach.</p></li>
+<li><p><strong>Routes keep some distance from walls.</strong> Within <code class="docutils literal notranslate"><span class="pre">wall_influence_radius</span></code> of a wall
+the field assumes slower walking, so the quickest route runs a little away from
+walls and does not cut corners tightly. Doors and the openings between regions do
+not count as walls.</p></li>
+</ul>
+<p>Direct steering is not affected: an agent with a direct steering target
+still walks the shortest path to that single point.</p>
+</section>
+<section id="tuning-the-grid">
+<h2>Tuning the grid<a class="headerlink" href="#tuning-the-grid" title="Link to this heading">#</a></h2>
+<p>Two parameters control the fields. Both apply to the whole simulation:</p>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">jupedsim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jps</span>
+
+<span class="n">simulation</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModel</span><span class="p">(),</span>
+    <span class="n">geometry</span><span class="o">=</span><span class="n">surface</span><span class="p">,</span>
+    <span class="n">floorfield_options</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">FloorfieldOptions</span><span class="p">(</span>
+        <span class="n">cell_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>  <span class="c1"># m, the default</span>
+        <span class="n">wall_influence_radius</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>  <span class="c1"># m, the default</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">cell_size</span></code></strong> is the edge length of a grid cell. Smaller cells resolve the
+geometry more finely and give smoother routes; they cost memory and time when a
+field is computed (four times as many cells when you halve the size).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">wall_influence_radius</span></code></strong> is how far from a wall the field assumes slower
+walking. Set it smaller to let routes run closer to walls.</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>A passage narrower than two cells may close. A cell that a wall runs through counts
+as not walkable, so a gap that holds no whole cell is blocked for the floor field.
+If that disconnects part of your geometry, creating the simulation fails with
+<code class="docutils literal notranslate"><span class="pre">SimulationError:</span> <span class="pre">Floor</span> <span class="pre">field:</span> <span class="pre">some</span> <span class="pre">walkable</span> <span class="pre">cells</span> <span class="pre">could</span> <span class="pre">not</span> <span class="pre">be</span> <span class="pre">reached,</span> <span class="pre">you</span> <span class="pre">can</span> <span class="pre">try</span> <span class="pre">reducing</span> <span class="pre">the</span> <span class="pre">cell</span> <span class="pre">size.</span></code> Reduce <code class="docutils literal notranslate"><span class="pre">cell_size</span></code> until the narrowest passage is at least
+two cells wide.</p>
+</div>
+</section>
+<section id="looking-at-the-fields">
+<h2>Looking at the fields<a class="headerlink" href="#looking-at-the-fields" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Simulation.travel_times(stage_id)</span></code> returns one grid per region, keyed by region id.
+Each grid has its travel times in seconds and the walking direction an agent would
+get in every cell, and plots directly with matplotlib:</p>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
+
+<span class="n">surface</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">WalkableSurface</span><span class="p">()</span>
+<span class="n">room</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">add_region</span><span class="p">(</span><span class="n">polygon</span><span class="o">=</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">simulation</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModel</span><span class="p">(),</span> <span class="n">geometry</span><span class="o">=</span><span class="n">surface</span>
+<span class="p">)</span>
+<span class="n">north</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_exit_stage</span><span class="p">([(</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">room</span><span class="p">)])</span>
+<span class="n">south</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_exit_stage</span><span class="p">([(</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">room</span><span class="p">)])</span>
+
+<span class="n">grid</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">travel_times</span><span class="p">(</span><span class="n">north</span><span class="p">)[</span><span class="n">room</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">values</span><span class="p">),</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">grid</span><span class="o">.</span><span class="n">extent</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">"travel time to the north exit [s]"</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">grid.values</span></code> has shape <code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">width)</span></code>, row 0 is the lowest. It is zero inside
+the destination’s area and <code class="docutils literal notranslate"><span class="pre">inf</span></code> where a cell is not walkable.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">grid.directions</span></code> has shape <code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">width,</span> <span class="pre">2)</span></code>: the unit vector an agent at the
+cell’s centre is sent along, zero inside the destination’s area, <code class="docutils literal notranslate"><span class="pre">nan</span></code> where a cell is
+not walkable.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">grid.origin</span></code>, <code class="docutils literal notranslate"><span class="pre">grid.width</span></code>, <code class="docutils literal notranslate"><span class="pre">grid.height</span></code>, <code class="docutils literal notranslate"><span class="pre">grid.cell_size</span></code> and <code class="docutils literal notranslate"><span class="pre">grid.extent</span></code>
+place the grid in the world. The grids of all regions share one lattice, so the
+cells of neighbouring regions line up.</p></li>
+</ul>
+<p>Fields are computed when an agent first needs them; <code class="docutils literal notranslate"><span class="pre">travel_times</span></code> computes them on
+demand if no agent has yet.</p>
+<section id="saving-them-with-the-trajectory">
+<h3>Saving them with the trajectory<a class="headerlink" href="#saving-them-with-the-trajectory" title="Link to this heading">#</a></h3>
+<p>The HDF5 writer can store the travel times of every waypoint and exit next to the
+trajectory, and the loader reads them back in the same form as <code class="docutils literal notranslate"><span class="pre">travel_times</span></code>:</p>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">writer</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Hdf5TrajectoryWriter</span><span class="p">(</span><span class="n">output_file</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">write_travel_times</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># ... run the simulation with trajectory_writer=writer, then</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="k">with</span> <span class="n">jps</span><span class="o">.</span><span class="n">Hdf5TrajectoryLoader</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">loader</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">stage_id</span> <span class="ow">in</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_travel_time_stage_ids</span><span class="p">():</span>
+        <span class="n">grids</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_travel_times</span><span class="p">(</span><span class="n">stage_id</span><span class="p">)</span>  <span class="c1"># {region_id: grid}</span>
+</pre></div>
+</div>
+<p>The travel times are written when the writer is closed, so destinations added during the
+run are included. They are stored as 32-bit floats.</p>
+</section>
+</section>
+<section id="rerouting-around-congestion-speed-fields">
+<h2>Rerouting around congestion: speed fields<a class="headerlink" href="#rerouting-around-congestion-speed-fields" title="Link to this heading">#</a></h2>
+<p>The travel times come from a <em>speed field</em>: a walking speed for every cell. By
+default it is 1 m/s in the open and slower near walls, and it does not know about
+other agents. You can replace it. A common use is congestion: estimate the local
+density from the agents’ positions every few seconds, turn it into a walking speed
+with a fundamental diagram, and set that as the speed field. Crowded areas then
+look slow to the floor field, and agents weigh the queue at the nearest door against
+a longer walk to a free one.</p>
+<p>Here 96 agents start in the north half of a room whose exit has two areas, one in
+the north-east and one in the south-east corner. Every 2 s the density around every
+cell (agents within 1 m) is turned into a speed with Weidmann’s fundamental diagram:</p>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jupedsim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jps</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
+
+<span class="n">surface</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">WalkableSurface</span><span class="p">()</span>
+<span class="n">room</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">add_region</span><span class="p">(</span><span class="n">polygon</span><span class="o">=</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">simulation</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModel</span><span class="p">(),</span> <span class="n">geometry</span><span class="o">=</span><span class="n">surface</span>
+<span class="p">)</span>
+<span class="n">exit_id</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_exit_stage</span><span class="p">(</span>
+    <span class="p">[(</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">room</span><span class="p">),</span> <span class="p">(</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">room</span><span class="p">)]</span>
+<span class="p">)</span>
+<span class="n">journey</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_journey</span><span class="p">(</span><span class="n">jps</span><span class="o">.</span><span class="n">JourneyDescription</span><span class="p">([</span><span class="n">exit_id</span><span class="p">]))</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">10.5</span><span class="p">,</span> <span class="mf">16.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">6.25</span><span class="p">,</span> <span class="mf">9.8</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">):</span>
+        <span class="n">simulation</span><span class="o">.</span><span class="n">add_agent</span><span class="p">(</span>
+            <span class="n">journey_id</span><span class="o">=</span><span class="n">journey</span><span class="p">,</span>
+            <span class="n">stage_id</span><span class="o">=</span><span class="n">exit_id</span><span class="p">,</span>
+            <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
+            <span class="n">state</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModelState</span><span class="p">(),</span>
+            <span class="n">region_id</span><span class="o">=</span><span class="n">room</span><span class="p">,</span>
+        <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">weidmann</span><span class="p">(</span><span class="n">density</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Walking speed in m/s at a density in persons/m² (Weidmann 1993)."""</span>
+    <span class="n">rho</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">density</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span>
+        <span class="mf">1.34</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">1.913</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">rho</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">5.4</span><span class="p">))),</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">1.34</span>
+    <span class="p">)</span>
+
+
+<span class="n">default</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">default_speed_fields</span><span class="p">()[</span><span class="n">room</span><span class="p">]</span>
+<span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">default</span><span class="o">.</span><span class="n">cell_centers</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">update_speed_field</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">agent</span><span class="o">.</span><span class="n">position</span> <span class="k">for</span> <span class="n">agent</span> <span class="ow">in</span> <span class="n">simulation</span><span class="o">.</span><span class="n">agents</span><span class="p">()])</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="n">dist2</span> <span class="o">=</span> <span class="p">(</span><span class="n">cx</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">cy</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">density</span> <span class="o">=</span> <span class="p">(</span><span class="n">dist2</span> <span class="o">&lt;</span> <span class="n">radius</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">radius</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="c1"># Keep the slow-down near walls, scale by how much the crowd slows walking.</span>
+    <span class="n">factor</span> <span class="o">=</span> <span class="n">weidmann</span><span class="p">(</span><span class="n">density</span><span class="p">)</span> <span class="o">/</span> <span class="n">weidmann</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">simulation</span><span class="o">.</span><span class="n">set_default_speed_field</span><span class="p">(</span>
+        <span class="n">room</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">default</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">factor</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+    <span class="p">)</span>
+
+
+<span class="k">while</span> <span class="n">simulation</span><span class="o">.</span><span class="n">agent_count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">simulation</span><span class="o">.</span><span class="n">iteration_count</span><span class="p">()</span> <span class="o">%</span> <span class="mi">200</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># every 2 s at the default dt</span>
+        <span class="n">update_speed_field</span><span class="p">()</span>
+    <span class="n">simulation</span><span class="o">.</span><span class="n">iterate</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Without the update, 92 of the 96 agents queue at the north-east area, the one
+closest to them, and the room is empty after 22.8 s. With it, 36 agents switch to
+the south-east area once the queue builds up, and the room is empty after 18.3 s.</p>
+<ul class="simple">
+<li><p><strong>The default speed field</strong> of a region is used by every destination. Use
+<code class="docutils literal notranslate"><span class="pre">set_default_speed_field(region_id,</span> <span class="pre">values)</span></code> to change it for all of them.</p></li>
+<li><p><strong>A destination can have its own</strong> speed field in a region, for example when only
+the agents heading for one destination should react to the congestion: <code class="docutils literal notranslate"><span class="pre">set_custom_speed_field(stage_id,</span> <span class="pre">region_id,</span> <span class="pre">values)</span></code>. <code class="docutils literal notranslate"><span class="pre">custom_speed_fields(stage_id)</span></code> shows which regions have one, and
+<code class="docutils literal notranslate"><span class="pre">clear_custom_speed_field(stage_id,</span> <span class="pre">region_id)</span></code> goes back to the default.</p></li>
+<li><p><strong>Values</strong> are an array of shape <code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">width)</span></code> on the region’s grid, in m/s.
+On walkable cells they must be finite and at least 0.01 m/s; whether a cell is
+walkable is decided by the geometry, not by the speed field, so values on cells
+that are not walkable are ignored.</p></li>
+<li><p><strong>The speeds change routes, not walking speeds.</strong> How fast agents actually walk is
+still up to the operational model.</p></li>
+</ul>
+<p>Setting a speed field drops the travel times that depend on it; they are computed
+again the next time they are needed, so update a speed field every few seconds
+rather than every iteration: each update costs a new floor field computation.</p>
+</section>
+<section id="design-decisions-briefly">
+<h2>Design decisions, briefly<a class="headerlink" href="#design-decisions-briefly" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>One grid per region, on a shared lattice.</strong> Every region of a <code class="docutils literal notranslate"><span class="pre">WalkableSurface</span></code>
+gets its own grid, so stacked floors and overlapping regions never mix. Because all
+grids share one lattice, travel times pass from one region to the next through
+their connecting edges cell by cell, and the result is the same as if the whole
+surface were one grid.</p></li>
+<li><p><strong>Computed when needed, then kept.</strong> A destination’s field is computed the first time an
+agent needs it and reused afterwards. Destinations nobody walks to cost nothing.</p></li>
+<li><p><strong>Checked up front.</strong> The geometry is checked when the simulation is created: if a
+walkable area cannot be reached from the rest, you get an error then, not agents
+stuck later on.</p></li>
+<li><p><strong>32-bit storage.</strong> Travel times and speeds are stored as 32-bit floats, which
+halves the memory per destination; the difference to 64 bits is well below a millisecond
+of travel time.</p></li>
+<li><p><strong>Written in Rust.</strong> The floor field library is a small Rust crate behind the C++
+core. That is invisible from Python; invalid input, such as a speed field of the
+wrong shape, comes back as an error instead of a crash.</p></li>
+</ul>
+</section>
+<section id="known-limitations">
+<h2>Known limitations<a class="headerlink" href="#known-limitations" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Directions are approximate.</strong> The solver is first order: directions can be a few
+degrees off near a destination and behind corners, and travel times along diagonals are
+overestimated by a few percent. Smaller cells help.</p></li>
+<li><p><strong>The first step that needs a field is slower.</strong> Computing a field takes time once,
+and again after its speed field changed. With many destinations and large geometries
+this shows up as a pause in the first iteration.</p></li>
+<li><p><strong>Memory grows with destinations times area.</strong> Every destination keeps one grid per region.
+For large geometries with many destinations, a coarser <code class="docutils literal notranslate"><span class="pre">cell_size</span></code> helps.</p></li>
+<li><p><strong>Narrow passages need small cells,</strong> see the warning above.</p></li>
+</ul>
+</section>
+<section id="what-comes-next">
+<h2>What comes next<a class="headerlink" href="#what-comes-next" title="Link to this heading">#</a></h2>
+<p>We are looking at more accurate directions, computing fields for many destinations in
+parallel ahead of time, storing only walkable cells to save memory, finer grids
+where the geometry needs them. A complete change to mesh-based floor fields and solvers
+might also be imagineable.
+If one of these matters for your work, or something above does not behave
+as described, start a thread in the
+<a class="reference external" href="https://github.com/PedestrianDynamics/jupedsim/discussions">GitHub discussions</a>.</p>
+</section>
+</section>
+
+</div>
+</article>
+<nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="coding-style.html" rel="prev"><small>Previous</small>Coding style</a><a class="book-pagenav-next" href="../notes/index.html" rel="next"><small>Next</small>Notes</a>
+</nav>
+</div>
+<aside class="book-toc" id="book-toc">
+<p class="book-toc-title">On this page</p>
+<nav id="TableOfContents">
+<ul>
+<li><a class="reference internal" href="#">Floor fields: how agents find their way in JuPedSim 2</a><ul>
+<li><a class="reference internal" href="#what-a-floor-field-is">What a floor field is</a></li>
+<li><a class="reference internal" href="#tuning-the-grid">Tuning the grid</a></li>
+<li><a class="reference internal" href="#looking-at-the-fields">Looking at the fields</a><ul>
+<li><a class="reference internal" href="#saving-them-with-the-trajectory">Saving them with the trajectory</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rerouting-around-congestion-speed-fields">Rerouting around congestion: speed fields</a></li>
+<li><a class="reference internal" href="#design-decisions-briefly">Design decisions, briefly</a></li>
+<li><a class="reference internal" href="#known-limitations">Known limitations</a></li>
+<li><a class="reference internal" href="#what-comes-next">What comes next</a></li>
+</ul>
+</li>
+</ul>
+
+</nav>
+</aside>
+</main><footer class="site-footer"><div class="site-footer-inner">
+<p class="site-footer-text">© JuPedSim contributors · LGPL-3.0</p>
+<ul class="site-footer-links"><li><a href="https://github.com/PedestrianDynamics/jupedsim">GitHub</a></li><li><a href="/pull-requests/1727/notes/feed.xml">RSS</a></li><li><a href="/pull-requests/1727/docs/v1x/v1.4.2/">1.x docs</a></li></ul>
+</div></footer>
+  </body>
+</html>
