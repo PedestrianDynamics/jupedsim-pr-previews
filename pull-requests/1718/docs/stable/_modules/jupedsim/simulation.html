@@ -253,10 +253,9 @@
             <span class="n">floorfield_options</span><span class="o">=</span><span class="n">floorfield_options</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_timer</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="n">timer_log_level</span><span class="o">=</span><span class="n">timer_log_level</span><span class="p">)</span>
-        <span class="c1"># Stages with a floor field, and the (stage, region) pairs where one has</span>
-        <span class="c1"># its own speed field: a default speed field change reaches the others.</span>
+        <span class="c1"># Stages with a floor field: a default speed field change reaches those</span>
+        <span class="c1"># without a speed field of their own in its region.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_routed_stages</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_custom_speed_fields</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="c1"># Stage id -&gt; iteration from which on its travel times may differ from</span>
         <span class="c1"># the last ones handed out by _take_travel_time_changes.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_changes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -471,6 +470,28 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">custom_speed_fields</span><span class="p">(</span><span class="n">stage_id</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="Simulation.has_custom_speed_field">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.has_custom_speed_field">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_custom_speed_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stage_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Whether a stage has a speed field of its own in a region.</span>
+
+<span class="sd">        Unlike :func:`custom_speed_fields`, this does not copy the speed fields.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            stage_id: Id of the stage.</span>
+<span class="sd">            region_id: Id of the region.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ``True`` if the stage uses its own speed field in this region, ``False`` if</span>
+<span class="sd">            it uses the default. ``False`` for a stage without an area to route to, such</span>
+<span class="sd">            as a direct steering stage.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            SimulationError: if the stage or region does not exist.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">has_custom_speed_field</span><span class="p">(</span><span class="n">stage_id</span><span class="p">,</span> <span class="n">region_id</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="Simulation.default_speed_fields">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.default_speed_fields">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">default_speed_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">SpeedGrid</span><span class="p">]:</span>
@@ -515,7 +536,7 @@
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">set_default_speed_field</span><span class="p">(</span><span class="n">region_id</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">stage_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_routed_stages</span><span class="p">:</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">stage_id</span><span class="p">,</span> <span class="n">region_id</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_custom_speed_fields</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_custom_speed_field</span><span class="p">(</span><span class="n">stage_id</span><span class="p">,</span> <span class="n">region_id</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_travel_times_changed</span><span class="p">(</span><span class="n">stage_id</span><span class="p">)</span></div>
 
 
@@ -545,7 +566,6 @@
 <span class="sd">                exist, or the stage has no area to route to.</span>
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">set_custom_speed_field</span><span class="p">(</span><span class="n">stage_id</span><span class="p">,</span> <span class="n">region_id</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_custom_speed_fields</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">stage_id</span><span class="p">,</span> <span class="n">region_id</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_travel_times_changed</span><span class="p">(</span><span class="n">stage_id</span><span class="p">)</span></div>
 
 
@@ -565,9 +585,9 @@
 <span class="sd">            SimulationError: if the region or stage does not exist, or the stage has</span>
 <span class="sd">                no area to route to.</span>
 <span class="sd">        """</span>
+        <span class="n">had_one</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_custom_speed_field</span><span class="p">(</span><span class="n">stage_id</span><span class="p">,</span> <span class="n">region_id</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">clear_custom_speed_field</span><span class="p">(</span><span class="n">stage_id</span><span class="p">,</span> <span class="n">region_id</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">stage_id</span><span class="p">,</span> <span class="n">region_id</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_custom_speed_fields</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_custom_speed_fields</span><span class="o">.</span><span class="n">remove</span><span class="p">((</span><span class="n">stage_id</span><span class="p">,</span> <span class="n">region_id</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">had_one</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_travel_times_changed</span><span class="p">(</span><span class="n">stage_id</span><span class="p">)</span></div>
 
 
@@ -862,7 +882,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-11-06</footer>
+<footer class="report-footer">Last updated 2026-11-11</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

@@ -119,12 +119,12 @@
 <h1>Source code for jupedsim.hdf5_serialization</h1><div class="highlight"><pre>
 <span></span><span class="c1"># SPDX-License-Identifier: LGPL-3.0-or-later</span>
 
-<span class="sd">"""HDF5 trajectory writer and loader, schema version 3.</span>
+<span class="sd">"""HDF5 trajectory writer and loader, schema version 2.</span>
 
 <span class="sd">File Layout:</span>
 <span class="sd">```txt</span>
 <span class="sd">    /</span>
-<span class="sd">    │  @schema_version   int  layout version, currently 3</span>
+<span class="sd">    │  @schema_version   int  layout version, currently 2</span>
 <span class="sd">    │  @producer         str  "JuPedSim"</span>
 <span class="sd">    │  @producer_version str  JuPedSim version that wrote the file</span>
 <span class="sd">    │  @dt               f8   simulation time step [s]</span>
@@ -230,7 +230,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.serialization</span><span class="w"> </span><span class="kn">import</span> <span class="n">TrajectoryWriter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.simulation</span><span class="w"> </span><span class="kn">import</span> <span class="n">Simulation</span>
 
-<span class="n">SCHEMA_VERSION</span><span class="p">:</span> <span class="n">Final</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">SCHEMA_VERSION</span><span class="p">:</span> <span class="n">Final</span> <span class="o">=</span> <span class="mi">2</span>
 
 
 <div class="viewcode-block" id="Hdf5TrajectoryWriter">
@@ -1029,7 +1029,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-11-06</footer>
+<footer class="report-footer">Last updated 2026-11-11</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

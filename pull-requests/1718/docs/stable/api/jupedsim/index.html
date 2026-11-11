@@ -2155,6 +2155,29 @@ a region where it has no speed field of its own, see
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.Simulation.has_custom_speed_field">
+<span class="sig-name descname"><span class="pre">has_custom_speed_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stage_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/simulation.html#Simulation.has_custom_speed_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Simulation.has_custom_speed_field" title="Link to this definition">#</a></dt>
+<dd><p>Whether a stage has a speed field of its own in a region.</p>
+<p>Unlike <a class="reference internal" href="#jupedsim.Simulation.custom_speed_fields" title="jupedsim.Simulation.custom_speed_fields"><code class="xref py py-func docutils literal notranslate"><span class="pre">custom_speed_fields()</span></code></a>, this does not copy the speed fields.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stage_id</strong> – Id of the stage.</p></li>
+<li><p><strong>region_id</strong> – Id of the region.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the stage uses its own speed field in this region, <code class="docutils literal notranslate"><span class="pre">False</span></code> if
+it uses the default. <code class="docutils literal notranslate"><span class="pre">False</span></code> for a stage without an area to route to, such
+as a direct steering stage.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#jupedsim.SimulationError" title="jupedsim.SimulationError"><strong>SimulationError</strong></a> – if the stage or region does not exist.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="jupedsim.Simulation.iterate">
 <span class="sig-name descname"><span class="pre">iterate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/jupedsim/simulation.html#Simulation.iterate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Simulation.iterate" title="Link to this definition">#</a></dt>
 <dd><p>Advance the simulation by the given number of iterations.</p>
@@ -3343,7 +3366,7 @@ basic information about this library.</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-11-06</footer>
+<footer class="report-footer">Last updated 2026-11-11</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="../../disclaimer.html" rel="prev"><small>Previous</small>Disclaimer</a><a class="book-pagenav-next" href="../../citation/citation.html" rel="next"><small>Next</small>Cite JuPedSim</a>
 </nav>
@@ -3571,6 +3594,7 @@ basic information about this library.</p>
 <li><a class="reference internal" href="#jupedsim.Simulation.get_geometry"><code class="docutils literal notranslate"><span class="pre">Simulation.get_geometry()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.get_location"><code class="docutils literal notranslate"><span class="pre">Simulation.get_location()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.get_stage"><code class="docutils literal notranslate"><span class="pre">Simulation.get_stage()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Simulation.has_custom_speed_field"><code class="docutils literal notranslate"><span class="pre">Simulation.has_custom_speed_field()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.iterate"><code class="docutils literal notranslate"><span class="pre">Simulation.iterate()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.iteration_count"><code class="docutils literal notranslate"><span class="pre">Simulation.iteration_count()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.mark_agent_for_removal"><code class="docutils literal notranslate"><span class="pre">Simulation.mark_agent_for_removal()</span></code></a></li>
