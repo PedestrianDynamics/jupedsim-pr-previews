@@ -150,14 +150,12 @@ input to the direction model.</p>
 by combining the desired direction <span class="math notranslate nohighlight">\(\mathbf{e}_{\mathrm{des}}\)</span> with a
 repulsive contribution from nearby walls,</p>
 <div class="math notranslate nohighlight">
-\[
-\mathbf{e}_{\mathrm{ref}} =
+\[\mathbf{e}_{\mathrm{ref}} =
 \frac{\mathbf{e}_{\mathrm{des}} + \mathbf{R}_{\mathrm{wall}}}
      {\|\mathbf{e}_{\mathrm{des}} + \mathbf{R}_{\mathrm{wall}}\|},
 \qquad
 \mathbf{R}_{\mathrm{wall}} = \sum_{w}
--\,A_w \exp\!\left(\frac{r_i - d_{iw}}{B_w}\right) \mathbf{e}_{iw},
-\]</div>
+-\,A_w \exp\!\left(\frac{r_i - d_{iw}}{B_w}\right) \mathbf{e}_{iw},\]</div>
 <p>where the sum runs over wall segments in the agent’s vicinity, <span class="math notranslate nohighlight">\(d_{iw}\)</span>
 is the distance to the closest point on segment <span class="math notranslate nohighlight">\(w\)</span>, and
 <span class="math notranslate nohighlight">\(\mathbf{e}_{iw}\)</span> is the unit vector from the agent toward that point.
@@ -186,15 +184,11 @@ direction <span class="math notranslate nohighlight">\(\mathbf{e}_{\mathrm{ref}}
 <span class="math notranslate nohighlight">\(x_j = \mathbf{e}_{\mathrm{ref}}\cdot\mathbf{r}_j &gt; 0\)</span>) the signed
 lateral position is</p>
 <div class="math notranslate nohighlight">
-\[
-s_j = \mathbf{e}_{\mathrm{ref}} \times \mathbf{r}_j,\qquad y_j = |s_j|.
-\]</div>
+\[s_j = \mathbf{e}_{\mathrm{ref}} \times \mathbf{r}_j,\qquad y_j = |s_j|.\]</div>
 <p>Neighbor relevance is determined through an anisotropic weighting that
 decays exponentially in both the longitudinal and lateral directions,</p>
 <div class="math notranslate nohighlight">
-\[
-w_j = \exp\!\left(-\frac{x_j}{r_x}\right)\,\exp\!\left(-\frac{y_j}{r_y}\right),
-\]</div>
+\[w_j = \exp\!\left(-\frac{x_j}{r_x}\right)\,\exp\!\left(-\frac{y_j}{r_y}\right),\]</div>
 <p>with independent decay lengths <span class="math notranslate nohighlight">\(r_x = R\,\sigma_x\)</span> and
 <span class="math notranslate nohighlight">\(r_y = R\,\sigma_y\)</span>, where <span class="math notranslate nohighlight">\(R\)</span> is the base perception range
 (<code class="docutils literal notranslate"><span class="pre">range_neighbor_repulsion</span></code>) and <span class="math notranslate nohighlight">\(\sigma_x\)</span>, <span class="math notranslate nohighlight">\(\sigma_y\)</span> are the
@@ -203,16 +197,12 @@ dimensionless aspect factors <code class="docutils literal notranslate"><span cl
 of motion.</p>
 <p>Only the most relevant forward neighbor is used,</p>
 <div class="math notranslate nohighlight">
-\[
-j^* = \arg\max_{x_j &gt; 0} w_j,
-\]</div>
+\[j^* = \arg\max_{x_j &gt; 0} w_j,\]</div>
 <p>and the turning angle is</p>
 <div class="math notranslate nohighlight">
-\[
-\theta = \theta_{\max}\,\tanh(a_{j^*}),
+\[\theta = \theta_{\max}\,\tanh(a_{j^*}),
 \qquad
-a_j = -\,w_j\,\frac{s_j}{|s_j| + \varepsilon_s},
-\]</div>
+a_j = -\,w_j\,\frac{s_j}{|s_j| + \varepsilon_s},\]</div>
 <p>where the negative sign drives the agent away from the occupied side
 and <span class="math notranslate nohighlight">\(\varepsilon_s\)</span> regularizes the side-sign term near the centerline.
 The bound <span class="math notranslate nohighlight">\(\theta_{\max}\)</span> caps the per-step deviation from the reference
@@ -221,9 +211,7 @@ direction; it is set from <code class="docutils literal notranslate"><span class
 <p>The walking direction is then obtained by rotating the reference
 direction,</p>
 <div class="math notranslate nohighlight">
-\[
-\mathbf{e}_{\mathrm{move}} = R(\theta)\,\mathbf{e}_{\mathrm{ref}}.
-\]</div>
+\[\mathbf{e}_{\mathrm{move}} = R(\theta)\,\mathbf{e}_{\mathrm{ref}}.\]</div>
 <p>Because the update is purely rotational, the direction vector remains
 unit length by construction.</p>
 </section>
@@ -235,18 +223,14 @@ changes when the selected neighbor <span class="math notranslate nohighlight">\(
 To suppress such artifacts, the heading angle is relaxed toward the
 target angle through a first-order dynamics,</p>
 <div class="math notranslate nohighlight">
-\[
-\frac{\mathrm{d}\theta}{\mathrm{d}t}
-  = \frac{\theta_{\mathrm{target}} - \theta}{\tau_\theta},
-\]</div>
+\[\frac{\mathrm{d}\theta}{\mathrm{d}t}
+  = \frac{\theta_{\mathrm{target}} - \theta}{\tau_\theta},\]</div>
 <p>with <span class="math notranslate nohighlight">\(\tau_\theta\)</span> a relaxation time constant. Discretized with explicit
 Euler over a simulation step <span class="math notranslate nohighlight">\(\Delta t\)</span>,</p>
 <div class="math notranslate nohighlight">
-\[
-\theta^{n+1} = \theta^{n} + \alpha\,(\theta_{\mathrm{target}} - \theta^{n}),
+\[\theta^{n+1} = \theta^{n} + \alpha\,(\theta_{\mathrm{target}} - \theta^{n}),
 \qquad
-\alpha = \mathrm{clip}\!\left(\tfrac{\Delta t}{\tau_\theta},\,0,\,1\right).
-\]</div>
+\alpha = \mathrm{clip}\!\left(\tfrac{\Delta t}{\tau_\theta},\,0,\,1\right).\]</div>
 <p>Each agent therefore carries the heading angle as part of its state from
 one time step to the next; the direction model is not memoryless.
 Smaller values of <span class="math notranslate nohighlight">\(\tau_\theta\)</span> recover the instantaneous response of
@@ -273,17 +257,13 @@ the movement direction <span class="math notranslate nohighlight">\(\mathbf{e}_{
 <span class="math notranslate nohighlight">\(\mathbf{e}_{\mathrm{des}}\)</span>; they are combined using a small blending
 weight <span class="math notranslate nohighlight">\(w_b\)</span>,</p>
 <div class="math notranslate nohighlight">
-\[
-s = (1 - w_b)\,s_{\mathrm{move}} + w_b\,s_{\mathrm{goal}}.
-\]</div>
+\[s = (1 - w_b)\,s_{\mathrm{move}} + w_b\,s_{\mathrm{goal}}.\]</div>
 <p>Each component is the minimum, over all visible neighbors, of the
 geometric spacing <span class="math notranslate nohighlight">\(\|\mathbf{r}_j\| - l\)</span> with <span class="math notranslate nohighlight">\(l = r_i + r_j\)</span>, evaluated
 within the corridor <span class="math notranslate nohighlight">\(|\mathrm{left}(\mathbf{e})\cdot\mathbf{r}_j| \le l\)</span>.</p>
 <p>The walking speed follows the optimal-velocity relation</p>
 <div class="math notranslate nohighlight">
-\[
-v = \min\!\left(\max\!\left(\frac{s - b_f}{T},\,v_{\min}\right),\,v_0\right),
-\]</div>
+\[v = \min\!\left(\max\!\left(\frac{s - b_f}{T},\,v_{\min}\right),\,v_0\right),\]</div>
 <p>where <span class="math notranslate nohighlight">\(T\)</span> is the time gap (<code class="docutils literal notranslate"><span class="pre">time_gap</span></code>), <span class="math notranslate nohighlight">\(b_f\)</span> the buffer distance
 (<code class="docutils literal notranslate"><span class="pre">agent_buffer</span></code>), and <span class="math notranslate nohighlight">\(v_0\)</span> the free walking speed (<code class="docutils literal notranslate"><span class="pre">desired_speed</span></code>).
 The lower bound <span class="math notranslate nohighlight">\(v_{\min}\)</span> is set to a small negative value
@@ -517,7 +497,7 @@ agent handle (<code class="docutils literal notranslate"><span class="pre">sim.a
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-11-06</footer>
+<footer class="report-footer">Last updated 2026-11-11</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="index.html" rel="prev"><small>Previous</small>Pedestrian Models</a><a class="book-pagenav-next" href="warp_driver_model.html" rel="next"><small>Next</small>WarpDriver Model</a>
 </nav>
