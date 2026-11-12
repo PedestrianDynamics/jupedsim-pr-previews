@@ -258,9 +258,11 @@
 <span class="sd">        every_nth_travel_time_field: Of the travel times written with</span>
 <span class="sd">            ``write_travel_times=True``, keep the first of every stage and</span>
 <span class="sd">            then every n-th change of it; 1 keeps all of them. Use it to make</span>
-<span class="sd">            the file smaller when the speed fields change often: a skipped</span>
-<span class="sd">            change is not in the file, the snapshot before it stays in effect</span>
-<span class="sd">            until the next one kept.</span>
+<span class="sd">            the file smaller when the speed fields change often. A skipped</span>
+<span class="sd">            change is not in the file: agents were routed with it, but a reader</span>
+<span class="sd">            only finds the snapshot before it, until the next one kept. The</span>
+<span class="sd">            value is stored as ``@every_nth_travel_time_field``, see</span>
+<span class="sd">            :meth:`Hdf5TrajectoryLoader.load_every_nth_travel_time_field`.</span>
 <span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -833,6 +835,17 @@
             <span class="k">raise</span> <span class="n">Hdf5TrajectoryLoader</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"Travel time grid of stage_id=</span><span class="si">{</span><span class="n">bad</span><span class="p">[</span><span class="s1">'stage_id'</span><span class="p">]</span><span class="si">}</span><span class="s2">, region_id=</span><span class="si">{</span><span class="n">bad</span><span class="p">[</span><span class="s1">'region_id'</span><span class="p">]</span><span class="si">}</span><span class="s2"> runs past the </span><span class="si">{</span><span class="n">values_ds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> stored values"</span>
             <span class="p">)</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">[</span><span class="s2">"travel_times"</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span>
+        <span class="k">if</span> <span class="s2">"every_nth_travel_time_field"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">Hdf5TrajectoryLoader</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
+                <span class="s2">"Travel times attribute 'every_nth_travel_time_field' missing."</span>
+            <span class="p">)</span>
+        <span class="n">every_nth</span> <span class="o">=</span> <span class="n">attrs</span><span class="p">[</span><span class="s2">"every_nth_travel_time_field"</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">every_nth</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">))</span> <span class="ow">or</span> <span class="n">every_nth</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">Hdf5TrajectoryLoader</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Travel times attribute 'every_nth_travel_time_field' has to be an integer &gt; 0, found </span><span class="si">{</span><span class="n">every_nth</span><span class="si">!r}</span><span class="s2">"</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_every_nth_travel_time_field</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">every_nth</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_grids</span> <span class="o">=</span> <span class="n">grids</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_values</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span> <span class="o">=</span> <span class="n">values_ds</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_directions</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span> <span class="o">=</span> <span class="n">directions_ds</span>
@@ -937,13 +950,30 @@
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">grids</span><span class="p">[</span><span class="s2">"stage_id"</span><span class="p">])</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span></div>
 
 
+<div class="viewcode-block" id="Hdf5TrajectoryLoader.load_every_nth_travel_time_field">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Hdf5TrajectoryLoader.load_every_nth_travel_time_field">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_every_nth_travel_time_field</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Returns the ``every_nth_travel_time_field`` the file was written with:</span>
+<span class="sd">        of the changes of a stage's travel times, the first and then every n-th</span>
+<span class="sd">        one was kept. 1 means every change is in the file.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            Hdf5TrajectoryLoader.Error: if the file holds no travel times.</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_require_travel_time_grids</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_every_nth_travel_time_field</span></div>
+
+
 <div class="viewcode-block" id="Hdf5TrajectoryLoader.load_travel_time_iterations">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Hdf5TrajectoryLoader.load_travel_time_iterations">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">load_travel_time_iterations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stage_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Returns the iterations at which the travel times to one stage were</span>
 <span class="sd">        recorded, ascending: when the stage was added, and whenever its speed</span>
-<span class="sd">        fields changed. Agents are routed with each snapshot from its iteration</span>
-<span class="sd">        until the next one.</span>
+<span class="sd">        fields changed. Agents were routed with a snapshot from its iteration</span>
+<span class="sd">        until the stage's next change. If the file was written with</span>
+<span class="sd">        :meth:`load_every_nth_travel_time_field` 1, that is the next snapshot;</span>
+<span class="sd">        with n &gt; 1 the changes in between are not in the file, and agents were</span>
+<span class="sd">        routed with travel times the file does not hold.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            stage_id: id of the stage, see :meth:`load_travel_time_stage_ids`.</span>
@@ -969,6 +999,10 @@
 <span class="sd">            stage_id: id of the stage, see :meth:`load_travel_time_stage_ids`.</span>
 <span class="sd">            iteration: iteration whose travel times to load: the last snapshot</span>
 <span class="sd">                recorded at or before it, see :meth:`load_travel_time_iterations`.</span>
+<span class="sd">                With :meth:`load_every_nth_travel_time_field` n &gt; 1, a change</span>
+<span class="sd">                between that snapshot and ``iteration`` may be missing from the</span>
+<span class="sd">                file, so these need not be the travel times agents were routed</span>
+<span class="sd">                with at ``iteration``.</span>
 <span class="sd">                The frame ``f`` of the trajectory is iteration</span>
 <span class="sd">                ``f * every_nth_frame``. ``None`` loads the last snapshot.</span>
 
@@ -1029,7 +1063,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-11-11</footer>
+<footer class="report-footer">Last updated 2026-11-12</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

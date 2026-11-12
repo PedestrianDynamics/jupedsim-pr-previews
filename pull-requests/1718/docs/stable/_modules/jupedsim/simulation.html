@@ -484,10 +484,11 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            ``True`` if the stage uses its own speed field in this region, ``False`` if</span>
 <span class="sd">            it uses the default. ``False`` for a stage without an area to route to, such</span>
-<span class="sd">            as a direct steering stage.</span>
+<span class="sd">            as a direct steering stage, whatever ``region_id`` is.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            SimulationError: if the stage or region does not exist.</span>
+<span class="sd">            SimulationError: if the stage does not exist, or if it has an area to route</span>
+<span class="sd">                to and the region does not exist.</span>
 <span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">has_custom_speed_field</span><span class="p">(</span><span class="n">stage_id</span><span class="p">,</span> <span class="n">region_id</span><span class="p">)</span></div>
 
@@ -882,7 +883,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-11-11</footer>
+<footer class="report-footer">Last updated 2026-11-12</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">
