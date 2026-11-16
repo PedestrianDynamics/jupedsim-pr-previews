@@ -1469,7 +1469,8 @@ connectors (stairs, ramps) with <a class="reference internal" href="#jupedsim.Ge
 <span class="sig-name descname"><span class="pre">add_region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.15)"><span class="pre">collections.abc.Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">holes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.15)"><span class="pre">collections.abc.Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.15)"><span class="pre">collections.abc.Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsFloat</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></span></dt>
 <dd><p>Add a flat region.</p>
 <p>The region is given either as <code class="docutils literal notranslate"><span class="pre">polygon</span></code> or as <code class="docutils literal notranslate"><span class="pre">boundary</span></code> with optional
-<code class="docutils literal notranslate"><span class="pre">holes</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">holes</span></code>. Rings are closed automatically; repeating the first point at the end
+is optional.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1485,9 +1486,11 @@ connectors (stairs, ramps) with <a class="reference internal" href="#jupedsim.Ge
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#jupedsim.SimulationError" title="jupedsim.SimulationError"><strong>SimulationError</strong></a> – If the boundary or a hole is not simple or has fewer than
 three distinct points, a hole does not lie strictly inside the boundary
-or overlaps or touches another hole, two vertices are closer than
-2.5 cm, or a coordinate or the height is not finite. Overlapping or
-touching regions at the same height are reported by <a class="reference internal" href="#jupedsim.GeometryBuilder.build" title="jupedsim.GeometryBuilder.build"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code></a>.</p>
+or overlaps or touches another hole, walls of the region come closer
+than 2.5 cm to each other, or a coordinate or the height is not finite
+or larger than 100 km in magnitude.
+Overlapping or touching regions at the same height are reported by
+<a class="reference internal" href="#jupedsim.GeometryBuilder.build" title="jupedsim.GeometryBuilder.build"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code></a>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1496,17 +1499,19 @@ touching regions at the same height are reported by <a class="reference internal
 <dt class="sig sig-object py" id="jupedsim.GeometryBuilder.build">
 <span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#jupedsim.Geometry" title="jupedsim.Geometry"><span class="pre">Geometry</span></a></span></span><a class="headerlink" href="#jupedsim.GeometryBuilder.build" title="Link to this definition">#</a></dt>
 <dd><p>Create the geometry from the regions and connectors added so far.</p>
-<p>The builder is left unchanged and can be extended and built again.</p>
+<p>After success, the builder cannot be used any more; after an error, it is left
+unchanged.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The <a class="reference internal" href="#jupedsim.Geometry" title="jupedsim.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a> to pass to <a class="reference internal" href="#jupedsim.Simulation" title="jupedsim.Simulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Simulation</span></code></a>.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="#jupedsim.SimulationError" title="jupedsim.SimulationError"><strong>SimulationError</strong></a> – If no region was added, regions at the same height
-overlap or touch, two vertices of different regions are closer than
-2.5 cm, or the regions do not form one connected walkable surface
-without parts passing through each other. Regions cannot be removed,
-so after such an error the geometry has to be added to a new builder.</p>
+overlap or touch, regions less than 1.5 m above each other overlap,
+two vertices of different regions are closer than 2.5 cm, or the
+regions do not form one connected walkable surface without parts
+passing through each other. Regions cannot be removed, so after such
+an error the geometry has to be added to a new builder.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1535,7 +1540,8 @@ given by its two end points.</p></li>
 are the same, an edge is not an edge of its region or already carries
 a connector, or the connector is not simple in the (x, y) plane, does
 not lie outside of both regions, is not planar (the edges of regions
-at different heights must be parallel) or is too steep to walk.</p>
+at different heights must be parallel), is too steep to walk, or its
+walls come closer than 2.5 cm to each other.</p>
 </dd>
 </dl>
 </dd></dl>

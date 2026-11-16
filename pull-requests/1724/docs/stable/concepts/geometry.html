@@ -137,6 +137,7 @@ The borders of the walkable area may not be crossed by any agent.</p>
 <h2>Walkable area<a class="headerlink" href="#walkable-area" title="Link to this heading">#</a></h2>
 <p>The walkable area is built with a <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.GeometryBuilder" title="jupedsim.GeometryBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeometryBuilder</span></code></a> out of regions.
 Its <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.GeometryBuilder.build" title="jupedsim.GeometryBuilder.build"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code></a> creates the <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.Geometry" title="jupedsim.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a> that is passed to <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.Simulation" title="jupedsim.Simulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Simulation</span></code></a>.
+After that, the builder cannot be used any more; another geometry needs a new <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.GeometryBuilder" title="jupedsim.GeometryBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeometryBuilder</span></code></a>.
 Each region is one simple, i.e., non self intersecting polygon covering a non-zero area.
 It is added either as a <em>Shapely</em> <a class="reference external" href="https://shapely.readthedocs.io/en/2.0.1/reference/shapely.Polygon.html#shapely.Polygon" title="(in Shapely)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polygon</span></code></a> or as a list of points describing its boundary.</p>
 <figure class="align-center" id="id2">
@@ -252,15 +253,21 @@ An obstacle that touches the boundary along an edge is instead “subtracted” 
 <ul class="simple">
 <li><p>a ring (the boundary or a hole) has fewer than three points or intersects itself,</p></li>
 <li><p>a hole does not lie strictly inside the boundary, or two holes overlap or touch,</p></li>
-<li><p>two vertices of the region are closer than 2.5 cm to each other, or</p></li>
-<li><p>a coordinate or the height is not finite.</p></li>
+<li><p>walls of the region come closer than 2.5 cm to each other, or</p></li>
+<li><p>a coordinate or the height is not finite or larger than 100 km in magnitude.</p></li>
 </ul>
-<p>Polygons from <em>Shapely</em> operations or from WKT files can have vertices closer than 2.5 cm, e.g. the
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Coordinates from external sources, e.g. georeferenced data, can be too large. Move such a
+geometry close to the origin first, e.g. with <code class="docutils literal notranslate"><span class="pre">shapely.affinity.translate</span></code>.</p>
+</div>
+<p>Polygons from <em>Shapely</em> operations or from WKT files can have walls closer than 2.5 cm, e.g. the
 many vertices of a small circle made with <code class="docutils literal notranslate"><span class="pre">buffer</span></code>. Use fewer segments, e.g.
 <code class="docutils literal notranslate"><span class="pre">point.buffer(0.2,</span> <span class="pre">quad_segs=4)</span></code>, or remove such vertices, e.g. with
 <code class="docutils literal notranslate"><span class="pre">shapely.simplify(walkable_area,</span> <span class="pre">0.025)</span></code>, and check the result.</p>
 <p>Regions at the same height must neither overlap nor touch each other; join them into one polygon
-instead. <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.GeometryBuilder.build" title="jupedsim.GeometryBuilder.build"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code></a> reports this, as it can only be checked once all
+instead. Regions above each other must be at least 1.5 m apart in height where they overlap.
+<a class="reference internal" href="../api/jupedsim/index.html#jupedsim.GeometryBuilder.build" title="jupedsim.GeometryBuilder.build"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code></a> reports this, as it can only be checked once all
 regions are known. A region cannot be removed from a builder again, so create a new
 <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.GeometryBuilder" title="jupedsim.GeometryBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeometryBuilder</span></code></a> after such an error.</p>
 <div class="admonition note">
