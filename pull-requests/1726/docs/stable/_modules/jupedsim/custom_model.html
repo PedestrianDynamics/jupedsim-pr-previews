@@ -219,8 +219,12 @@
 <span class="sd">                :meth:`~jupedsim.simulation.Simulation.add_agent`.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            The state the agent starts with. The default returns ``state``</span>
-<span class="sd">            unchanged.</span>
+<span class="sd">            The state the agent starts with, of the same type as ``state``.</span>
+<span class="sd">            The default returns ``state`` unchanged.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            SimulationError: Raised by the simulation if the returned object</span>
+<span class="sd">                is not of the type of ``state``, e.g. ``None``.</span>
 <span class="sd">        """</span>
         <span class="k">return</span> <span class="n">state</span></div>
 
