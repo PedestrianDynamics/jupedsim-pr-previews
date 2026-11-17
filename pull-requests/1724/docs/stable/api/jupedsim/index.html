@@ -684,7 +684,7 @@ not be reused afterwards.</p>
 movement while it is within the critical wall distance. Combined with
 the parallel component of the agent’s direction this keeps agents at
 a safe distance from walls and yields smooth gliding along them.</p></li>
-<li><p><strong>rng_seed</strong> – Seed of the internally used random number generator.</p></li>
+<li><p><strong>rng_seed</strong> – Seed of the per-agent random numbers.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1197,6 +1197,37 @@ to move by; the simulation applies it as given.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.CustomOperationalModel.seed_agent_state">
+<span class="sig-name descname"><span class="pre">seed_agent_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../../_modules/jupedsim/custom_model.html#CustomOperationalModel.seed_agent_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.CustomOperationalModel.seed_agent_state" title="Link to this definition">#</a></dt>
+<dd><p>Prepare the state of an agent that is being added.</p>
+<p>Called once for every agent added to the simulation, after
+<a class="reference internal" href="#jupedsim.CustomOperationalModel.check_model_constraint" title="jupedsim.CustomOperationalModel.check_model_constraint"><code class="xref py py-meth docutils literal notranslate"><span class="pre">check_model_constraint()</span></code></a> accepted it, in the order the agents are
+added. A model delegating to a built-in one that draws random numbers
+(e.g. <a class="reference internal" href="#jupedsim.AnticipationVelocityModel" title="jupedsim.AnticipationVelocityModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnticipationVelocityModel</span></code></a> or
+<a class="reference internal" href="#jupedsim.WarpDriverModel" title="jupedsim.WarpDriverModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">WarpDriverModel</span></code></a>) has to seed the delegated state
+here with <code class="xref py py-meth docutils literal notranslate"><span class="pre">seed_state()</span></code>; otherwise the
+built-in model raises on its first step.</p>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">seed_agent_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">replace</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">sub</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_inner</span><span class="o">.</span><span class="n">seed_state</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">sub</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>state</strong> – The agent’s model state, the object you handed to
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">add_agent()</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The state the agent starts with, of the same type as <code class="docutils literal notranslate"><span class="pre">state</span></code>.
+The default returns <code class="docutils literal notranslate"><span class="pre">state</span></code> unchanged.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#jupedsim.SimulationError" title="jupedsim.SimulationError"><strong>SimulationError</strong></a> – Raised by the simulation if the returned object
+is not of the type of <code class="docutils literal notranslate"><span class="pre">state</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -1487,10 +1518,10 @@ is optional.</p>
 <dd class="field-odd"><p><a class="reference internal" href="#jupedsim.SimulationError" title="jupedsim.SimulationError"><strong>SimulationError</strong></a> – If the boundary or a hole is not simple or has fewer than
 three distinct points, a hole does not lie strictly inside the boundary
 or overlaps or touches another hole, walls of the region come closer
-than 2.5 cm to each other, or a coordinate or the height is not finite
-or larger than 100 km in magnitude.
-Overlapping or touching regions at the same height are reported by
-<a class="reference internal" href="#jupedsim.GeometryBuilder.build" title="jupedsim.GeometryBuilder.build"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code></a>.</p>
+than 2.5 cm to each other, a coordinate or the height is not finite
+or larger than 100 km in magnitude, or the region overlaps or touches a
+region at the same height, or overlaps one less than 1.5 m above or
+below it.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1506,12 +1537,11 @@ unchanged.</p>
 <dd class="field-odd"><p>The <a class="reference internal" href="#jupedsim.Geometry" title="jupedsim.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a> to pass to <a class="reference internal" href="#jupedsim.Simulation" title="jupedsim.Simulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Simulation</span></code></a>.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#jupedsim.SimulationError" title="jupedsim.SimulationError"><strong>SimulationError</strong></a> – If no region was added, regions at the same height
-overlap or touch, regions less than 1.5 m above each other overlap,
-two vertices of different regions are closer than 2.5 cm, or the
-regions do not form one connected walkable surface without parts
-passing through each other. Regions cannot be removed, so after such
-an error the geometry has to be added to a new builder.</p>
+<dd class="field-even"><p><a class="reference internal" href="#jupedsim.SimulationError" title="jupedsim.SimulationError"><strong>SimulationError</strong></a> – If no region was added, two vertices of different
+regions are closer than 2.5 cm, or the regions do not form one
+connected walkable surface without parts passing through each other.
+Regions cannot be removed; where fixing the error needs that, add the
+geometry to a new builder.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1521,7 +1551,9 @@ an error the geometry has to be added to a new builder.</p>
 <span class="sig-name descname"><span class="pre">connect_regions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_edge</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_edge</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#jupedsim.GeometryBuilder.connect_regions" title="Link to this definition">#</a></dt>
 <dd><p>Join two regions by a connector, e.g. a stair or a ramp.</p>
 <p>The connector is the planar quadrilateral spanned by one edge of each region.
-It is a region of its own and cannot be connected again.</p>
+It is a region of its own and cannot be connected again. Unlike
+<a class="reference internal" href="#jupedsim.GeometryBuilder.add_region" title="jupedsim.GeometryBuilder.add_region"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_region()</span></code></a>, it does not check the headroom to other regions; only
+<a class="reference internal" href="#jupedsim.GeometryBuilder.build" title="jupedsim.GeometryBuilder.build"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code></a> rejects a connector that passes through another region.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -2939,9 +2971,9 @@ agent standing exactly on the wall, where no direction exists.</p>
 <p>Based on Wolinski, Lin, and Pettré (2016) – probabilistic collision
 avoidance using warped intrinsic fields.</p>
 <p>The model-level parameters (the precomputed intrinsic collision-probability
-field controlled by <code class="docutils literal notranslate"><span class="pre">sigma</span></code>, the sampling and look-ahead parameters and a
-random number generator seeded by <code class="docutils literal notranslate"><span class="pre">rng_seed</span></code>) are carried by the model
-instance, which is passed to the simulation:</p>
+field controlled by <code class="docutils literal notranslate"><span class="pre">sigma</span></code>, the sampling and look-ahead parameters and the
+<code class="docutils literal notranslate"><span class="pre">rng_seed</span></code> each agent’s random numbers derive from) are carried by the
+model instance, which is passed to the simulation:</p>
 <div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">sim</span> <span class="o">=</span> <span class="n">jupedsim</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span>
     <span class="n">model</span><span class="o">=</span><span class="n">jupedsim</span><span class="o">.</span><span class="n">WarpDriverModel</span><span class="p">(</span><span class="n">sigma</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">rng_seed</span><span class="o">=</span><span class="mi">42</span><span class="p">),</span>
     <span class="n">geometry</span><span class="o">=...</span><span class="p">,</span>
@@ -2978,7 +3010,7 @@ collision field along the direction of motion.</p></li>
 collision field perpendicular to the direction of motion.</p></li>
 <li><p><strong>num_samples</strong> – Number of evenly spaced sample points on the projected
 trajectory.</p></li>
-<li><p><strong>rng_seed</strong> – Seed of the random number generator used for symmetry-breaking
+<li><p><strong>rng_seed</strong> – Seed of the per-agent random numbers used for symmetry-breaking
 perturbations and detour side selection. A fixed seed gives
 reproducible runs.</p></li>
 </ul>
@@ -3463,7 +3495,7 @@ basic information about this library.</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-11-16</footer>
+<footer class="report-footer">Last updated 2026-11-17</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="../../disclaimer.html" rel="prev"><small>Previous</small>Disclaimer</a><a class="book-pagenav-next" href="../../citation/citation.html" rel="next"><small>Next</small>Cite JuPedSim</a>
 </nav>
@@ -3581,6 +3613,7 @@ basic information about this library.</p>
 <li><a class="reference internal" href="#jupedsim.CustomOperationalModel"><code class="docutils literal notranslate"><span class="pre">CustomOperationalModel</span></code></a><ul>
 <li><a class="reference internal" href="#jupedsim.CustomOperationalModel.check_model_constraint"><code class="docutils literal notranslate"><span class="pre">CustomOperationalModel.check_model_constraint()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.CustomOperationalModel.compute_next_state"><code class="docutils literal notranslate"><span class="pre">CustomOperationalModel.compute_next_state()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.CustomOperationalModel.seed_agent_state"><code class="docutils literal notranslate"><span class="pre">CustomOperationalModel.seed_agent_state()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#jupedsim.DirectSteeringStage"><code class="docutils literal notranslate"><span class="pre">DirectSteeringStage</span></code></a><ul>

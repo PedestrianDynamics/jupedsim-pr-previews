@@ -267,9 +267,10 @@ many vertices of a small circle made with <code class="docutils literal notransl
 <code class="docutils literal notranslate"><span class="pre">shapely.simplify(walkable_area,</span> <span class="pre">0.025)</span></code>, and check the result.</p>
 <p>Regions at the same height must neither overlap nor touch each other; join them into one polygon
 instead. Regions above each other must be at least 1.5 m apart in height where they overlap.
-<a class="reference internal" href="../api/jupedsim/index.html#jupedsim.GeometryBuilder.build" title="jupedsim.GeometryBuilder.build"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code></a> reports this, as it can only be checked once all
-regions are known. A region cannot be removed from a builder again, so create a new
-<a class="reference internal" href="../api/jupedsim/index.html#jupedsim.GeometryBuilder" title="jupedsim.GeometryBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeometryBuilder</span></code></a> after such an error.</p>
+<a class="reference internal" href="../api/jupedsim/index.html#jupedsim.GeometryBuilder.add_region" title="jupedsim.GeometryBuilder.add_region"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_region()</span></code></a> rejects a region that breaks this; the builder stays
+usable. Connectors are not checked for headroom: a connector below another region is accepted at
+any height. Only <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.GeometryBuilder.build" title="jupedsim.GeometryBuilder.build"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code></a> rejects a connector that passes through
+another region.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>For more information how to create polygons with Shapely have a look at their <a class="reference external" href="https://shapely.readthedocs.io">documentation</a>.</p>
@@ -301,7 +302,7 @@ This can be done with:</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-11-16</footer>
+<footer class="report-footer">Last updated 2026-11-17</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="index.html" rel="prev"><small>Previous</small>Concepts</a><a class="book-pagenav-next" href="routing.html" rel="next"><small>Next</small>Routing</a>
 </nav>

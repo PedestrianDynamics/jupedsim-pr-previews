@@ -195,6 +195,39 @@
 <span class="sd">        """</span></div>
 
 
+<div class="viewcode-block" id="CustomOperationalModel.seed_agent_state">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.CustomOperationalModel.seed_agent_state">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">seed_agent_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Prepare the state of an agent that is being added.</span>
+
+<span class="sd">        Called once for every agent added to the simulation, after</span>
+<span class="sd">        :meth:`check_model_constraint` accepted it, in the order the agents are</span>
+<span class="sd">        added. A model delegating to a built-in one that draws random numbers</span>
+<span class="sd">        (e.g. :class:`~jupedsim.AnticipationVelocityModel` or</span>
+<span class="sd">        :class:`~jupedsim.WarpDriverModel`) has to seed the delegated state</span>
+<span class="sd">        here with :meth:`~jupedsim.OperationalModel.seed_state`; otherwise the</span>
+<span class="sd">        built-in model raises on its first step.</span>
+
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">            def seed_agent_state(self, state):</span>
+<span class="sd">                return replace(state, sub=self._inner.seed_state(state.sub))</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            state: The agent's model state, the object you handed to</span>
+<span class="sd">                :meth:`~jupedsim.simulation.Simulation.add_agent`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The state the agent starts with, of the same type as ``state``.</span>
+<span class="sd">            The default returns ``state`` unchanged.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            SimulationError: Raised by the simulation if the returned object</span>
+<span class="sd">                is not of the type of ``state``, e.g. ``None``.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="n">state</span></div>
+
+
 <div class="viewcode-block" id="CustomOperationalModel.check_model_constraint">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.CustomOperationalModel.check_model_constraint">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">check_model_constraint</span><span class="p">(</span>
@@ -213,7 +246,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-11-16</footer>
+<footer class="report-footer">Last updated 2026-11-17</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">
