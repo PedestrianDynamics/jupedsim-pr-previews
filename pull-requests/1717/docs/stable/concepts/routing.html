@@ -74,7 +74,6 @@
 <nav class="book-tree" aria-label="Documentation">
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/getting_started.html">Getting started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../migration_2_0.html">Migrating to 2.0</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Concepts</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="geometry.html">Geometry</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Routing</a></li>
@@ -173,7 +172,7 @@ The various types of stages will be explained below.</p>
 This needs to be uphold when the geometry is changed.</p>
 </div>
 <p>Each stage lies in one region of the walkable area. Its <code class="docutils literal notranslate"><span class="pre">region_id</span></code> is the id
-<a class="reference internal" href="../api/jupedsim/index.html#jupedsim.WalkableSurface.add_region" title="jupedsim.WalkableSurface.add_region"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_region()</span></code></a> returned for that region, see <a class="reference internal" href="geometry.html"><span class="doc">Geometry</span></a>.</p>
+<a class="reference internal" href="../api/jupedsim/index.html#jupedsim.GeometryBuilder.add_region" title="jupedsim.GeometryBuilder.add_region"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_region()</span></code></a> returned for that region, see <a class="reference internal" href="geometry.html"><span class="doc">Geometry</span></a>.</p>
 <section id="waypoint">
 <h4>Waypoint<a class="headerlink" href="#waypoint" title="Link to this heading">#</a></h4>
 <p>The most fundamental kind of stage is a <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.WaypointStage" title="jupedsim.WaypointStage"><code class="xref py py-class docutils literal notranslate"><span class="pre">Waypoint</span></code></a>. It represents a target the agent needs to reach.
@@ -380,7 +379,7 @@ When multiple paths lead to the target, the shortest one will be preferred.</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-11-13</footer>
+<footer class="report-footer">Last updated 2026-11-17</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="geometry.html" rel="prev"><small>Previous</small>Geometry</a><a class="book-pagenav-next" href="custom_serialization.html" rel="next"><small>Next</small>Custom Serialization</a>
 </nav>
