@@ -66,7 +66,6 @@
 <nav class="book-tree" aria-label="Documentation">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/getting_started.html">Getting started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="migration_2_0.html">Migrating to 2.0</a></li>
 <li class="toctree-l1"><a class="reference internal" href="concepts/index.html">Concepts</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="concepts/geometry.html">Geometry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="concepts/routing.html">Routing</a></li>
@@ -163,7 +162,7 @@
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.Simulation.add_journey">add_journey() (Simulation method)</a>
 </li>
-      <li><a href="api/jupedsim/index.html#jupedsim.WalkableSurface.add_region">add_region() (WalkableSurface method)</a>
+      <li><a href="api/jupedsim/index.html#jupedsim.GeometryBuilder.add_region">add_region() (GeometryBuilder method)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.Simulation.add_waypoint_stage">add_waypoint_stage() (Simulation method)</a>
 </li>
@@ -207,14 +206,16 @@
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.GeneralizedCentrifugalForceModelState.b_min">b_min (GeneralizedCentrifugalForceModelState property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/jupedsim/index.html#jupedsim.Hdf5TrajectoryWriter.begin_writing">begin_writing() (Hdf5TrajectoryWriter method)</a>
 
       <ul>
         <li><a href="api/jupedsim/index.html#jupedsim.TrajectoryWriter.begin_writing">(TrajectoryWriter method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/jupedsim/index.html#jupedsim.GeometryBuilder.build">build() (GeometryBuilder method)</a>
+</li>
       <li><a href="api/jupedsim/index.html#jupedsim.BuildInfo">BuildInfo (class in jupedsim)</a>
 </li>
   </ul></td>
@@ -279,7 +280,7 @@
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.CustomOperationalModel.compute_next_state">compute_next_state() (CustomOperationalModel method)</a>
 </li>
-      <li><a href="api/jupedsim/index.html#jupedsim.WalkableSurface.connect_regions">connect_regions() (WalkableSurface method)</a>
+      <li><a href="api/jupedsim/index.html#jupedsim.GeometryBuilder.connect_regions">connect_regions() (GeometryBuilder method)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.DirectSteeringStage.count_targeting">count_targeting() (DirectSteeringStage method)</a>
 
@@ -290,8 +291,6 @@
 </li>
       </ul></li>
       <li><a href="api/jupedsim/index.html#jupedsim.Transition.create_fixed_transition">create_fixed_transition() (Transition static method)</a>
-</li>
-      <li><a href="api/jupedsim/index.html#jupedsim.WalkableSurface.create_geometry">create_geometry() (WalkableSurface method)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.Transition.create_least_targeted_transition">create_least_targeted_transition() (Transition static method)</a>
 </li>
@@ -407,13 +406,11 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/jupedsim/index.html#jupedsim.Agent.final_target">final_target (Agent property)</a>
 </li>
-      <li><a href="api/jupedsim/index.html#jupedsim.FloorfieldOptions">FloorfieldOptions (class in jupedsim)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/jupedsim/index.html#jupedsim.SocialForceModelState.force_distance">force_distance (SocialForceModelState property)</a>
+      <li><a href="api/jupedsim/index.html#jupedsim.FloorfieldOptions">FloorfieldOptions (class in jupedsim)</a>
 </li>
-      <li><a href="api/jupedsim/index.html#jupedsim.Geometry.from_obj">from_obj() (Geometry static method)</a>
+      <li><a href="api/jupedsim/index.html#jupedsim.SocialForceModelState.force_distance">force_distance (SocialForceModelState property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -426,6 +423,8 @@
       <li><a href="api/jupedsim/index.html#jupedsim.GeneralizedCentrifugalForceModelState">GeneralizedCentrifugalForceModelState (class in jupedsim)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.Geometry">Geometry (class in jupedsim)</a>
+</li>
+      <li><a href="api/jupedsim/index.html#jupedsim.GeometryBuilder">GeometryBuilder (class in jupedsim)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.get_build_info">get_build_info() (in module jupedsim)</a>
 </li>
@@ -857,8 +856,6 @@
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/jupedsim/index.html#jupedsim.WalkableSurface">WalkableSurface (class in jupedsim)</a>
-</li>
       <li><a href="api/jupedsim/index.html#jupedsim.AnticipationVelocityModelState.wall_buffer_distance">wall_buffer_distance (AnticipationVelocityModelState property)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.SurfaceMeshShortestPathRoutingEngine.wall_clearance">wall_clearance() (SurfaceMeshShortestPathRoutingEngine method)</a>
