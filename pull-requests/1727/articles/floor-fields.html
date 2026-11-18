@@ -74,7 +74,7 @@
 <p class="report-kicker">Article</p>
 <h1 class="report-title">Floor fields: how agents find their way in JuPedSim 2</h1>
 <p class="report-subtitle">How agents in JuPedSim 2 find their way to waypoints and exits with floor fields, what you can tune, how to look at the fields and how to reroute agents around congestion with speed fields.</p>
-<p class="report-meta"><span class="meta-item">JuPedSim team</span><span class="meta-item"><time datetime="2026-11-10" data-pagefind-meta="date[datetime]">2026-11-10</time></span><span class="meta-item">1753 words</span><span class="meta-item">9 min read</span>
+<p class="report-meta"><span class="meta-item">JuPedSim team</span><span class="meta-item"><time datetime="2026-11-10" data-pagefind-meta="date[datetime]">2026-11-10</time></span><span class="meta-item">1730 words</span><span class="meta-item">9 min read</span>
 </p>
 </header>
 <div class="report-body" data-pagefind-body>
@@ -86,8 +86,7 @@ field is a map of how long it takes to reach one destination from every point of
 walkable area. An agent simply walks down the gradient on that map, so it always heads for
 the part of the destination it can reach fastest, around walls and holes, through doors
 and up and down stairs.</p>
-<p>This article explains what that means for your models, which settings you have,
-how to look at the fields, and how to change them, for example to reroute agents
+<p>how to look at the fields, and how to change them, for example to reroute agents
 around congestion. It ends with what we chose not to do (yet) and what comes next.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -140,8 +139,7 @@ walking. Set it smaller to let routes run closer to walls.</p></li>
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>A passage narrower than two cells may close. A cell that a wall runs through counts
-as not walkable, so a gap that holds no whole cell is blocked for the floor field.
+<p>A passage narrower than two grid cells may become blocked in the floor field. Cells intersected by a wall are marked as non-walkable, which can leave no continuous path of walkable cells through the passage.
 If that disconnects part of your geometry, creating the simulation fails with
 <code class="docutils literal notranslate"><span class="pre">SimulationError:</span> <span class="pre">Floor</span> <span class="pre">field:</span> <span class="pre">some</span> <span class="pre">walkable</span> <span class="pre">cells</span> <span class="pre">could</span> <span class="pre">not</span> <span class="pre">be</span> <span class="pre">reached,</span> <span class="pre">you</span> <span class="pre">can</span> <span class="pre">try</span> <span class="pre">reducing</span> <span class="pre">the</span> <span class="pre">cell</span> <span class="pre">size.</span></code> Reduce <code class="docutils literal notranslate"><span class="pre">cell_size</span></code> until the narrowest passage is at least
 two cells wide.</p>
@@ -178,7 +176,7 @@ the destination’s area and <code class="docutils literal notranslate"><span cl
 cell’s centre is sent along, zero inside the destination’s area, <code class="docutils literal notranslate"><span class="pre">nan</span></code> where a cell is
 not walkable.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">grid.origin</span></code>, <code class="docutils literal notranslate"><span class="pre">grid.width</span></code>, <code class="docutils literal notranslate"><span class="pre">grid.height</span></code>, <code class="docutils literal notranslate"><span class="pre">grid.cell_size</span></code> and <code class="docutils literal notranslate"><span class="pre">grid.extent</span></code>
-place the grid in the world. The grids of all regions share one lattice, so the
+describe the grid’s position and dimensions. The grids of all regions share one lattice, so the
 cells of neighbouring regions line up.</p></li>
 </ul>
 <p>Fields are computed when an agent first needs them; <code class="docutils literal notranslate"><span class="pre">travel_times</span></code> computes them on
@@ -202,13 +200,7 @@ run are included. They are stored as 32-bit floats.</p>
 </section>
 <section id="rerouting-around-congestion-speed-fields">
 <h2>Rerouting around congestion: speed fields<a class="headerlink" href="#rerouting-around-congestion-speed-fields" title="Link to this heading">#</a></h2>
-<p>The travel times come from a <em>speed field</em>: a walking speed for every cell. By
-default it is 1 m/s in the open and slower near walls, and it does not know about
-other agents. You can replace it. A common use is congestion: estimate the local
-density from the agents’ positions every few seconds, turn it into a walking speed
-with a fundamental diagram, and set that as the speed field. Crowded areas then
-look slow to the floor field, and agents weigh the queue at the nearest door against
-a longer walk to a free one.</p>
+<p>Travel times are computed from a <em>speed field</em>, which assigns a walking speed to each grid cell. The default speed is 1 m/s away from walls and decreases near them, without accounting for other agents. To include congestion, you can periodically estimate local density from agent positions, convert it into a speed using a fundamental diagram, and update the speed field. This increases the estimated travel time through crowded areas, allowing agents to take a longer route to a less congested exit. The speed field affects route choice; the operational model still determines how fast agents move.</p>
 <p>Here 96 agents start in the north half of a room whose exit has two areas, one in
 the north-east and one in the south-east corner. Every 2 s the density around every
 cell (agents within 1 m) is turned into a speed with Weidmann’s fundamental diagram:</p>
@@ -283,12 +275,12 @@ that are not walkable are ignored.</p></li>
 <li><p><strong>The speeds change routes, not walking speeds.</strong> How fast agents actually walk is
 still up to the operational model.</p></li>
 </ul>
-<p>Setting a speed field drops the travel times that depend on it; they are computed
+<p>Changing a speed field invalidates the cached travel times that depend on it; they are computed
 again the next time they are needed, so update a speed field every few seconds
 rather than every iteration: each update costs a new floor field computation.</p>
 </section>
-<section id="design-decisions-briefly">
-<h2>Design decisions, briefly<a class="headerlink" href="#design-decisions-briefly" title="Link to this heading">#</a></h2>
+<section id="implementation-details">
+<h2>Implementation details<a class="headerlink" href="#implementation-details" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><strong>One grid per region, on a shared lattice.</strong> Every region of a <code class="docutils literal notranslate"><span class="pre">WalkableSurface</span></code>
 gets its own grid, so stacked floors and overlapping regions never mix. Because all
@@ -296,10 +288,8 @@ grids share one lattice, travel times pass from one region to the next through
 their connecting edges cell by cell, and the result is the same as if the whole
 surface were one grid.</p></li>
 <li><p><strong>Computed when needed, then kept.</strong> A destination’s field is computed the first time an
-agent needs it and reused afterwards. Destinations nobody walks to cost nothing.</p></li>
-<li><p><strong>Checked up front.</strong> The geometry is checked when the simulation is created: if a
-walkable area cannot be reached from the rest, you get an error then, not agents
-stuck later on.</p></li>
+agent needs it and reused afterwards.</p></li>
+<li><p><strong>Connectivity checked at creation.</strong> When the simulation is created, JuPedSim checks for disconnected walkable areas and reports an error if it finds any. Agents may still get stuck during the simulation due to interactions in the operational model.</p></li>
 <li><p><strong>32-bit storage.</strong> Travel times and speeds are stored as 32-bit floats, which
 halves the memory per destination; the difference to 64 bits is well below a millisecond
 of travel time.</p></li>
@@ -324,13 +314,9 @@ For large geometries with many destinations, a coarser <code class="docutils lit
 </section>
 <section id="what-comes-next">
 <h2>What comes next<a class="headerlink" href="#what-comes-next" title="Link to this heading">#</a></h2>
-<p>We are looking at more accurate directions, computing fields for many destinations in
-parallel ahead of time, storing only walkable cells to save memory, finer grids
-where the geometry needs them. A complete change to mesh-based floor fields and solvers
-might also be imagineable.
-If one of these matters for your work, or something above does not behave
-as described, start a thread in the
-<a class="reference external" href="https://github.com/PedestrianDynamics/jupedsim/discussions">GitHub discussions</a>.</p>
+<p>We are considering more accurate direction estimates, parallel computation of fields before a simulation starts, and lower memory use by storing only walkable cells. Adaptive grids or mesh-based solvers are further options.</p>
+<p>If your simulations would benefit from these changes, describe your use case in <a class="reference external" href="https://github.com/PedestrianDynamics/jupedsim/discussions">GitHub discussions</a>.
+Please also report behaviour that differs from this description.</p>
 </section>
 </section>
 
@@ -351,7 +337,7 @@ as described, start a thread in the
 </ul>
 </li>
 <li><a class="reference internal" href="#rerouting-around-congestion-speed-fields">Rerouting around congestion: speed fields</a></li>
-<li><a class="reference internal" href="#design-decisions-briefly">Design decisions, briefly</a></li>
+<li><a class="reference internal" href="#implementation-details">Implementation details</a></li>
 <li><a class="reference internal" href="#known-limitations">Known limitations</a></li>
 <li><a class="reference internal" href="#what-comes-next">What comes next</a></li>
 </ul>
