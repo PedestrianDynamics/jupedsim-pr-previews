@@ -73,19 +73,15 @@
 <header class="report-header">
 <p class="report-kicker">Article</p>
 <h1 class="report-title">Floor fields: how agents find their way in JuPedSim 2</h1>
-<p class="report-subtitle">How agents in JuPedSim 2 find their way to waypoints and exits with floor fields, what you can tune, how to look at the fields and how to reroute agents around congestion with speed fields.</p>
-<p class="report-meta"><span class="meta-item">JuPedSim team</span><span class="meta-item"><time datetime="2026-11-10" data-pagefind-meta="date[datetime]">2026-11-10</time></span><span class="meta-item">1730 words</span><span class="meta-item">9 min read</span>
+<p class="report-subtitle">Floor fields guide agents towards exits in JuPedSim 2.0. This article explains their configuration, visualisation and use in routing around congestion.</p>
+<p class="report-meta"><span class="meta-item">JuPedSim team</span><span class="meta-item"><time datetime="2026-11-10" data-pagefind-meta="date[datetime]">2026-11-10</time></span><span class="meta-item">1697 words</span><span class="meta-item">8 min read</span>
 </p>
 </header>
 <div class="report-body" data-pagefind-body>
 <!-- SPDX-License-Identifier: LGPL-3.0-or-later -->
 <section class="tex2jax_ignore mathjax_ignore" id="floor-fields-how-agents-find-their-way-in-jupedsim-2">
 <h1>Floor fields: how agents find their way in JuPedSim 2<a class="headerlink" href="#floor-fields-how-agents-find-their-way-in-jupedsim-2" title="Link to this heading">#</a></h1>
-<p>In JuPedSim 2, agents walk to waypoints and exits along <em>floor fields</em>. A floor
-field is a map of how long it takes to reach one destination from every point of the
-walkable area. An agent simply walks down the gradient on that map, so it always heads for
-the part of the destination it can reach fastest, around walls and holes, through doors
-and up and down stairs.</p>
+<p>In JuPedSim 2.0, agents use floor fields to reach their targets. A floor field assigns an estimated travel time to each grid cell, based on a prescribed speed field. Agents follow decreasing travel times towards their destination, around obstacles and through connected regions and stairs. Their actual movement is determined by the operational model.</p>
 <p>how to look at the fields, and how to change them, for example to reroute agents
 around congestion. It ends with what we chose not to do (yet) and what comes next.</p>
 <div class="admonition note">
@@ -104,9 +100,7 @@ the openings between regions, and across stairs that connect floors. Mathematica
 it solves the eikonal equation with the fast sweeping method.</p>
 <p>Two consequences are worth knowing:</p>
 <ul class="simple">
-<li><p><strong>Agents head for the nearest part of a destination, not its centre.</strong> A wide exit
-or a destination made of several areas works as you would expect: every agent takes the part
-that is quickest to reach.</p></li>
+<li><p><strong>Agents head towards the part of the destination with the lowest estimated travel time.</strong> For a wide exit or a destination comprising several areas, this need not be its centre or the closest point.</p></li>
 <li><p><strong>Routes keep some distance from walls.</strong> Within <code class="docutils literal notranslate"><span class="pre">wall_influence_radius</span></code> of a wall
 the field assumes slower walking, so the quickest route runs a little away from
 walls and does not cut corners tightly. Doors and the openings between regions do
@@ -301,9 +295,7 @@ wrong shape, comes back as an error instead of a crash.</p></li>
 <section id="known-limitations">
 <h2>Known limitations<a class="headerlink" href="#known-limitations" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><strong>Directions are approximate.</strong> The solver is first order: directions can be a few
-degrees off near a destination and behind corners, and travel times along diagonals are
-overestimated by a few percent. Smaller cells help.</p></li>
+<li><p>The first-order solver introduces errors in travel times and directions, particularly near corners and destinations. Reducing the cell size improves resolution.</p></li>
 <li><p><strong>The first step that needs a field is slower.</strong> Computing a field takes time once,
 and again after its speed field changed. With many destinations and large geometries
 this shows up as a pause in the first iteration.</p></li>
