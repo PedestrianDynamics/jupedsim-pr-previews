@@ -171,19 +171,19 @@
 <span class="sd">    │       │  Region id of each triangle</span>
 <span class="sd">    │       └─ [M] &lt;u8</span>
 <span class="sd">    └── travel_times   only with write_travel_times=True</span>
-<span class="sd">        │  Floor field travel times to every waypoint and exit stage, one</span>
-<span class="sd">        │  grid per region in every snapshot of a stage. A stage gets a</span>
+<span class="sd">        │  Floor field travel times to every target (waypoint or exit), one</span>
+<span class="sd">        │  grid per region in every snapshot of a target. A target gets a</span>
 <span class="sd">        │  snapshot when it is added and whenever its speed fields change,</span>
 <span class="sd">        │  written after the next iteration (or on close); after the first,</span>
 <span class="sd">        │  only every n-th change is kept</span>
 <span class="sd">        │  @every_nth_travel_time_field int  n</span>
 <span class="sd">        ├── grids</span>
-<span class="sd">        │   │  One row per grid, ordered by iteration, then stage id, then</span>
+<span class="sd">        │   │  One row per grid, ordered by iteration, then target id, then</span>
 <span class="sd">        │   │  region id</span>
 <span class="sd">        │   │  type compound {</span>
 <span class="sd">        │   │    iteration &lt;u8 iteration from which on agents are routed with</span>
 <span class="sd">        │   │                  these travel times, see @every_nth_frame</span>
-<span class="sd">        │   │    stage_id  &lt;u8 stage the travel times lead to</span>
+<span class="sd">        │   │    target_id &lt;u8 target the travel times lead to</span>
 <span class="sd">        │   │    region_id &lt;u8 region the grid covers, see /regions</span>
 <span class="sd">        │   │    origin_x  &lt;f8 x of the lower-left corner of cell (0, 0) [m]</span>
 <span class="sd">        │   │    origin_y  &lt;f8 y of the lower-left corner of cell (0, 0) [m]</span>
@@ -198,13 +198,13 @@
 <span class="sd">        │   │  Travel times [s] of all grids, one after another, each</span>
 <span class="sd">        │   │  row-major from its lowest row: grid i is</span>
 <span class="sd">        │   │  values[offset:offset + width * height].reshape(height, width)</span>
-<span class="sd">        │   └─ Zero inside the stage's area, inf where a cell is not walkable</span>
+<span class="sd">        │   └─ Zero inside the target's area, inf where a cell is not walkable</span>
 <span class="sd">        └── directions</span>
 <span class="sd">            │  [N, 2] &lt;f4, shuffle + zstd, row k belongs to values[k]</span>
 <span class="sd">            │  Walking direction (x, y) at each cell's centre, the unit</span>
 <span class="sd">            │  vector an agent there is sent along: grid i is</span>
 <span class="sd">            │  directions[offset:offset + width * height].reshape(height, width, 2)</span>
-<span class="sd">            └─ Zero inside the stage's area, nan where a cell is not walkable</span>
+<span class="sd">            └─ Zero inside the target's area, nan where a cell is not walkable</span>
 <span class="sd">```</span>
 
 <span class="sd">Reading the file requires the Zstd filter: ``import hdf5plugin`` before</span>
@@ -247,15 +247,15 @@
 <span class="sd">        output_file: File to write to; an existing file is overwritten.</span>
 <span class="sd">        every_nth_frame: Record every n-th iteration, 1 records all of them.</span>
 <span class="sd">        write_travel_times: Also store the floor field travel times to every</span>
-<span class="sd">            waypoint and exit stage in /travel_times: a snapshot when the</span>
-<span class="sd">            stage is added, and again whenever its speed fields change, so a</span>
+<span class="sd">            target (waypoint or exit) in /travel_times: a snapshot when the</span>
+<span class="sd">            target is added, and again whenever its speed fields change, so a</span>
 <span class="sd">            run with dynamic speed fields can be replayed. Snapshots are</span>
 <span class="sd">            written after the next iteration, reusing the floor fields the</span>
 <span class="sd">            agents needed; fields no agent needed are solved for them.</span>
 <span class="sd">            Changes after the last iteration are written by :meth:`close`,</span>
 <span class="sd">            not by :meth:`close_after_error`.</span>
 <span class="sd">        every_nth_travel_time_field: Of the travel times written with</span>
-<span class="sd">            ``write_travel_times=True``, keep the first of every stage and</span>
+<span class="sd">            ``write_travel_times=True``, keep the first of every target and</span>
 <span class="sd">            then every n-th change of it; 1 keeps all of them. Use it to make</span>
 <span class="sd">            the file smaller when the speed fields change often. A skipped</span>
 <span class="sd">            change is not in the file: agents were routed with it, but a reader</span>
@@ -282,7 +282,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_every_nth_frame</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">every_nth_frame</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_write_travel_times</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">write_travel_times</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_every_nth_travel_time_field</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">every_nth_travel_time_field</span>
-        <span class="c1"># Stage id -&gt; travel time fields seen so far, written or skipped.</span>
+        <span class="c1"># Target id -&gt; travel time fields seen so far, written or skipped.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_fields_seen</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span><span class="p">:</span> <span class="n">Simulation</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_records_to_cache</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">16</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">trajectory_dtype</span><span class="p">()</span><span class="o">.</span><span class="n">itemsize</span>
@@ -547,7 +547,7 @@
         <span class="n">grids_ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"iteration"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
             <span class="s2">"Iteration from which on agents are routed with these travel times"</span>
         <span class="p">)</span>
-        <span class="n">grids_ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"stage_id"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Stage the travel times lead to"</span>
+        <span class="n">grids_ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"target_id"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Target the travel times lead to"</span>
         <span class="n">grids_ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"region_id"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Region the grid covers"</span>
         <span class="n">grids_ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"origin_x"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
             <span class="s2">"X of the lower-left corner of cell (0, 0) [m]"</span>
@@ -564,24 +564,24 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_grids_ds</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span> <span class="o">=</span> <span class="n">grids_ds</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_write_travel_time_changes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simulation</span><span class="p">:</span> <span class="n">Simulation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Append a snapshot of every stage whose travel times changed, see</span>
+<span class="w">        </span><span class="sd">"""Append a snapshot of every target whose travel times changed, see</span>
 <span class="sd">        :meth:`~jupedsim.Simulation._take_travel_time_changes`: its first, then</span>
 <span class="sd">        every n-th change, see ``every_nth_travel_time_field``.</span>
 
-<span class="sd">        A stage's travel times span all regions, so a snapshot holds a grid for</span>
+<span class="sd">        A target's travel times span all regions, so a snapshot holds a grid for</span>
 <span class="sd">        every region. Each grid's row is appended after its values, so an</span>
 <span class="sd">        interrupted run leaves no row pointing past the stored values; memory</span>
 <span class="sd">        holds one grid at a time.</span>
 <span class="sd">        """</span>
         <span class="k">for</span> <span class="p">(</span>
-            <span class="n">stage_id</span><span class="p">,</span>
+            <span class="n">target_id</span><span class="p">,</span>
             <span class="n">iteration</span><span class="p">,</span>
         <span class="p">)</span> <span class="ow">in</span> <span class="n">simulation</span><span class="o">.</span><span class="n">_take_travel_time_changes</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">seen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_fields_seen</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">stage_id</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_fields_seen</span><span class="p">[</span><span class="n">stage_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">seen</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">seen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_fields_seen</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">target_id</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_fields_seen</span><span class="p">[</span><span class="n">target_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">seen</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="k">if</span> <span class="n">seen</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_every_nth_travel_time_field</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="n">target</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">target</span><span class="p">(</span><span class="n">stage_id</span><span class="p">)</span>
+            <span class="n">target</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">target</span><span class="p">(</span><span class="n">target_id</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">region</span><span class="p">,</span> <span class="n">grid</span> <span class="ow">in</span> <span class="n">simulation</span><span class="o">.</span><span class="n">travel_times</span><span class="p">(</span><span class="n">target</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="n">offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_values_ds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="n">values</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"&lt;f4"</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
@@ -596,7 +596,7 @@
                     <span class="p">[</span>
                         <span class="p">(</span>
                             <span class="n">iteration</span><span class="p">,</span>
-                            <span class="n">stage_id</span><span class="p">,</span>
+                            <span class="n">target_id</span><span class="p">,</span>
                             <span class="n">region</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
                             <span class="o">*</span><span class="n">grid</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span>
                             <span class="n">grid</span><span class="o">.</span><span class="n">width</span><span class="p">,</span>
@@ -645,7 +645,7 @@
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span>
             <span class="p">[</span>
                 <span class="p">(</span><span class="s2">"iteration"</span><span class="p">,</span> <span class="s2">"&lt;u8"</span><span class="p">),</span>
-                <span class="p">(</span><span class="s2">"stage_id"</span><span class="p">,</span> <span class="s2">"&lt;u8"</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">"target_id"</span><span class="p">,</span> <span class="s2">"&lt;u8"</span><span class="p">),</span>
                 <span class="p">(</span><span class="s2">"region_id"</span><span class="p">,</span> <span class="s2">"&lt;u8"</span><span class="p">),</span>
                 <span class="p">(</span><span class="s2">"origin_x"</span><span class="p">,</span> <span class="s2">"&lt;f8"</span><span class="p">),</span>
                 <span class="p">(</span><span class="s2">"origin_y"</span><span class="p">,</span> <span class="s2">"&lt;f8"</span><span class="p">),</span>
@@ -693,7 +693,7 @@
 
     <span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">class</span><span class="w"> </span><span class="nc">TravelTimeGrid</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Travel times and walking directions to one stage over the floor field</span>
+<span class="w">        </span><span class="sd">"""Travel times and walking directions to one target over the floor field</span>
 <span class="sd">        grid of one region, as stored in /travel_times.</span>
 
 <span class="sd">        Has the fields of :class:`~jupedsim.TravelTimeGrid`, so code written</span>
@@ -711,11 +711,11 @@
 <span class="w">        </span><span class="sd">"""Edge length of a cell in metres."""</span>
         <span class="n">values</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">]</span>
 <span class="w">        </span><span class="sd">"""Travel times in seconds, shape ``(height, width)``; row 0 is the</span>
-<span class="sd">        lowest. Zero inside the stage's area, ``inf`` where a cell is not</span>
+<span class="sd">        lowest. Zero inside the target's area, ``inf`` where a cell is not</span>
 <span class="sd">        walkable."""</span>
         <span class="n">directions</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">]</span>
 <span class="w">        </span><span class="sd">"""Walking direction at each cell's centre, shape ``(height, width, 2)``.</span>
-<span class="sd">        Zero inside the stage's area, ``nan`` where a cell is not walkable."""</span>
+<span class="sd">        Zero inside the target's area, ``nan`` where a cell is not walkable."""</span>
 
         <span class="nd">@property</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">extent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
@@ -826,14 +826,14 @@
                 <span class="sa">f</span><span class="s2">"Travel times hold </span><span class="si">{</span><span class="n">values_ds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> values but </span><span class="si">{</span><span class="n">directions_ds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> directions"</span>
             <span class="p">)</span>
 
-        <span class="c1"># One row per grid, small enough to keep: loading a stage then needs no</span>
+        <span class="c1"># One row per grid, small enough to keep: loading a target then needs no</span>
         <span class="c1"># second read of /travel_times/grids.</span>
         <span class="n">grids</span> <span class="o">=</span> <span class="n">grids_ds</span><span class="p">[:]</span>
         <span class="n">ends</span> <span class="o">=</span> <span class="n">grids</span><span class="p">[</span><span class="s2">"offset"</span><span class="p">]</span> <span class="o">+</span> <span class="n">grids</span><span class="p">[</span><span class="s2">"width"</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"&lt;u8"</span><span class="p">)</span> <span class="o">*</span> <span class="n">grids</span><span class="p">[</span><span class="s2">"height"</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">grids</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ends</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">values_ds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
             <span class="n">bad</span> <span class="o">=</span> <span class="n">grids</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">ends</span> <span class="o">&gt;</span> <span class="n">values_ds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
             <span class="k">raise</span> <span class="n">Hdf5TrajectoryLoader</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">"Travel time grid of stage_id=</span><span class="si">{</span><span class="n">bad</span><span class="p">[</span><span class="s1">'stage_id'</span><span class="p">]</span><span class="si">}</span><span class="s2">, region_id=</span><span class="si">{</span><span class="n">bad</span><span class="p">[</span><span class="s1">'region_id'</span><span class="p">]</span><span class="si">}</span><span class="s2"> runs past the </span><span class="si">{</span><span class="n">values_ds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> stored values"</span>
+                <span class="sa">f</span><span class="s2">"Travel time grid of target_id=</span><span class="si">{</span><span class="n">bad</span><span class="p">[</span><span class="s1">'target_id'</span><span class="p">]</span><span class="si">}</span><span class="s2">, region_id=</span><span class="si">{</span><span class="n">bad</span><span class="p">[</span><span class="s1">'region_id'</span><span class="p">]</span><span class="si">}</span><span class="s2"> runs past the </span><span class="si">{</span><span class="n">values_ds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> stored values"</span>
             <span class="p">)</span>
         <span class="n">attrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">[</span><span class="s2">"travel_times"</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span>
         <span class="k">if</span> <span class="s2">"every_nth_travel_time_field"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
@@ -938,23 +938,23 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_grids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
 
 
-<div class="viewcode-block" id="Hdf5TrajectoryLoader.load_travel_time_stage_ids">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Hdf5TrajectoryLoader.load_travel_time_stage_ids">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">load_travel_time_stage_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""Returns the ids of all stages with travel times in the file, ascending.</span>
+<div class="viewcode-block" id="Hdf5TrajectoryLoader.load_travel_time_target_ids">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Hdf5TrajectoryLoader.load_travel_time_target_ids">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_travel_time_target_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Returns the ids of all targets with travel times in the file, ascending.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            Hdf5TrajectoryLoader.Error: if the file holds no travel times.</span>
 <span class="sd">        """</span>
         <span class="n">grids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_travel_time_grids</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">grids</span><span class="p">[</span><span class="s2">"stage_id"</span><span class="p">])</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">grids</span><span class="p">[</span><span class="s2">"target_id"</span><span class="p">])</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Hdf5TrajectoryLoader.load_every_nth_travel_time_field">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Hdf5TrajectoryLoader.load_every_nth_travel_time_field">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">load_every_nth_travel_time_field</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Returns the ``every_nth_travel_time_field`` the file was written with:</span>
-<span class="sd">        of the changes of a stage's travel times, the first and then every n-th</span>
+<span class="sd">        of the changes of a target's travel times, the first and then every n-th</span>
 <span class="sd">        one was kept. 1 means every change is in the file.</span>
 
 <span class="sd">        Raises:</span>
@@ -966,37 +966,37 @@
 
 <div class="viewcode-block" id="Hdf5TrajectoryLoader.load_travel_time_iterations">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Hdf5TrajectoryLoader.load_travel_time_iterations">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">load_travel_time_iterations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stage_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""Returns the iterations at which the travel times to one stage were</span>
-<span class="sd">        recorded, ascending: when the stage was added, and whenever its speed</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_travel_time_iterations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Returns the iterations at which the travel times to one target were</span>
+<span class="sd">        recorded, ascending: when the target was added, and whenever its speed</span>
 <span class="sd">        fields changed. Agents were routed with a snapshot from its iteration</span>
-<span class="sd">        until the stage's next change. If the file was written with</span>
+<span class="sd">        until the target's next change. If the file was written with</span>
 <span class="sd">        :meth:`load_every_nth_travel_time_field` 1, that is the next snapshot;</span>
 <span class="sd">        with n &gt; 1 the changes in between are not in the file, and agents were</span>
 <span class="sd">        routed with travel times the file does not hold.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            stage_id: id of the stage, see :meth:`load_travel_time_stage_ids`.</span>
+<span class="sd">            target_id: id of the target, see :meth:`load_travel_time_target_ids`.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            Hdf5TrajectoryLoader.Error: if the file holds no travel times, or none</span>
-<span class="sd">                for ``stage_id``.</span>
+<span class="sd">                for ``target_id``.</span>
 <span class="sd">        """</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_stage_travel_time_rows</span><span class="p">(</span><span class="n">stage_id</span><span class="p">)[</span><span class="s2">"iteration"</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_target_travel_time_rows</span><span class="p">(</span><span class="n">target_id</span><span class="p">)[</span><span class="s2">"iteration"</span><span class="p">]</span>
         <span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Hdf5TrajectoryLoader.load_travel_times">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Hdf5TrajectoryLoader.load_travel_times">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">load_travel_times</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">stage_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">iteration</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">target_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">iteration</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Hdf5TrajectoryLoader</span><span class="o">.</span><span class="n">TravelTimeGrid</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""Loads the travel times to one stage, the counterpart of</span>
+<span class="w">        </span><span class="sd">"""Loads the travel times to one target, the counterpart of</span>
 <span class="sd">        :meth:`~jupedsim.Simulation.travel_times`.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            stage_id: id of the stage, see :meth:`load_travel_time_stage_ids`.</span>
+<span class="sd">            target_id: id of the target, see :meth:`load_travel_time_target_ids`.</span>
 <span class="sd">            iteration: iteration whose travel times to load: the last snapshot</span>
 <span class="sd">                recorded at or before it, see :meth:`load_travel_time_iterations`.</span>
 <span class="sd">                With :meth:`load_every_nth_travel_time_field` n &gt; 1, a change</span>
@@ -1011,16 +1011,16 @@
 
 <span class="sd">        Raises:</span>
 <span class="sd">            Hdf5TrajectoryLoader.Error: if the file holds no travel times, none</span>
-<span class="sd">                for ``stage_id``, or none recorded at or before ``iteration``.</span>
+<span class="sd">                for ``target_id``, or none recorded at or before ``iteration``.</span>
 <span class="sd">        """</span>
-        <span class="n">rows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stage_travel_time_rows</span><span class="p">(</span><span class="n">stage_id</span><span class="p">)</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_target_travel_time_rows</span><span class="p">(</span><span class="n">target_id</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">iteration</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">snapshot</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="s2">"iteration"</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">earlier</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="s2">"iteration"</span><span class="p">][</span><span class="n">rows</span><span class="p">[</span><span class="s2">"iteration"</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">iteration</span><span class="p">]</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">earlier</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">Hdf5TrajectoryLoader</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">"No travel times for stage_id=</span><span class="si">{</span><span class="n">stage_id</span><span class="si">}</span><span class="s2"> at iteration </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s2">, the first are from iteration </span><span class="si">{</span><span class="n">rows</span><span class="p">[</span><span class="s1">'iteration'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span>
+                    <span class="sa">f</span><span class="s2">"No travel times for target_id=</span><span class="si">{</span><span class="n">target_id</span><span class="si">}</span><span class="s2"> at iteration </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s2">, the first are from iteration </span><span class="si">{</span><span class="n">rows</span><span class="p">[</span><span class="s1">'iteration'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
             <span class="n">snapshot</span> <span class="o">=</span> <span class="n">earlier</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
         <span class="n">rows</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="n">rows</span><span class="p">[</span><span class="s2">"iteration"</span><span class="p">]</span> <span class="o">==</span> <span class="n">snapshot</span><span class="p">]</span>
@@ -1044,13 +1044,15 @@
         <span class="k">return</span> <span class="n">result</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_stage_travel_time_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stage_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""The rows of /travel_times/grids for one stage, all snapshots."""</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_target_travel_time_rows</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">target_id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""The rows of /travel_times/grids for one target, all snapshots."""</span>
         <span class="n">grids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_travel_time_grids</span><span class="p">()</span>
-        <span class="n">rows</span> <span class="o">=</span> <span class="n">grids</span><span class="p">[</span><span class="n">grids</span><span class="p">[</span><span class="s2">"stage_id"</span><span class="p">]</span> <span class="o">==</span> <span class="n">stage_id</span><span class="p">]</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="n">grids</span><span class="p">[</span><span class="n">grids</span><span class="p">[</span><span class="s2">"target_id"</span><span class="p">]</span> <span class="o">==</span> <span class="n">target_id</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">Hdf5TrajectoryLoader</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">"No travel times for stage_id=</span><span class="si">{</span><span class="n">stage_id</span><span class="si">}</span><span class="s2">, found stages </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">load_travel_time_stage_ids</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span>
+                <span class="sa">f</span><span class="s2">"No travel times for target_id=</span><span class="si">{</span><span class="n">target_id</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">rows</span>
 
@@ -1063,7 +1065,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-11-17</footer>
+<footer class="report-footer">Last updated 2026-11-18</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

@@ -127,6 +127,7 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.agent</span><span class="w"> </span><span class="kn">import</span> <span class="n">Agent</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.custom_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">CustomOperationalModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.internal.messages</span><span class="w"> </span><span class="kn">import</span> <span class="n">id_and_name</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.internal.tracing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Timer</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.pyjupedsim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AnticipationVelocityModel</span><span class="p">,</span>
@@ -228,7 +229,7 @@
 <span class="sd">            dt: Iteration step size in seconds. It is recommended to leave this at its default</span>
 <span class="sd">                value.</span>
 <span class="sd">            floorfield_options: Parameters of the floor fields used to route agents to their</span>
-<span class="sd">                stage areas. Defaults to :class:`~jupedsim.FloorfieldOptions` with its default</span>
+<span class="sd">                target areas. Defaults to :class:`~jupedsim.FloorfieldOptions` with its default</span>
 <span class="sd">                values.</span>
 <span class="sd">            trajectory_writer: Any object implementing the TrajectoryWriter interface. JuPedSim</span>
 <span class="sd">                provides :class:`~jupedsim.Hdf5TrajectoryWriter`, which writes HDF5 files. If</span>
@@ -541,7 +542,7 @@
 <span class="w">        </span><span class="sd">"""Get the default walking speeds the floor fields are computed with, for every region.</span>
 
 <span class="sd">        Every region has a default speed field, which starts out slowing agents down</span>
-<span class="sd">        near walls (see :class:`~jupedsim.FloorfieldOptions`). Every stage uses it in</span>
+<span class="sd">        near walls (see :class:`~jupedsim.FloorfieldOptions`). Every target uses it in</span>
 <span class="sd">        a region where it has no speed field of its own, see</span>
 <span class="sd">        :func:`custom_speed_fields`.</span>
 
@@ -929,7 +930,10 @@
                 <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">what</span><span class="si">}</span><span class="s2"> must be a </span><span class="si">{</span><span class="n">kind</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">handle</span><span class="o">.</span><span class="n">_simulation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">handle</span><span class="si">!r}</span><span class="s2"> belongs to another simulation"</span><span class="p">)</span>
+            <span class="n">word</span> <span class="o">=</span> <span class="s2">"Target"</span> <span class="k">if</span> <span class="n">kind</span> <span class="ow">is</span> <span class="n">RouteTarget</span> <span class="k">else</span> <span class="n">kind</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">word</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">id_and_name</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span><span class="si">}</span><span class="s2"> belongs to another simulation"</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="n">handle</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_region_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
@@ -944,7 +948,9 @@
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="n">own</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">own</span> <span class="o">!=</span> <span class="n">region</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">region</span><span class="si">!r}</span><span class="s2"> belongs to another geometry"</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Region </span><span class="si">{</span><span class="n">id_and_name</span><span class="p">(</span><span class="n">region</span><span class="p">)</span><span class="si">}</span><span class="s2"> belongs to another geometry"</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="n">region</span><span class="o">.</span><span class="n">id</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_by_region</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">by_id</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">_Value</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Region</span><span class="p">,</span> <span class="n">_Value</span><span class="p">]:</span>
@@ -1034,7 +1040,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-11-17</footer>
+<footer class="report-footer">Last updated 2026-11-18</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

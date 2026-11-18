@@ -123,6 +123,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Final</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.internal.messages</span><span class="w"> </span><span class="kn">import</span> <span class="n">id_and_name</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.pyjupedsim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">_FixedTransitionDescription</span><span class="p">,</span>
     <span class="n">_LeastTargetedTransitionDescription</span><span class="p">,</span>
@@ -241,7 +242,8 @@
                 <span class="ow">or</span> <span class="n">weight</span> <span class="o">&lt;=</span> <span class="mi">0</span>
             <span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">"weights must be positive integers, got </span><span class="si">{</span><span class="n">weight</span><span class="si">!r}</span><span class="s2"> for </span><span class="si">{</span><span class="n">target</span><span class="si">!r}</span><span class="s2">"</span>
+                    <span class="sa">f</span><span class="s2">"weights must be positive integers, got </span><span class="si">{</span><span class="n">weight</span><span class="si">!r}</span><span class="s2"> for "</span>
+                    <span class="sa">f</span><span class="s2">"target </span><span class="si">{</span><span class="n">id_and_name</span><span class="p">(</span><span class="n">target</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_weights</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
 
@@ -363,7 +365,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-11-17</footer>
+<footer class="report-footer">Last updated 2026-11-18</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

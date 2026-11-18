@@ -351,11 +351,14 @@
         <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">))</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">"Agent(id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="si">}</span><span class="s2">)"</span></div>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">"Agent(id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="si">}</span><span class="s2">)"</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"Agent(id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="si">}</span><span class="s2">, name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">)"</span></div>
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-11-17</footer>
+<footer class="report-footer">Last updated 2026-11-18</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">
