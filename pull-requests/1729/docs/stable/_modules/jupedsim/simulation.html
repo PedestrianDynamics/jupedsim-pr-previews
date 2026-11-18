@@ -66,7 +66,6 @@
 <nav class="book-tree" aria-label="Documentation">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../notebooks/getting_started.html">Getting started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../migration_2_0.html">Migrating to 2.0</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../concepts/geometry.html">Geometry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../concepts/routing.html">Routing</a></li>
@@ -151,7 +150,6 @@
     <span class="n">SocialForceModelState</span><span class="p">,</span>
     <span class="n">SpeedGrid</span><span class="p">,</span>
     <span class="n">TravelTimeGrid</span><span class="p">,</span>
-    <span class="n">WalkableSurface</span><span class="p">,</span>
     <span class="n">WarpDriverModel</span><span class="p">,</span>
     <span class="n">WarpDriverModelState</span><span class="p">,</span>
     <span class="n">WaypointStage</span><span class="p">,</span>
@@ -196,7 +194,7 @@
             <span class="o">|</span> <span class="n">WarpDriverModel</span>
             <span class="o">|</span> <span class="n">CustomOperationalModel</span>
         <span class="p">),</span>
-        <span class="n">geometry</span><span class="p">:</span> <span class="n">WalkableSurface</span> <span class="o">|</span> <span class="n">Geometry</span><span class="p">,</span>
+        <span class="n">geometry</span><span class="p">:</span> <span class="n">Geometry</span><span class="p">,</span>
         <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
         <span class="n">floorfield_options</span><span class="p">:</span> <span class="n">FloorfieldOptions</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">trajectory_writer</span><span class="p">:</span> <span class="n">TrajectoryWriter</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -217,9 +215,11 @@
 <span class="sd">                    Model instances are consumed by this constructor and must not be reused</span>
 <span class="sd">                    afterwards.</span>
 <span class="sd">            geometry:</span>
-<span class="sd">                The walkable area: a :class:`~jupedsim.WalkableSurface` made of regions, which</span>
-<span class="sd">                may be stacked into floors and joined by stairs or ramps, or a</span>
-<span class="sd">                :class:`~jupedsim.Geometry` created from one.</span>
+<span class="sd">                The walkable area, created with :meth:`~jupedsim.GeometryBuilder.build` from</span>
+<span class="sd">                regions which may be stacked into floors and joined by stairs or ramps.</span>
+
+<span class="sd">                The geometry is not modified and may be shared, e.g. by several simulations</span>
+<span class="sd">                or with a :class:`~jupedsim.SurfaceMeshShortestPathRoutingEngine`.</span>
 
 <span class="sd">            dt: Iteration step size in seconds. It is recommended to leave this at its default</span>
 <span class="sd">                value.</span>
@@ -242,8 +242,6 @@
                 <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="o">=</span> <span class="n">trajectory_writer</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">WalkableSurface</span><span class="p">):</span>
-            <span class="n">geometry</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">create_geometry</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">floorfield_options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">floorfield_options</span> <span class="o">=</span> <span class="n">FloorfieldOptions</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">_Simulation</span><span class="p">(</span>
@@ -375,8 +373,8 @@
 <span class="sd">            stage_id: Id of the stage the agent initially targets.</span>
 <span class="sd">            position: Position to spawn the agent at, as ``(x, y)`` in metres.</span>
 <span class="sd">            region_id: Region the agent stands in, as returned by</span>
-<span class="sd">                :meth:`~jupedsim.WalkableSurface.add_region` or</span>
-<span class="sd">                :meth:`~jupedsim.WalkableSurface.connect_regions`.</span>
+<span class="sd">                :meth:`~jupedsim.GeometryBuilder.add_region` or</span>
+<span class="sd">                :meth:`~jupedsim.GeometryBuilder.connect_regions`.</span>
 <span class="sd">            state: Initial per-agent model state. For built-in models this is the matching</span>
 <span class="sd">                ``XModelState`` instance, e.g. :class:`~jupedsim.CollisionFreeSpeedModelState`. For</span>
 <span class="sd">                custom models this is your own object, of whatever type your</span>
@@ -883,7 +881,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-11-16</footer>
+<footer class="report-footer">Last updated 2026-11-18</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">
