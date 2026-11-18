@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../_static/logo.png" sizes="482x536" rel="icon" type="image/png">
-    <title>Floor fields: how agents find their way in JuPedSim 2 &#8212; JuPedSim  documentation</title>
+    <title>Floor fields in JuPedSim 2.0 &#8212; JuPedSim  documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
     <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=29da98fa" />
     <link rel="stylesheet" type="text/css" href="../_static/jupedsim-style.css?v=df79899f" />
@@ -69,18 +69,18 @@
 </nav>
 </aside>
 <div class="book-page">
-<article class="report" data-pagefind-filter="section:Article" data-pagefind-meta="title:Floor fields: how agents find their way in JuPedSim 2">
+<article class="report" data-pagefind-filter="section:Article" data-pagefind-meta="title:Floor fields in JuPedSim 2.0">
 <header class="report-header">
 <p class="report-kicker">Article</p>
-<h1 class="report-title">Floor fields: how agents find their way in JuPedSim 2</h1>
-<p class="report-subtitle">Floor fields guide agents towards exits in JuPedSim 2.0. This article explains their configuration, visualisation and use in routing around congestion.</p>
-<p class="report-meta"><span class="meta-item">JuPedSim team</span><span class="meta-item"><time datetime="2026-11-10" data-pagefind-meta="date[datetime]">2026-11-10</time></span><span class="meta-item">1697 words</span><span class="meta-item">8 min read</span>
+<h1 class="report-title">Floor fields in JuPedSim 2.0</h1>
+<p class="report-subtitle">How floor fields guide agents towards waypoints and exits, and how speed fields can redirect them around congestion.</p>
+<p class="report-meta"><span class="meta-item">JuPedSim team</span><span class="meta-item"><time datetime="2026-11-10" data-pagefind-meta="date[datetime]">2026-11-10</time></span><span class="meta-item">1837 words</span><span class="meta-item">9 min read</span>
 </p>
 </header>
 <div class="report-body" data-pagefind-body>
 <!-- SPDX-License-Identifier: LGPL-3.0-or-later -->
-<section class="tex2jax_ignore mathjax_ignore" id="floor-fields-how-agents-find-their-way-in-jupedsim-2">
-<h1>Floor fields: how agents find their way in JuPedSim 2<a class="headerlink" href="#floor-fields-how-agents-find-their-way-in-jupedsim-2" title="Link to this heading">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="floor-fields-in-jupedsim-2-0">
+<h1>Floor fields in JuPedSim 2.0<a class="headerlink" href="#floor-fields-in-jupedsim-2-0" title="Link to this heading">#</a></h1>
 <p>In JuPedSim 2.0, agents use floor fields to reach their targets. A floor field assigns an estimated travel time to each grid cell, based on a prescribed speed field. Agents follow decreasing travel times towards their destination, around obstacles and through connected regions and stairs. Their actual movement is determined by the operational model.</p>
 <p>how to look at the fields, and how to change them, for example to reroute agents
 around congestion. It ends with what we chose not to do (yet) and what comes next.</p>
@@ -163,6 +163,15 @@ get in every cell, and plots directly with matplotlib:</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">"travel time to the north exit [s]"</span><span class="p">)</span>
 </pre></div>
 </div>
+<figure class="align-default" id="id1">
+<img alt="Travel time to the north exit over the 20 m by 10 m room, with white contour lines every 2 s and grey arrows for the walking direction" src="../_images/travel-time.png" />
+<figcaption>
+<p><span class="caption-text">The field of the example, with contour lines every 2 s and one arrow of
+<code class="docutils literal notranslate"><span class="pre">grid.directions</span></code> per metre. The travel time grows with the distance to the
+exit. Near the walls the field assumes slower walking, so the contour lines
+bend and the arrows point away from the wall.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">grid.values</span></code> has shape <code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">width)</span></code>, row 0 is the lowest. It is zero inside
 the destination’s area and <code class="docutils literal notranslate"><span class="pre">inf</span></code> where a cell is not walkable.</p></li>
@@ -256,6 +265,24 @@ cell (agents within 1 m) is turned into a speed with Weidmann’s fundamental di
 <p>Without the update, 92 of the 96 agents queue at the north-east area, the one
 closest to them, and the room is empty after 22.8 s. With it, 36 agents switch to
 the south-east area once the queue builds up, and the room is empty after 18.3 s.</p>
+<figure class="align-default" id="id2">
+<img alt="Animation of both runs, one above the other: without the update nearly all agents queue at the north-east area; with it, part of the crowd turns to the south-east area" src="../_images/congestion.gif" />
+<figcaption>
+<p><span class="caption-text">Both runs, agents marked by the exit area they leave by. The background shows
+the speed field; with the update it is recomputed every 2 s and darkens where
+agents crowd.</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id3">
+<img alt="Four panels: travel time to the exit at 8 s without and with the update, the updated speed field at 8 s, and the number of agents in the room over time for both runs" src="../_images/congestion.png" />
+<figcaption>
+<p><span class="caption-text">Why agents switch. (a) Without the update the travel time ignores the crowd,
+and 92 of the 96 agents head for the north-east area. (b) With the update the queue
+slows the speed field (c), the travel time through the queue grows, and for the
+agents in the south part of the crowd the south-east area becomes quicker. (d)
+Agents in the room over time.</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 <ul class="simple">
 <li><p><strong>The default speed field</strong> of a region is used by every destination. Use
 <code class="docutils literal notranslate"><span class="pre">set_default_speed_field(region_id,</span> <span class="pre">values)</span></code> to change it for all of them.</p></li>
@@ -321,7 +348,7 @@ Please also report behaviour that differs from this description.</p>
 <p class="book-toc-title">On this page</p>
 <nav id="TableOfContents">
 <ul>
-<li><a class="reference internal" href="#">Floor fields: how agents find their way in JuPedSim 2</a><ul>
+<li><a class="reference internal" href="#">Floor fields in JuPedSim 2.0</a><ul>
 <li><a class="reference internal" href="#what-a-floor-field-is">What a floor field is</a></li>
 <li><a class="reference internal" href="#tuning-the-grid">Tuning the grid</a></li>
 <li><a class="reference internal" href="#looking-at-the-fields">Looking at the fields</a><ul>
