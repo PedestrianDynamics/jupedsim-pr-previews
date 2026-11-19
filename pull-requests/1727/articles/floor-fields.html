@@ -82,7 +82,7 @@
 <section class="tex2jax_ignore mathjax_ignore" id="floor-fields-in-jupedsim-2-0">
 <h1>Floor fields in JuPedSim 2.0<a class="headerlink" href="#floor-fields-in-jupedsim-2-0" title="Link to this heading">#</a></h1>
 <p>In JuPedSim 2.0, agents use floor fields to reach their targets. A floor field assigns an estimated travel time to each grid cell, based on a prescribed speed field. Agents follow decreasing travel times towards their destination, around obstacles and through connected regions and stairs. Their actual movement is determined by the operational model.</p>
-<p>In this artcile, we will cover how to look at the fields, and how to change them, for example to reroute agents
+<p>In this article, we will cover how to look at the fields, and how to change them, for example to reroute agents
 around congestion. It ends with what we chose not to do (yet) and what comes next.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -171,7 +171,7 @@ bend and the arrows point away from the wall.</span><a class="headerlink" href="
 </figcaption>
 </figure>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">grid.values</span></code> has shape <code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">width)</span></code>, row 0 is the lowest. It is zero inside
+<li><p><code class="docutils literal notranslate"><span class="pre">grid.values</span></code> has shape <code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">width)</span></code>; row 0 is the lowest. It is zero inside
 the destination’s area and <code class="docutils literal notranslate"><span class="pre">inf</span></code> where a cell is not walkable.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">grid.directions</span></code> has shape <code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">width,</span> <span class="pre">2)</span></code>: the unit vector an agent at the
 cell’s centre is sent along, zero inside the destination’s area, <code class="docutils literal notranslate"><span class="pre">nan</span></code> where a cell is
@@ -308,7 +308,7 @@ surface were one grid.</p></li>
 agent needs it and reused afterwards.</p></li>
 <li><p><strong>Connectivity checked at creation.</strong> When the simulation is created, JuPedSim checks for disconnected walkable areas and reports an error if it finds any. Agents may still get stuck during the simulation due to interactions in the operational model.</p></li>
 <li><p><strong>32-bit storage.</strong> Travel times and speeds are stored as 32-bit floats, which
-halves the memory per destination; the difference to 64 bits is well below a millisecond
+halves the memory per destination; the difference from 64-bit storage is well below a millisecond
 of travel time.</p></li>
 <li><p><strong>Written in Rust.</strong> The floor field library is a small Rust crate behind the C++
 core. That is invisible from Python; invalid input, such as a speed field of the
