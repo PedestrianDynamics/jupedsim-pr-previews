@@ -156,7 +156,7 @@
     <span class="n">_PythonModel</span><span class="p">,</span>
     <span class="n">_Simulation</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.records</span><span class="w"> </span><span class="kn">import</span> <span class="n">RemovalRecord</span><span class="p">,</span> <span class="n">TargetCompletionRecord</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.records</span><span class="w"> </span><span class="kn">import</span> <span class="n">RemovalRecord</span><span class="p">,</span> <span class="n">TargetReachedRecord</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.route</span><span class="w"> </span><span class="kn">import</span> <span class="n">AGENT_LOCATION</span><span class="p">,</span> <span class="n">Route</span><span class="p">,</span> <span class="n">Transition</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.serialization</span><span class="w"> </span><span class="kn">import</span> <span class="n">TrajectoryWriter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.target</span><span class="w"> </span><span class="kn">import</span> <span class="n">Exit</span><span class="p">,</span> <span class="n">RouteTarget</span><span class="p">,</span> <span class="n">Waypoint</span>
@@ -258,7 +258,10 @@
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_timer</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="n">timer_log_level</span><span class="o">=</span><span class="n">timer_log_level</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_target_descriptions</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Waypoint</span> <span class="o">|</span> <span class="n">Exit</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_target_completions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TargetCompletionRecord</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reached_targets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TargetReachedRecord</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># How many of the native records, which cover its most recent iteration and</span>
+        <span class="c1"># the agents added since, are in _reached_targets.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_native_reached_seen</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_removals</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">RemovalRecord</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="c1"># Stages with a floor field: a default speed field change reaches those</span>
         <span class="c1"># without a speed field of their own in its region.</span>
@@ -321,7 +324,7 @@
 
 <span class="sd">        The targets of the route are those in its transitions. The transition leaving</span>
 <span class="sd">        :data:`~jupedsim.AGENT_LOCATION` chooses an agent's first target, once, when</span>
-<span class="sd">        it joins the route. An agent completing a target goes on to what the</span>
+<span class="sd">        it joins the route. An agent reaching a target goes on to what the</span>
 <span class="sd">        transition leaving that target chooses. A target without an outgoing</span>
 <span class="sd">        transition ends the route; the agent stays in its area. Loops are allowed.</span>
 
@@ -381,9 +384,9 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Agent</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Add an agent to the simulation.</span>
 
-<span class="sd">        Give either ``route`` or ``steer_to``. Targets are completed in</span>
-<span class="sd">        :meth:`iterate`, not here: an agent placed inside its first target still has</span>
-<span class="sd">        it afterwards and completes it in the next iteration.</span>
+<span class="sd">        Give either ``route`` or ``steer_to``. An agent placed inside its first target</span>
+<span class="sd">        has reached it, see :meth:`reached_targets`, and moves on in the next</span>
+<span class="sd">        iteration; inside an exit, it leaves at the beginning of the next iteration.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            location: Where the agent stands, e.g. ``region.at(x, y)``.</span>
@@ -395,7 +398,7 @@
 <span class="sd">            steer_to: Steers the agent to this location instead of a route. The way</span>
 <span class="sd">                there follows the walkable surface (the shortest path, not the floor</span>
 <span class="sd">                field), so speed fields do not apply. Its arrival is reported once by</span>
-<span class="sd">                :meth:`target_completions`.</span>
+<span class="sd">                :meth:`reached_targets`.</span>
 <span class="sd">            state: Initial per-agent model state. For built-in models the matching</span>
 <span class="sd">                ``XModelState``, e.g. :class:`~jupedsim.CollisionFreeSpeedModelState`;</span>
 <span class="sd">                its defaults if not given. For custom models your own object, of</span>
@@ -448,6 +451,7 @@
                 <span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">,</span>
                 <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
             <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_collect_reached_targets</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">Agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">)</span></div>
 
 
@@ -667,24 +671,30 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">mark_agent_for_removal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_own</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">Agent</span><span class="p">,</span> <span class="s2">"agent"</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Simulation.target_completions">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.target_completions">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">target_completions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">TargetCompletionRecord</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""The targets completed in the most recent :meth:`iterate` call.</span>
+<div class="viewcode-block" id="Simulation.reached_targets">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.reached_targets">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reached_targets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">TargetReachedRecord</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""The targets reached in the most recent :meth:`iterate` call, and by the agents</span>
+<span class="sd">        added since.</span>
 
-<span class="sd">        One record per completed target assignment: revisiting a target in a loop</span>
-<span class="sd">        gives another record; staying at the last target of a route gives none, and</span>
-<span class="sd">        neither does being pushed out of it and returning. In direct steering, one</span>
+<span class="sd">        An agent reaches its target when it stands in one of its areas after a step, or</span>
+<span class="sd">        when it is added there. One record per target assignment: revisiting a target in</span>
+<span class="sd">        a loop gives another record; staying at the last target of a route gives none,</span>
+<span class="sd">        and neither does being pushed out of it and returning. In direct steering, one</span>
 <span class="sd">        record per ``steer_to`` assignment, once the agent is within 0.05 m of the</span>
 <span class="sd">        location.</span>
 
+<span class="sd">        An agent moves on at the beginning of the next iteration, by one target per step:</span>
+<span class="sd">        if it stands in its next target already, it reaches that one after the step.</span>
+<span class="sd">        After :meth:`~jupedsim.Agent.reroute`, too, it reaches its new target after the</span>
+<span class="sd">        next step at the earliest.</span>
+
 <span class="sd">        Records cover all iterations of the most recent ``iterate(count)`` call.</span>
 <span class="sd">        Reading does not consume them; the next :meth:`iterate` replaces them. Scripts</span>
-<span class="sd">        that react to completions call :meth:`iterate` with ``count=1``, so that a</span>
-<span class="sd">        :meth:`~jupedsim.Agent.reroute` takes effect in the step after the</span>
-<span class="sd">        completion.</span>
+<span class="sd">        that react to them call :meth:`iterate` with ``count=1``, so that a</span>
+<span class="sd">        :meth:`~jupedsim.Agent.reroute` takes effect in the step after.</span>
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_target_completions</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reached_targets</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Simulation.removed_agents">
@@ -692,9 +702,10 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">removed_agents</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">RemovalRecord</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""The agents removed in the most recent :meth:`iterate` call.</span>
 
-<span class="sd">        An exit completion always comes with a removal record from the same</span>
-<span class="sd">        :meth:`iterate` call; the agent itself leaves at the beginning of the next.</span>
-<span class="sd">        Covers the same iterations as :meth:`target_completions`.</span>
+<span class="sd">        An agent that reaches an exit, or is marked by :meth:`mark_agent_for_removal`,</span>
+<span class="sd">        is removed at the beginning of the next iteration; until then</span>
+<span class="sd">        :attr:`Agent.leaving &lt;jupedsim.Agent.leaving&gt;` is true. Covers the same</span>
+<span class="sd">        iterations as :meth:`reached_targets`.</span>
 <span class="sd">        """</span>
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_removals</span><span class="p">)</span></div>
 
@@ -711,30 +722,34 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="o">.</span><span class="n">begin_writing</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="o">.</span><span class="n">write_iteration_state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_target_completions</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reached_targets</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_removals</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">iterate</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_collect_records</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_native_reached_seen</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_collect_reached_targets</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">agent_id</span><span class="p">,</span> <span class="n">exit_id</span><span class="p">,</span> <span class="n">time</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">removed_agents</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_removals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">RemovalRecord</span><span class="p">(</span>
+                        <span class="n">agent_id</span><span class="p">,</span>
+                        <span class="kc">None</span> <span class="k">if</span> <span class="n">exit_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">RouteTarget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exit_id</span><span class="p">),</span>
+                        <span class="n">time</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="o">.</span><span class="n">write_iteration_state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_collect_records</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">agent_id</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">location</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">target_completions</span><span class="p">():</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_collect_reached_targets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">agent_id</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">location</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">reached_targets</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_native_reached_seen</span>
+        <span class="p">):</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
                 <span class="n">target</span> <span class="o">=</span> <span class="n">RouteTarget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_target_completions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">TargetCompletionRecord</span><span class="p">(</span><span class="n">agent_id</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">location</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reached_targets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">TargetReachedRecord</span><span class="p">(</span><span class="n">agent_id</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">location</span><span class="p">)</span>
             <span class="p">)</span>
-        <span class="k">for</span> <span class="n">agent_id</span><span class="p">,</span> <span class="n">exit_id</span><span class="p">,</span> <span class="n">time</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">removed_agents</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_removals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">RemovalRecord</span><span class="p">(</span>
-                    <span class="n">agent_id</span><span class="p">,</span>
-                    <span class="kc">None</span> <span class="k">if</span> <span class="n">exit_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">RouteTarget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exit_id</span><span class="p">),</span>
-                    <span class="n">time</span><span class="p">,</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_native_reached_seen</span> <span class="o">+=</span> <span class="mi">1</span>
 
 <div class="viewcode-block" id="Simulation.close">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.close">[docs]</a>
@@ -882,13 +897,15 @@
 <span class="sd">        Raises:</span>
 <span class="sd">            KeyError: if there is no such target.</span>
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lookup</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">,</span> <span class="s2">"target"</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lookup</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">(),</span> <span class="s2">"target"</span><span class="p">)</span></div>
 
 
-    <span class="nd">@property</span>
+<div class="viewcode-block" id="Simulation.targets">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.targets">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">targets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">RouteTarget</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""All targets, in the order they were added."""</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">RouteTarget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">stage_ids</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">RouteTarget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">stage_ids</span><span class="p">()]</span></div>
+
 
 <div class="viewcode-block" id="Simulation.route">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.route">[docs]</a>
@@ -898,13 +915,15 @@
 <span class="sd">        Raises:</span>
 <span class="sd">            KeyError: if there is no such route.</span>
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lookup</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">routes</span><span class="p">,</span> <span class="s2">"route"</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lookup</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">routes</span><span class="p">(),</span> <span class="s2">"route"</span><span class="p">)</span></div>
 
 
-    <span class="nd">@property</span>
+<div class="viewcode-block" id="Simulation.routes">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.routes">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">routes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Route</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""All routes, in the order they were added."""</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">Route</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">route_ids</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">Route</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">route_ids</span><span class="p">()]</span></div>
+
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_lookup</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="n">handles</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">_Handle</span><span class="p">],</span> <span class="n">kind</span><span class="p">:</span> <span class="nb">str</span>
@@ -1040,7 +1059,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-11-19</footer>
+<footer class="report-footer">Last updated 2026-11-20</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

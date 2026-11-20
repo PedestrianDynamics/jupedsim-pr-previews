@@ -172,7 +172,7 @@
 <td><p>Describes an exit, to be added with <a class="reference internal" href="#jupedsim.Simulation.add_target" title="jupedsim.Simulation.add_target"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_target()</span></code></a>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.FixedTransition" title="jupedsim.FixedTransition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FixedTransition</span></code></a></p></td>
-<td><p>Leads every agent completing <code class="docutils literal notranslate"><span class="pre">source</span></code> to <code class="docutils literal notranslate"><span class="pre">target</span></code>.</p></td>
+<td><p>Leads every agent reaching <code class="docutils literal notranslate"><span class="pre">source</span></code> to <code class="docutils literal notranslate"><span class="pre">target</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.FloorfieldOptions" title="jupedsim.FloorfieldOptions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FloorfieldOptions</span></code></a></p></td>
 <td><p>Parameters of the floor fields used to route agents to their stage areas.</p></td>
@@ -196,7 +196,7 @@
 <td><p>Write trajectory data to an HDF5 file, see the module docs for the layout.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.LeastTargetedTransition" title="jupedsim.LeastTargetedTransition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LeastTargetedTransition</span></code></a></p></td>
-<td><p>Leads an agent completing <code class="docutils literal notranslate"><span class="pre">source</span></code> to the target fewest agents head for.</p></td>
+<td><p>Leads an agent reaching <code class="docutils literal notranslate"><span class="pre">source</span></code> to the target fewest agents head for.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.Location" title="jupedsim.Location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Location</span></code></a></p></td>
 <td><p>A point on the walkable surface, together with the region it lies in.</p></td>
@@ -211,7 +211,7 @@
 <td><p>An agent left the simulation, see <a class="reference internal" href="#jupedsim.Simulation.removed_agents" title="jupedsim.Simulation.removed_agents"><code class="xref py py-meth docutils literal notranslate"><span class="pre">removed_agents()</span></code></a>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.RoundRobinTransition" title="jupedsim.RoundRobinTransition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RoundRobinTransition</span></code></a></p></td>
-<td><p>Distributes the agents completing <code class="docutils literal notranslate"><span class="pre">source</span></code> over targets by weight.</p></td>
+<td><p>Distributes the agents reaching <code class="docutils literal notranslate"><span class="pre">source</span></code> over targets by weight.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.Route" title="jupedsim.Route"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Route</span></code></a></p></td>
 <td><p>Handle to a route in a <a class="reference internal" href="#jupedsim.Simulation" title="jupedsim.Simulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Simulation</span></code></a>.</p></td>
@@ -234,8 +234,8 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.SurfaceMeshShortestPathRoutingEngine" title="jupedsim.SurfaceMeshShortestPathRoutingEngine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SurfaceMeshShortestPathRoutingEngine</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.TargetCompletionRecord" title="jupedsim.TargetCompletionRecord"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TargetCompletionRecord</span></code></a></p></td>
-<td><p>An agent completed its target, see <a class="reference internal" href="#jupedsim.Simulation.target_completions" title="jupedsim.Simulation.target_completions"><code class="xref py py-meth docutils literal notranslate"><span class="pre">target_completions()</span></code></a>.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.TargetReachedRecord" title="jupedsim.TargetReachedRecord"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TargetReachedRecord</span></code></a></p></td>
+<td><p>An agent reached its target, see <a class="reference internal" href="#jupedsim.Simulation.reached_targets" title="jupedsim.Simulation.reached_targets"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reached_targets()</span></code></a>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.TrajectoryWriter" title="jupedsim.TrajectoryWriter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TrajectoryWriter</span></code></a></p></td>
 <td><p>Interface for trajectory serialization</p></td>
@@ -436,15 +436,17 @@ are equal if they refer to the same agent.</p>
 </pre></div>
 </div>
 <p>It takes effect in the next iteration and cannot be called while the
-simulation iterates. <a class="reference internal" href="#jupedsim.Agent.current_target" title="jupedsim.Agent.current_target"><code class="xref py py-attr docutils literal notranslate"><span class="pre">current_target</span></code></a> returns the new target at once.</p>
+simulation iterates. <a class="reference internal" href="#jupedsim.Agent.current_target" title="jupedsim.Agent.current_target"><code class="xref py py-attr docutils literal notranslate"><span class="pre">current_target</span></code></a> returns the new target at once.
+The agent reaches it after the next step at the earliest, even if it stands
+in it already.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – if the arguments do not form one of the calls above, or a
 handle belongs to another simulation.</p></li>
 <li><p><a class="reference internal" href="#jupedsim.SimulationError" title="jupedsim.SimulationError"><strong>SimulationError</strong></a> – if <code class="docutils literal notranslate"><span class="pre">first_target</span></code> is not part of the route, the agent
-has no route to jump in, or the location belongs to another
-geometry.</p></li>
+has no route to jump in, the location belongs to another geometry, or
+the agent is <a class="reference internal" href="#jupedsim.Agent.leaving" title="jupedsim.Agent.leaving"><code class="xref py py-attr docutils literal notranslate"><span class="pre">leaving</span></code></a>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -462,6 +464,13 @@ geometry.</p></li>
 <dt class="sig sig-object py" id="jupedsim.Agent.id">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></em><a class="headerlink" href="#jupedsim.Agent.id" title="Link to this definition">#</a></dt>
 <dd><p>Numeric id of the agent in this simulation.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="jupedsim.Agent.leaving">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">leaving</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><span class="pre">bool</span></a></em><a class="headerlink" href="#jupedsim.Agent.leaving" title="Link to this definition">#</a></dt>
+<dd><p>Whether the agent leaves the simulation at the beginning of the next
+iteration: it reached an exit, or was marked for removal.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -1234,7 +1243,7 @@ is not of the type of <code class="docutils literal notranslate"><span class="pr
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Exit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">areas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.15)"><span class="pre">collections.abc.Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Area</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">jupedsim.pyjupedsim.Region</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/jupedsim/target.html#Exit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Exit" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">_TargetDescription</span></code></p>
 <p>Describes an exit, to be added with <a class="reference internal" href="#jupedsim.Simulation.add_target" title="jupedsim.Simulation.add_target"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_target()</span></code></a>.</p>
-<p>Agents completing an exit leave the simulation at the beginning of the next
+<p>Agents reaching an exit leave the simulation at the beginning of the next
 iteration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1247,7 +1256,7 @@ iteration.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="jupedsim.FixedTransition">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FixedTransition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jupedsim.target.RouteTarget</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/jupedsim/route.html#FixedTransition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.FixedTransition" title="Link to this definition">#</a></dt>
-<dd><p>Leads every agent completing <code class="docutils literal notranslate"><span class="pre">source</span></code> to <code class="docutils literal notranslate"><span class="pre">target</span></code>.</p>
+<dd><p>Leads every agent reaching <code class="docutils literal notranslate"><span class="pre">source</span></code> to <code class="docutils literal notranslate"><span class="pre">target</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1888,7 +1897,7 @@ of a single iteration.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="jupedsim.LeastTargetedTransition">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LeastTargetedTransition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.15)"><span class="pre">collections.abc.Iterable</span></a><span class="p"><span class="pre">[</span></span><span class="pre">jupedsim.target.RouteTarget</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/jupedsim/route.html#LeastTargetedTransition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.LeastTargetedTransition" title="Link to this definition">#</a></dt>
-<dd><p>Leads an agent completing <code class="docutils literal notranslate"><span class="pre">source</span></code> to the target fewest agents head for.</p>
+<dd><p>Leads an agent reaching <code class="docutils literal notranslate"><span class="pre">source</span></code> to the target fewest agents head for.</p>
 <p>Agents are counted over all routes of the simulation, at the moment of the
 decision. On a tie, the earlier target in <code class="docutils literal notranslate"><span class="pre">targets</span></code> is chosen.</p>
 <dl class="field-list simple">
@@ -1906,7 +1915,7 @@ decision. On a tie, the earlier target in <code class="docutils literal notransl
 
 <dl class="py property">
 <dt class="sig sig-object py" id="jupedsim.LeastTargetedTransition.targets">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">targets</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">jupedsim.target.RouteTarget</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#jupedsim.LeastTargetedTransition.targets" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">targets</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><span class="pre">jupedsim.target.RouteTarget</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#jupedsim.LeastTargetedTransition.targets" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -2039,7 +2048,7 @@ lie in this region.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="jupedsim.RemovalRecord.time">
 <span class="sig-name descname"><span class="pre">time</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></em><a class="headerlink" href="#jupedsim.RemovalRecord.time" title="Link to this definition">#</a></dt>
-<dd><p>Simulation time in seconds of the exit completion, or of the removal.</p>
+<dd><p>Simulation time in seconds of the removal.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2047,7 +2056,7 @@ lie in this region.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="jupedsim.RoundRobinTransition">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RoundRobinTransition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.15)"><span class="pre">collections.abc.Mapping</span></a><span class="p"><span class="pre">[</span></span><span class="pre">jupedsim.target.RouteTarget</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/jupedsim/route.html#RoundRobinTransition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.RoundRobinTransition" title="Link to this definition">#</a></dt>
-<dd><p>Distributes the agents completing <code class="docutils literal notranslate"><span class="pre">source</span></code> over targets by weight.</p>
+<dd><p>Distributes the agents reaching <code class="docutils literal notranslate"><span class="pre">source</span></code> over targets by weight.</p>
 <p>The agents deciding here go to the targets in turn, as many in a row to each as
 its weight says: with weights <code class="docutils literal notranslate"><span class="pre">{a:</span> <span class="pre">2,</span> <span class="pre">b:</span> <span class="pre">1}</span></code> the sequence is a, a, b, a, a, b,
 … The sequence is counted per route and source.</p>
@@ -2066,7 +2075,7 @@ its weight says: with weights <code class="docutils literal notranslate"><span c
 
 <dl class="py property">
 <dt class="sig sig-object py" id="jupedsim.RoundRobinTransition.weights">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">weights</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><span class="pre">jupedsim.target.RouteTarget</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#jupedsim.RoundRobinTransition.weights" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">weights</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.15)"><span class="pre">collections.abc.Mapping</span></a><span class="p"><span class="pre">[</span></span><span class="pre">jupedsim.target.RouteTarget</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#jupedsim.RoundRobinTransition.weights" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -2133,9 +2142,9 @@ instances of simulation.</p>
 <dt class="sig sig-object py" id="jupedsim.Simulation.add_agent">
 <span class="sig-name descname"><span class="pre">add_agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jupedsim.pyjupedsim.Location</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">route</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jupedsim.route.Route</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jupedsim.target.RouteTarget</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steer_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jupedsim.pyjupedsim.Location</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jupedsim.pyjupedsim.GeneralizedCentrifugalForceModelState</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">jupedsim.pyjupedsim.CollisionFreeSpeedModelState</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">jupedsim.pyjupedsim.CollisionFreeSpeedModelV2State</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">jupedsim.pyjupedsim.CollisionFreeSpeedModelV3State</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">jupedsim.pyjupedsim.AnticipationVelocityModelState</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">jupedsim.pyjupedsim.SocialForceModelState</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">jupedsim.pyjupedsim.WarpDriverModelState</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">jupedsim.agent.Agent</span></span></span><a class="reference internal" href="../../_modules/jupedsim/simulation.html#Simulation.add_agent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Simulation.add_agent" title="Link to this definition">#</a></dt>
 <dd><p>Add an agent to the simulation.</p>
-<p>Give either <code class="docutils literal notranslate"><span class="pre">route</span></code> or <code class="docutils literal notranslate"><span class="pre">steer_to</span></code>. Targets are completed in
-<a class="reference internal" href="#jupedsim.Simulation.iterate" title="jupedsim.Simulation.iterate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">iterate()</span></code></a>, not here: an agent placed inside its first target still has
-it afterwards and completes it in the next iteration.</p>
+<p>Give either <code class="docutils literal notranslate"><span class="pre">route</span></code> or <code class="docutils literal notranslate"><span class="pre">steer_to</span></code>. An agent placed inside its first target
+has reached it, see <a class="reference internal" href="#jupedsim.Simulation.reached_targets" title="jupedsim.Simulation.reached_targets"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reached_targets()</span></code></a>, and moves on in the next
+iteration; inside an exit, it leaves at the beginning of the next iteration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -2148,7 +2157,7 @@ Later targets follow the route’s transitions.</p></li>
 <li><p><strong>steer_to</strong> – Steers the agent to this location instead of a route. The way
 there follows the walkable surface (the shortest path, not the floor
 field), so speed fields do not apply. Its arrival is reported once by
-<a class="reference internal" href="#jupedsim.Simulation.target_completions" title="jupedsim.Simulation.target_completions"><code class="xref py py-meth docutils literal notranslate"><span class="pre">target_completions()</span></code></a>.</p></li>
+<a class="reference internal" href="#jupedsim.Simulation.reached_targets" title="jupedsim.Simulation.reached_targets"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reached_targets()</span></code></a>.</p></li>
 <li><p><strong>state</strong> – Initial per-agent model state. For built-in models the matching
 <code class="docutils literal notranslate"><span class="pre">XModelState</span></code>, e.g. <a class="reference internal" href="#jupedsim.CollisionFreeSpeedModelState" title="jupedsim.CollisionFreeSpeedModelState"><code class="xref py py-class docutils literal notranslate"><span class="pre">CollisionFreeSpeedModelState</span></code></a>;
 its defaults if not given. For custom models your own object, of
@@ -2180,7 +2189,7 @@ belongs to another geometry, or the name is already used.</p></li>
 <dd><p>Add a route: a directed graph of targets, given by its transitions.</p>
 <p>The targets of the route are those in its transitions. The transition leaving
 <a class="reference internal" href="#jupedsim.AGENT_LOCATION" title="jupedsim.AGENT_LOCATION"><code class="xref py py-data docutils literal notranslate"><span class="pre">AGENT_LOCATION</span></code></a> chooses an agent’s first target, once, when
-it joins the route. An agent completing a target goes on to what the
+it joins the route. An agent reaching a target goes on to what the
 transition leaving that target chooses. A target without an outgoing
 transition ends the route; the agent stays in its area. Loops are allowed.</p>
 <dl class="field-list simple">
@@ -2468,12 +2477,34 @@ that is about to leave already.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.Simulation.reached_targets">
+<span class="sig-name descname"><span class="pre">reached_targets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><span class="pre">jupedsim.records.TargetReachedRecord</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/jupedsim/simulation.html#Simulation.reached_targets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Simulation.reached_targets" title="Link to this definition">#</a></dt>
+<dd><p>The targets reached in the most recent <a class="reference internal" href="#jupedsim.Simulation.iterate" title="jupedsim.Simulation.iterate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">iterate()</span></code></a> call, and by the agents
+added since.</p>
+<p>An agent reaches its target when it stands in one of its areas after a step, or
+when it is added there. One record per target assignment: revisiting a target in
+a loop gives another record; staying at the last target of a route gives none,
+and neither does being pushed out of it and returning. In direct steering, one
+record per <code class="docutils literal notranslate"><span class="pre">steer_to</span></code> assignment, once the agent is within 0.05 m of the
+location.</p>
+<p>An agent moves on at the beginning of the next iteration, by one target per step:
+if it stands in its next target already, it reaches that one after the step.
+After <a class="reference internal" href="#jupedsim.Agent.reroute" title="jupedsim.Agent.reroute"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reroute()</span></code></a>, too, it reaches its new target after the
+next step at the earliest.</p>
+<p>Records cover all iterations of the most recent <code class="docutils literal notranslate"><span class="pre">iterate(count)</span></code> call.
+Reading does not consume them; the next <a class="reference internal" href="#jupedsim.Simulation.iterate" title="jupedsim.Simulation.iterate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">iterate()</span></code></a> replaces them. Scripts
+that react to them call <a class="reference internal" href="#jupedsim.Simulation.iterate" title="jupedsim.Simulation.iterate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">iterate()</span></code></a> with <code class="docutils literal notranslate"><span class="pre">count=1</span></code>, so that a
+<a class="reference internal" href="#jupedsim.Agent.reroute" title="jupedsim.Agent.reroute"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reroute()</span></code></a> takes effect in the step after.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="jupedsim.Simulation.removed_agents">
 <span class="sig-name descname"><span class="pre">removed_agents</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><span class="pre">jupedsim.records.RemovalRecord</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/jupedsim/simulation.html#Simulation.removed_agents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Simulation.removed_agents" title="Link to this definition">#</a></dt>
 <dd><p>The agents removed in the most recent <a class="reference internal" href="#jupedsim.Simulation.iterate" title="jupedsim.Simulation.iterate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">iterate()</span></code></a> call.</p>
-<p>An exit completion always comes with a removal record from the same
-<a class="reference internal" href="#jupedsim.Simulation.iterate" title="jupedsim.Simulation.iterate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">iterate()</span></code></a> call; the agent itself leaves at the beginning of the next.
-Covers the same iterations as <a class="reference internal" href="#jupedsim.Simulation.target_completions" title="jupedsim.Simulation.target_completions"><code class="xref py py-meth docutils literal notranslate"><span class="pre">target_completions()</span></code></a>.</p>
+<p>An agent that reaches an exit, or is marked by <a class="reference internal" href="#jupedsim.Simulation.mark_agent_for_removal" title="jupedsim.Simulation.mark_agent_for_removal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mark_agent_for_removal()</span></code></a>,
+is removed at the beginning of the next iteration; until then
+<a class="reference internal" href="#jupedsim.Agent.leaving" title="jupedsim.Agent.leaving"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Agent.leaving</span></code></a> is true. Covers the same
+iterations as <a class="reference internal" href="#jupedsim.Simulation.reached_targets" title="jupedsim.Simulation.reached_targets"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reached_targets()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -2485,6 +2516,12 @@ Covers the same iterations as <a class="reference internal" href="#jupedsim.Simu
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#KeyError" title="(in Python v3.15)"><strong>KeyError</strong></a> – if there is no such route.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.Simulation.routes">
+<span class="sig-name descname"><span class="pre">routes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">jupedsim.route.Route</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/jupedsim/simulation.html#Simulation.routes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Simulation.routes" title="Link to this definition">#</a></dt>
+<dd><p>All routes, in the order they were added.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -2555,19 +2592,9 @@ walkable is fixed by the geometry.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="jupedsim.Simulation.target_completions">
-<span class="sig-name descname"><span class="pre">target_completions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><span class="pre">jupedsim.records.TargetCompletionRecord</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/jupedsim/simulation.html#Simulation.target_completions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Simulation.target_completions" title="Link to this definition">#</a></dt>
-<dd><p>The targets completed in the most recent <a class="reference internal" href="#jupedsim.Simulation.iterate" title="jupedsim.Simulation.iterate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">iterate()</span></code></a> call.</p>
-<p>One record per completed target assignment: revisiting a target in a loop
-gives another record; staying at the last target of a route gives none, and
-neither does being pushed out of it and returning. In direct steering, one
-record per <code class="docutils literal notranslate"><span class="pre">steer_to</span></code> assignment, once the agent is within 0.05 m of the
-location.</p>
-<p>Records cover all iterations of the most recent <code class="docutils literal notranslate"><span class="pre">iterate(count)</span></code> call.
-Reading does not consume them; the next <a class="reference internal" href="#jupedsim.Simulation.iterate" title="jupedsim.Simulation.iterate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">iterate()</span></code></a> replaces them. Scripts
-that react to completions call <a class="reference internal" href="#jupedsim.Simulation.iterate" title="jupedsim.Simulation.iterate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">iterate()</span></code></a> with <code class="docutils literal notranslate"><span class="pre">count=1</span></code>, so that a
-<a class="reference internal" href="#jupedsim.Agent.reroute" title="jupedsim.Agent.reroute"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reroute()</span></code></a> takes effect in the step after the
-completion.</p>
+<dt class="sig sig-object py" id="jupedsim.Simulation.targets">
+<span class="sig-name descname"><span class="pre">targets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">jupedsim.target.RouteTarget</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/jupedsim/simulation.html#Simulation.targets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Simulation.targets" title="Link to this definition">#</a></dt>
+<dd><p>All targets, in the order they were added.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -2607,18 +2634,6 @@ placement, travel times in seconds and walking directions.</p>
 <dt class="sig sig-object py" id="jupedsim.Simulation.geometry">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">geometry</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">jupedsim.pyjupedsim.Geometry</span></em><a class="headerlink" href="#jupedsim.Simulation.geometry" title="Link to this definition">#</a></dt>
 <dd><p>The geometry of the simulation.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="jupedsim.Simulation.routes">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">routes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">jupedsim.route.Route</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#jupedsim.Simulation.routes" title="Link to this definition">#</a></dt>
-<dd><p>All routes, in the order they were added.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="jupedsim.Simulation.targets">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">targets</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">jupedsim.target.RouteTarget</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#jupedsim.Simulation.targets" title="Link to this definition">#</a></dt>
-<dd><p>All targets, in the order they were added.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -2835,31 +2850,31 @@ around smoke:</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="jupedsim.TargetCompletionRecord">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TargetCompletionRecord</span></span><a class="reference internal" href="../../_modules/jupedsim/records.html#TargetCompletionRecord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.TargetCompletionRecord" title="Link to this definition">#</a></dt>
-<dd><p>An agent completed its target, see <a class="reference internal" href="#jupedsim.Simulation.target_completions" title="jupedsim.Simulation.target_completions"><code class="xref py py-meth docutils literal notranslate"><span class="pre">target_completions()</span></code></a>.</p>
+<dt class="sig sig-object py" id="jupedsim.TargetReachedRecord">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TargetReachedRecord</span></span><a class="reference internal" href="../../_modules/jupedsim/records.html#TargetReachedRecord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.TargetReachedRecord" title="Link to this definition">#</a></dt>
+<dd><p>An agent reached its target, see <a class="reference internal" href="#jupedsim.Simulation.reached_targets" title="jupedsim.Simulation.reached_targets"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reached_targets()</span></code></a>.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="jupedsim.TargetCompletionRecord.agent_id">
-<span class="sig-name descname"><span class="pre">agent_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></em><a class="headerlink" href="#jupedsim.TargetCompletionRecord.agent_id" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="jupedsim.TargetReachedRecord.agent_id">
+<span class="sig-name descname"><span class="pre">agent_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></em><a class="headerlink" href="#jupedsim.TargetReachedRecord.agent_id" title="Link to this definition">#</a></dt>
 <dd><p>Id of the agent.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="jupedsim.TargetCompletionRecord.location">
-<span class="sig-name descname"><span class="pre">location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">jupedsim.pyjupedsim.Location</span></em><a class="headerlink" href="#jupedsim.TargetCompletionRecord.location" title="Link to this definition">#</a></dt>
-<dd><p>Where the agent stood at the completion.</p>
+<dt class="sig sig-object py" id="jupedsim.TargetReachedRecord.location">
+<span class="sig-name descname"><span class="pre">location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">jupedsim.pyjupedsim.Location</span></em><a class="headerlink" href="#jupedsim.TargetReachedRecord.location" title="Link to this definition">#</a></dt>
+<dd><p>Where the agent stood.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="jupedsim.TargetCompletionRecord.target">
-<span class="sig-name descname"><span class="pre">target</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">jupedsim.target.RouteTarget</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">jupedsim.pyjupedsim.Location</span></em><a class="headerlink" href="#jupedsim.TargetCompletionRecord.target" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="jupedsim.TargetReachedRecord.target">
+<span class="sig-name descname"><span class="pre">target</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">jupedsim.target.RouteTarget</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">jupedsim.pyjupedsim.Location</span></em><a class="headerlink" href="#jupedsim.TargetReachedRecord.target" title="Link to this definition">#</a></dt>
 <dd><p>The target on the agent’s route, or the location it was steered to.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="jupedsim.TargetCompletionRecord.time">
-<span class="sig-name descname"><span class="pre">time</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></em><a class="headerlink" href="#jupedsim.TargetCompletionRecord.time" title="Link to this definition">#</a></dt>
-<dd><p>Simulation time in seconds of the completion.</p>
+<dt class="sig sig-object py" id="jupedsim.TargetReachedRecord.time">
+<span class="sig-name descname"><span class="pre">time</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></em><a class="headerlink" href="#jupedsim.TargetReachedRecord.time" title="Link to this definition">#</a></dt>
+<dd><p>Simulation time in seconds at which the agent reached it.</p>
 </dd></dl>
 
 </dd></dl>
@@ -3158,7 +3173,7 @@ the agent is not detouring.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Waypoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">areas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.15)"><span class="pre">collections.abc.Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Area</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">jupedsim.pyjupedsim.Region</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/jupedsim/target.html#Waypoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.Waypoint" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">_TargetDescription</span></code></p>
 <p>Describes a waypoint, to be added with <a class="reference internal" href="#jupedsim.Simulation.add_target" title="jupedsim.Simulation.add_target"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_target()</span></code></a>.</p>
-<p>Reaching any one of its areas completes the waypoint.</p>
+<p>An agent reaches the waypoint when it stands in any one of its areas.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>areas</strong> – Pairs of an area and the region it lies in. An area is a
@@ -3568,7 +3583,7 @@ a target, and no transition can lead to it.</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-11-19</footer>
+<footer class="report-footer">Last updated 2026-11-20</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="../../disclaimer.html" rel="prev"><small>Previous</small>Disclaimer</a><a class="book-pagenav-next" href="../../citation/citation.html" rel="next"><small>Next</small>Cite JuPedSim</a>
 </nav>
@@ -3603,6 +3618,7 @@ a target, and no transition can lead to it.</p>
 <li><a class="reference internal" href="#jupedsim.Agent.reroute"><code class="docutils literal notranslate"><span class="pre">Agent.reroute()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Agent.current_target"><code class="docutils literal notranslate"><span class="pre">Agent.current_target</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Agent.id"><code class="docutils literal notranslate"><span class="pre">Agent.id</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Agent.leaving"><code class="docutils literal notranslate"><span class="pre">Agent.leaving</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Agent.location"><code class="docutils literal notranslate"><span class="pre">Agent.location</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Agent.name"><code class="docutils literal notranslate"><span class="pre">Agent.name</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Agent.route"><code class="docutils literal notranslate"><span class="pre">Agent.route</span></code></a></li>
@@ -3830,17 +3846,17 @@ a target, and no transition can lead to it.</p>
 <li><a class="reference internal" href="#jupedsim.Simulation.iterate"><code class="docutils literal notranslate"><span class="pre">Simulation.iterate()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.iteration_count"><code class="docutils literal notranslate"><span class="pre">Simulation.iteration_count()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.mark_agent_for_removal"><code class="docutils literal notranslate"><span class="pre">Simulation.mark_agent_for_removal()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Simulation.reached_targets"><code class="docutils literal notranslate"><span class="pre">Simulation.reached_targets()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.removed_agents"><code class="docutils literal notranslate"><span class="pre">Simulation.removed_agents()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.route"><code class="docutils literal notranslate"><span class="pre">Simulation.route()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Simulation.routes"><code class="docutils literal notranslate"><span class="pre">Simulation.routes()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.set_custom_speed_field"><code class="docutils literal notranslate"><span class="pre">Simulation.set_custom_speed_field()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.set_default_speed_field"><code class="docutils literal notranslate"><span class="pre">Simulation.set_default_speed_field()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.target"><code class="docutils literal notranslate"><span class="pre">Simulation.target()</span></code></a></li>
-<li><a class="reference internal" href="#jupedsim.Simulation.target_completions"><code class="docutils literal notranslate"><span class="pre">Simulation.target_completions()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.Simulation.targets"><code class="docutils literal notranslate"><span class="pre">Simulation.targets()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.travel_time"><code class="docutils literal notranslate"><span class="pre">Simulation.travel_time()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.travel_times"><code class="docutils literal notranslate"><span class="pre">Simulation.travel_times()</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.geometry"><code class="docutils literal notranslate"><span class="pre">Simulation.geometry</span></code></a></li>
-<li><a class="reference internal" href="#jupedsim.Simulation.routes"><code class="docutils literal notranslate"><span class="pre">Simulation.routes</span></code></a></li>
-<li><a class="reference internal" href="#jupedsim.Simulation.targets"><code class="docutils literal notranslate"><span class="pre">Simulation.targets</span></code></a></li>
 <li><a class="reference internal" href="#jupedsim.Simulation.timer"><code class="docutils literal notranslate"><span class="pre">Simulation.timer</span></code></a></li>
 </ul>
 </li>
@@ -3874,11 +3890,11 @@ a target, and no transition can lead to it.</p>
 <li><a class="reference internal" href="#jupedsim.SurfaceMeshShortestPathRoutingEngine.wall_clearance"><code class="docutils literal notranslate"><span class="pre">SurfaceMeshShortestPathRoutingEngine.wall_clearance()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#jupedsim.TargetCompletionRecord"><code class="docutils literal notranslate"><span class="pre">TargetCompletionRecord</span></code></a><ul>
-<li><a class="reference internal" href="#jupedsim.TargetCompletionRecord.agent_id"><code class="docutils literal notranslate"><span class="pre">TargetCompletionRecord.agent_id</span></code></a></li>
-<li><a class="reference internal" href="#jupedsim.TargetCompletionRecord.location"><code class="docutils literal notranslate"><span class="pre">TargetCompletionRecord.location</span></code></a></li>
-<li><a class="reference internal" href="#jupedsim.TargetCompletionRecord.target"><code class="docutils literal notranslate"><span class="pre">TargetCompletionRecord.target</span></code></a></li>
-<li><a class="reference internal" href="#jupedsim.TargetCompletionRecord.time"><code class="docutils literal notranslate"><span class="pre">TargetCompletionRecord.time</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.TargetReachedRecord"><code class="docutils literal notranslate"><span class="pre">TargetReachedRecord</span></code></a><ul>
+<li><a class="reference internal" href="#jupedsim.TargetReachedRecord.agent_id"><code class="docutils literal notranslate"><span class="pre">TargetReachedRecord.agent_id</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.TargetReachedRecord.location"><code class="docutils literal notranslate"><span class="pre">TargetReachedRecord.location</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.TargetReachedRecord.target"><code class="docutils literal notranslate"><span class="pre">TargetReachedRecord.target</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.TargetReachedRecord.time"><code class="docutils literal notranslate"><span class="pre">TargetReachedRecord.time</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#jupedsim.TrajectoryWriter"><code class="docutils literal notranslate"><span class="pre">TrajectoryWriter</span></code></a><ul>

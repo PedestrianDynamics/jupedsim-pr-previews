@@ -264,6 +264,12 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve</span><span class="p">()</span><span class="o">.</span><span class="n">location</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">leaving</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Whether the agent leaves the simulation at the beginning of the next</span>
+<span class="sd">        iteration: it reached an exit, or was marked for removal."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve</span><span class="p">()</span><span class="o">.</span><span class="n">leaving</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">route_orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Unit vector toward the current target.</span>
 
@@ -307,13 +313,15 @@
 
 <span class="sd">        It takes effect in the next iteration and cannot be called while the</span>
 <span class="sd">        simulation iterates. :attr:`current_target` returns the new target at once.</span>
+<span class="sd">        The agent reaches it after the next step at the earliest, even if it stands</span>
+<span class="sd">        in it already.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            ValueError: if the arguments do not form one of the calls above, or a</span>
 <span class="sd">                handle belongs to another simulation.</span>
 <span class="sd">            SimulationError: if ``first_target`` is not part of the route, the agent</span>
-<span class="sd">                has no route to jump in, or the location belongs to another</span>
-<span class="sd">                geometry.</span>
+<span class="sd">                has no route to jump in, the location belongs to another geometry, or</span>
+<span class="sd">                the agent is :attr:`leaving`.</span>
 <span class="sd">        """</span>
         <span class="n">sim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span>
         <span class="k">if</span> <span class="n">steer_to</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -358,7 +366,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-11-19</footer>
+<footer class="report-footer">Last updated 2026-11-20</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

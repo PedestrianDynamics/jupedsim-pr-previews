@@ -124,20 +124,20 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.target</span><span class="w"> </span><span class="kn">import</span> <span class="n">RouteTarget</span>
 
 
-<div class="viewcode-block" id="TargetCompletionRecord">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.TargetCompletionRecord">[docs]</a>
+<div class="viewcode-block" id="TargetReachedRecord">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.TargetReachedRecord">[docs]</a>
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">TargetCompletionRecord</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">"""An agent completed its target, see :meth:`~jupedsim.Simulation.target_completions`."""</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TargetReachedRecord</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""An agent reached its target, see :meth:`~jupedsim.Simulation.reached_targets`."""</span>
 
     <span class="n">agent_id</span><span class="p">:</span> <span class="nb">int</span>
 <span class="w">    </span><span class="sd">"""Id of the agent."""</span>
     <span class="n">target</span><span class="p">:</span> <span class="n">RouteTarget</span> <span class="o">|</span> <span class="n">Location</span>
 <span class="w">    </span><span class="sd">"""The target on the agent's route, or the location it was steered to."""</span>
     <span class="n">time</span><span class="p">:</span> <span class="nb">float</span>
-<span class="w">    </span><span class="sd">"""Simulation time in seconds of the completion."""</span>
+<span class="w">    </span><span class="sd">"""Simulation time in seconds at which the agent reached it."""</span>
     <span class="n">location</span><span class="p">:</span> <span class="n">Location</span>
-<span class="w">    </span><span class="sd">"""Where the agent stood at the completion."""</span></div>
+<span class="w">    </span><span class="sd">"""Where the agent stood."""</span></div>
 
 
 
@@ -153,11 +153,11 @@
 <span class="w">    </span><span class="sd">"""The exit it left through, ``None`` after</span>
 <span class="sd">    :meth:`~jupedsim.Simulation.mark_agent_for_removal`."""</span>
     <span class="n">time</span><span class="p">:</span> <span class="nb">float</span>
-<span class="w">    </span><span class="sd">"""Simulation time in seconds of the exit completion, or of the removal."""</span></div>
+<span class="w">    </span><span class="sd">"""Simulation time in seconds of the removal."""</span></div>
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-11-19</footer>
+<footer class="report-footer">Last updated 2026-11-20</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

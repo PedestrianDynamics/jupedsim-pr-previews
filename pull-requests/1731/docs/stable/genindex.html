@@ -171,7 +171,7 @@
       <li><a href="api/jupedsim/index.html#jupedsim.RemovalRecord.agent_id">agent_id (RemovalRecord attribute)</a>
 
       <ul>
-        <li><a href="api/jupedsim/index.html#jupedsim.TargetCompletionRecord.agent_id">(TargetCompletionRecord attribute)</a>
+        <li><a href="api/jupedsim/index.html#jupedsim.TargetReachedRecord.agent_id">(TargetReachedRecord attribute)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -517,6 +517,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/jupedsim/index.html#jupedsim.LeastTargetedTransition">LeastTargetedTransition (class in jupedsim)</a>
 </li>
+      <li><a href="api/jupedsim/index.html#jupedsim.Agent.leaving">leaving (Agent property)</a>
+</li>
       <li><a href="api/jupedsim/index.html#jupedsim.BuildInfo.library_version">library_version (BuildInfo property)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.Hdf5TrajectoryLoader.load_every_nth_travel_time_field">load_every_nth_travel_time_field() (Hdf5TrajectoryLoader method)</a>
@@ -537,7 +539,7 @@
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.Location">Location (class in jupedsim)</a>
 </li>
-      <li><a href="api/jupedsim/index.html#jupedsim.TargetCompletionRecord.location">location (TargetCompletionRecord attribute)</a>
+      <li><a href="api/jupedsim/index.html#jupedsim.TargetReachedRecord.location">location (TargetReachedRecord attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -686,6 +688,8 @@
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.CollisionFreeSpeedModelV3State.range_y_scale">range_y_scale (CollisionFreeSpeedModelV3State property)</a>
 </li>
+      <li><a href="api/jupedsim/index.html#jupedsim.Simulation.reached_targets">reached_targets() (Simulation method)</a>
+</li>
       <li><a href="api/jupedsim/index.html#jupedsim.AnticipationVelocityModelState.reaction_time">reaction_time (AnticipationVelocityModelState property)</a>
 
       <ul>
@@ -694,10 +698,10 @@
       </ul></li>
       <li><a href="api/jupedsim/index.html#jupedsim.Region">Region (class in jupedsim)</a>
 </li>
-      <li><a href="api/jupedsim/index.html#jupedsim.Location.region">region (Location property)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/jupedsim/index.html#jupedsim.Location.region">region (Location property)</a>
+</li>
       <li><a href="api/jupedsim/index.html#jupedsim.Geometry.region">region() (Geometry method)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.Geometry.region_count">region_count() (Geometry method)</a>
@@ -730,7 +734,7 @@
         <li><a href="api/jupedsim/index.html#jupedsim.AgentStep.route_orientation">(AgentStep property)</a>
 </li>
       </ul></li>
-      <li><a href="api/jupedsim/index.html#jupedsim.Simulation.routes">routes (Simulation property)</a>
+      <li><a href="api/jupedsim/index.html#jupedsim.Simulation.routes">routes() (Simulation method)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.RouteTarget">RouteTarget (class in jupedsim)</a>
 </li>
@@ -813,21 +817,17 @@
       <li><a href="api/jupedsim/index.html#jupedsim.FixedTransition.target">target (FixedTransition property)</a>
 
       <ul>
-        <li><a href="api/jupedsim/index.html#jupedsim.TargetCompletionRecord.target">(TargetCompletionRecord attribute)</a>
+        <li><a href="api/jupedsim/index.html#jupedsim.TargetReachedRecord.target">(TargetReachedRecord attribute)</a>
 </li>
       </ul></li>
       <li><a href="api/jupedsim/index.html#jupedsim.Simulation.target">target() (Simulation method)</a>
 </li>
-      <li><a href="api/jupedsim/index.html#jupedsim.Simulation.target_completions">target_completions() (Simulation method)</a>
-</li>
-      <li><a href="api/jupedsim/index.html#jupedsim.TargetCompletionRecord">TargetCompletionRecord (class in jupedsim)</a>
+      <li><a href="api/jupedsim/index.html#jupedsim.TargetReachedRecord">TargetReachedRecord (class in jupedsim)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.LeastTargetedTransition.targets">targets (LeastTargetedTransition property)</a>
-
-      <ul>
-        <li><a href="api/jupedsim/index.html#jupedsim.Simulation.targets">(Simulation property)</a>
 </li>
-      </ul></li>
+      <li><a href="api/jupedsim/index.html#jupedsim.Simulation.targets">targets() (Simulation method)</a>
+</li>
       <li><a href="api/jupedsim/index.html#jupedsim.GeneralizedCentrifugalForceModelState.tau">tau (GeneralizedCentrifugalForceModelState property)</a>
 </li>
       <li><a href="api/jupedsim/index.html#jupedsim.CollisionFreeSpeedModelV3State.theta_max_upper_bound">theta_max_upper_bound (CollisionFreeSpeedModelV3State property)</a>
@@ -835,7 +835,7 @@
       <li><a href="api/jupedsim/index.html#jupedsim.RemovalRecord.time">time (RemovalRecord attribute)</a>
 
       <ul>
-        <li><a href="api/jupedsim/index.html#jupedsim.TargetCompletionRecord.time">(TargetCompletionRecord attribute)</a>
+        <li><a href="api/jupedsim/index.html#jupedsim.TargetReachedRecord.time">(TargetReachedRecord attribute)</a>
 </li>
       </ul></li>
       <li><a href="api/jupedsim/index.html#jupedsim.AnticipationVelocityModelState.time_gap">time_gap (AnticipationVelocityModelState property)</a>
@@ -972,7 +972,7 @@
 
 
 </div>
-<footer class="report-footer">Last updated 2026-11-19</footer>
+<footer class="report-footer">Last updated 2026-11-20</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">
