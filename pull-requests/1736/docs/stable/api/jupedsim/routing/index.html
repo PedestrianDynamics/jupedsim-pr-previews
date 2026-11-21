@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../../../_static/logo.png" sizes="482x536" rel="icon" type="image/png">
+    <title>jupedsim.routing &#8212; JuPedSim  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=29da98fa" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupedsim-style.css?v=df79899f" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/chroma-dark.css?v=9526b014" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/book.css?v=7f8b60bd" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/site.css?v=34df8e08" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx.css?v=164699b4" />
+    <script src="../../../_static/documentation_options.js?v=7f41d439"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer="defer" src="../../../_static/theme.js?v=07cb4702"></script>
+    <script defer="defer" src="../../../_static/search.js?v=322617c8"></script>
+    <script defer="defer" src="../../../_static/switcher.js?v=bc5f7bca"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="canonical" href="https://www.jupedsim.org/docs/stable/api/jupedsim/routing/index.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Cite JuPedSim" href="../../../citation/citation.html" />
+    <link rel="prev" title="jupedsim" href="../index.html" />
+ 
+<script>(function(){var s=null;try{s=localStorage.getItem('theme')}catch(e){}var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var r=document.documentElement;r.dataset.theme=(s==='light'||s==='dark')?s:(d?'dark':'light');r.dataset.themeMode=(s==='light'||s==='dark')?s:'auto';})();</script>
+  </head><body>
+<input type="checkbox" class="book-control" id="menu-control" aria-label="Toggle navigation" aria-controls="book-menu">
+<input type="checkbox" class="book-control" id="search-control" aria-label="Show search">
+<input type="checkbox" class="book-control" id="toc-control" aria-label="Toggle table of contents" aria-controls="book-toc">
+<label for="menu-control" class="book-overlay book-overlay-menu" aria-hidden="true"></label>
+<label for="toc-control" class="book-overlay book-overlay-toc" aria-hidden="true"></label>
+<header class="site-bar">
+<div class="site-bar-inner">
+<label for="menu-control" class="site-bar-btn site-bar-menu" aria-label="Open navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></label>
+<a class="book-brand" href="/pull-requests/1736/" aria-label="JuPedSim"><img class="book-logo book-logo-light" src="../../../_static/jupedsim-mark-light.svg" alt="JuPedSim" width="737" height="200"><img class="book-logo book-logo-dark" src="../../../_static/jupedsim-mark-dark.svg" alt="" aria-hidden="true" width="737" height="200"></a>
+<nav class="site-nav" aria-label="Site">
+<ul>
+<li><a class="bracket-label" href="/pull-requests/1736/articles/">[Articles]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1736/notes/">[Notes]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1736/docs/stable/" aria-current="page">[Docs]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1736/docs/v1x/v1.4.2/">[Docs v1&nbsp;<span aria-hidden="true">↗</span>]</a></li>
+</ul>
+</nav>
+<label for="search-control" class="site-bar-btn site-bar-search-btn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></label>
+<form class="book-search" action="../../../search.html" method="get" role="search">
+<input type="search" id="book-search-input" name="q" data-pagefind="/pull-requests/1736/pagefind/pagefind.js" placeholder="Search  /" aria-label="Search" autocomplete="off" spellcheck="false">
+<ul class="book-search-results" id="book-search-results" hidden></ul>
+</form>
+<button type="button" id="book-theme-toggle" class="book-theme-toggle bracket-label" aria-live="polite">Theme: auto</button>
+<label for="toc-control" class="site-bar-btn site-bar-toc" aria-label="On this page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></label>
+</div>
+</header>
+<main class="book">
+<aside class="book-menu" id="book-menu"><nav class="site-nav-drawer" aria-label="Site (menu)">
+<ul>
+<li><a class="bracket-label" href="/pull-requests/1736/articles/">[Articles]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1736/notes/">[Notes]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1736/docs/stable/" aria-current="page">[Docs]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1736/docs/v1x/v1.4.2/">[Docs v1&nbsp;<span aria-hidden="true">↗</span>]</a></li>
+</ul>
+</nav>
+<select id="book-version-switcher" class="book-version-switcher" aria-label="Documentation version" data-json="/pull-requests/1736/docs/versions.json" data-match="v2.0.0" data-page="api/jupedsim/routing/index.html" hidden></select>
+<nav class="book-tree" aria-label="Documentation">
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../concepts/geometry.html">Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../concepts/routing.html">Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../concepts/custom_serialization.html">Custom Serialization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pedestrian_models/index.html">Pedestrian Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pedestrian_models/collision_free_speed_model_v3.html">CollisionFreeSpeedModelV3 (Rotational Steering)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pedestrian_models/warp_driver_model.html">WarpDriver Model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/index.html">Notebooks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/model-comparison.html">Comparative Analysis of Pedestrian Dynamics Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/corner.html">Movement around Corners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/corner.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/double-bottleneck.html">Movement through Bottlenecks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/double-bottleneck.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/journey.html">How to work with Journeys</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/journey.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/lane-formation.html">Lane formation in bi-directional flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/lane-formation.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/motivation.html">Modelling Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/motivation.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/routing.html">How Route Choice can Impact Evacuation Times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/routing.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/direct_steering.html">Leader–Follower Dynamics with Direct Steering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/single-file.html">Simulating Single-File Movement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/single-file.html#download">Download</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../debugging/index.html">Debugging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../debugging/profiling_and_timing.html">Profiling and Timing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../disclaimer.html">Disclaimer</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">jupedsim.routing</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citation/citation.html">Cite JuPedSim</a></li>
+</ul>
+
+</nav>
+</aside>
+<div class="book-page">
+<article class="report" data-pagefind-filter="section:Docs" data-pagefind-meta="title:jupedsim.routing">
+<header class="report-header">
+<p class="report-kicker">Docs</p>
+<h1 class="report-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">jupedsim.routing</span></code></h1>
+</header>
+<div class="report-body" data-pagefind-body>
+<section id="module-jupedsim.routing">
+<span id="jupedsim-routing"></span><h1><a class="reference internal" href="#module-jupedsim.routing" title="jupedsim.routing"><code class="xref py py-mod docutils literal notranslate"><span class="pre">jupedsim.routing</span></code></a><a class="headerlink" href="#module-jupedsim.routing" title="Link to this heading">#</a></h1>
+<p>JuPedSim routing and shared-space operational extensions.</p>
+<section id="package-contents">
+<h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading">#</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading">#</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.routing.MicroMobilityAgent" title="jupedsim.routing.MicroMobilityAgent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MicroMobilityAgent</span></code></a></p></td>
+<td><p>Continuous kinematic-bicycle state for a shared-space cyclist or e-scooter (DC10).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.routing.SharedSpaceMultimodalSolver" title="jupedsim.routing.SharedSpaceMultimodalSolver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SharedSpaceMultimodalSolver</span></code></a></p></td>
+<td><p>Coupled pedestrian + cyclist/e-scooter shared-space solver (STEP-UP DC1 &amp; DC10).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.routing.compute_anisotropic_social_forces" title="jupedsim.routing.compute_anisotropic_social_forces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_anisotropic_social_forces</span></code></a>(positions, ...[, ...]) → Tuple[numpy.typing.NDArray[numpy.float64], Dict[str, numpy.typing.NDArray[numpy.float64] | Dict[Tuple[int, int], str]]]</p></td>
+<td><p>Compute velocity- and gaze-anisotropic pedestrian accelerations with</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#jupedsim.routing.ellipse_semi_axes" title="jupedsim.routing.ellipse_semi_axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ellipse_semi_axes</span></code></a>(speed_mps[, distracted, a0, ...]) → Tuple[float, float]</p></td>
+<td><p>Return longitudinal and lateral elliptical personal-space semi-axes <code class="docutils literal notranslate"><span class="pre">(a_m,</span> <span class="pre">b_m)</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#jupedsim.routing.fov_attenuation" title="jupedsim.routing.fov_attenuation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fov_attenuation</span></code></a>(gaze_dir, rel_pos[, lambda_aniso, ...]) → float</p></td>
+<td><p>Compute anisotropic visual field-of-view weight <code class="docutils literal notranslate"><span class="pre">w(phi)</span> <span class="pre">in</span> <span class="pre">[lambda_aniso,</span> <span class="pre">1]</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="jupedsim.routing.MicroMobilityAgent">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MicroMobilityAgent</span></span><a class="reference internal" href="../../../_modules/jupedsim/routing/anisotropic_shared_space.html#MicroMobilityAgent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.routing.MicroMobilityAgent" title="Link to this definition">#</a></dt>
+<dd><p>Continuous kinematic-bicycle state for a shared-space cyclist or e-scooter (DC10).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.routing.MicroMobilityAgent.step_kinematic_bicycle">
+<span class="sig-name descname"><span class="pre">step_kinematic_bicycle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">accel_mps2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">steer_rad</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed_cap_mps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#jupedsim.routing.MicroMobilityAgent" title="jupedsim.routing.MicroMobilityAgent"><span class="pre">MicroMobilityAgent</span></a></span></span><a class="reference internal" href="../../../_modules/jupedsim/routing/anisotropic_shared_space.html#MicroMobilityAgent.step_kinematic_bicycle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.routing.MicroMobilityAgent.step_kinematic_bicycle" title="Link to this definition">#</a></dt>
+<dd><p>Advance immutable state by <code class="docutils literal notranslate"><span class="pre">dt</span></code> under exact kinematic-bicycle kinematics.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.routing.MicroMobilityAgent.agent_id">
+<span class="sig-name descname"><span class="pre">agent_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a></em><a class="headerlink" href="#jupedsim.routing.MicroMobilityAgent.agent_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.routing.MicroMobilityAgent.desired_speed_mps">
+<span class="sig-name descname"><span class="pre">desired_speed_mps</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4.5</span></em><a class="headerlink" href="#jupedsim.routing.MicroMobilityAgent.desired_speed_mps" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.routing.MicroMobilityAgent.goal_xy">
+<span class="sig-name descname"><span class="pre">goal_xy</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(30.0,</span> <span class="pre">0.0)</span></em><a class="headerlink" href="#jupedsim.routing.MicroMobilityAgent.goal_xy" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.routing.MicroMobilityAgent.max_accel_mps2">
+<span class="sig-name descname"><span class="pre">max_accel_mps2</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2.0</span></em><a class="headerlink" href="#jupedsim.routing.MicroMobilityAgent.max_accel_mps2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.routing.MicroMobilityAgent.max_decel_mps2">
+<span class="sig-name descname"><span class="pre">max_decel_mps2</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3.8</span></em><a class="headerlink" href="#jupedsim.routing.MicroMobilityAgent.max_decel_mps2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.routing.MicroMobilityAgent.max_steer_rad">
+<span class="sig-name descname"><span class="pre">max_steer_rad</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.52</span></em><a class="headerlink" href="#jupedsim.routing.MicroMobilityAgent.max_steer_rad" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.routing.MicroMobilityAgent.speed">
+<span class="sig-name descname"><span class="pre">speed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3.5</span></em><a class="headerlink" href="#jupedsim.routing.MicroMobilityAgent.speed" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.routing.MicroMobilityAgent.vehicle_type">
+<span class="sig-name descname"><span class="pre">vehicle_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'cyclist'</span></em><a class="headerlink" href="#jupedsim.routing.MicroMobilityAgent.vehicle_type" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="jupedsim.routing.MicroMobilityAgent.velocity">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">velocity</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#jupedsim.routing.MicroMobilityAgent.velocity" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.routing.MicroMobilityAgent.wheelbase_m">
+<span class="sig-name descname"><span class="pre">wheelbase_m</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.05</span></em><a class="headerlink" href="#jupedsim.routing.MicroMobilityAgent.wheelbase_m" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.routing.MicroMobilityAgent.x">
+<span class="sig-name descname"><span class="pre">x</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#jupedsim.routing.MicroMobilityAgent.x" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.routing.MicroMobilityAgent.y">
+<span class="sig-name descname"><span class="pre">y</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#jupedsim.routing.MicroMobilityAgent.y" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.routing.MicroMobilityAgent.yaw">
+<span class="sig-name descname"><span class="pre">yaw</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#jupedsim.routing.MicroMobilityAgent.yaw" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="jupedsim.routing.SharedSpaceMultimodalSolver">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SharedSpaceMultimodalSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">crowd_density_threshold_m2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.35</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dense_speed_cap_kmh</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safe_passing_clearance_m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cpa_horizon_s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_steer_candidates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">11</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/jupedsim/routing/anisotropic_shared_space.html#SharedSpaceMultimodalSolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.routing.SharedSpaceMultimodalSolver" title="Link to this definition">#</a></dt>
+<dd><p>Coupled pedestrian + cyclist/e-scooter shared-space solver (STEP-UP DC1 &amp; DC10).</p>
+<p>Enforces a dynamic <code class="docutils literal notranslate"><span class="pre">8.0</span> <span class="pre">km/h</span></code> (<code class="docutils literal notranslate"><span class="pre">2.222</span> <span class="pre">m/s</span></code>) micro-mobility speed cap
+whenever local pedestrian crowd density exceeds <code class="docutils literal notranslate"><span class="pre">0.35</span> <span class="pre">ped/m^2</span></code> and selects
+predictive <code class="docutils literal notranslate"><span class="pre">tau_CPA</span></code> / <code class="docutils literal notranslate"><span class="pre">d_CPA</span></code> collision-avoidance steering &amp; braking.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.routing.SharedSpaceMultimodalSolver.compute_effective_speed_cap">
+<span class="sig-name descname"><span class="pre">compute_effective_speed_cap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_density_m2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">free_speed_mps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../../../_modules/jupedsim/routing/anisotropic_shared_space.html#SharedSpaceMultimodalSolver.compute_effective_speed_cap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.routing.SharedSpaceMultimodalSolver.compute_effective_speed_cap" title="Link to this definition">#</a></dt>
+<dd><p>Apply <code class="docutils literal notranslate"><span class="pre">8</span> <span class="pre">km/h</span></code> speed cap when <code class="docutils literal notranslate"><span class="pre">local_density_m2</span> <span class="pre">&gt;</span> <span class="pre">0.35</span> <span class="pre">ped/m^2</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.routing.SharedSpaceMultimodalSolver.compute_pair_cpa">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compute_pair_cpa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p_pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_vel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_vel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/jupedsim/routing/anisotropic_shared_space.html#SharedSpaceMultimodalSolver.compute_pair_cpa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.routing.SharedSpaceMultimodalSolver.compute_pair_cpa" title="Link to this definition">#</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">(tau_cpa_s,</span> <span class="pre">d_cpa_m)</span></code> between pedestrian and wheeler.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.routing.SharedSpaceMultimodalSolver.select_wheeler_control">
+<span class="sig-name descname"><span class="pre">select_wheeler_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#jupedsim.routing.MicroMobilityAgent" title="jupedsim.routing.MicroMobilityAgent"><span class="pre">MicroMobilityAgent</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ped_positions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ped_velocities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_density_m2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/jupedsim/routing/anisotropic_shared_space.html#SharedSpaceMultimodalSolver.select_wheeler_control"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.routing.SharedSpaceMultimodalSolver.select_wheeler_control" title="Link to this definition">#</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">(accel_mps2,</span> <span class="pre">steer_rad,</span> <span class="pre">speed_cap_mps)</span></code> minimizing goal
+heading error plus <code class="docutils literal notranslate"><span class="pre">tau_CPA</span></code> pedestrian encroachment risk.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jupedsim.routing.SharedSpaceMultimodalSolver.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ped_positions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ped_velocities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ped_desired_dirs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wheelers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#jupedsim.routing.MicroMobilityAgent" title="jupedsim.routing.MicroMobilityAgent"><span class="pre">MicroMobilityAgent</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ped_desired_speeds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.35</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distracted_mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dyads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#jupedsim.routing.MicroMobilityAgent" title="jupedsim.routing.MicroMobilityAgent"><span class="pre">MicroMobilityAgent</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.15)"><span class="pre">object</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/jupedsim/routing/anisotropic_shared_space.html#SharedSpaceMultimodalSolver.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.routing.SharedSpaceMultimodalSolver.step" title="Link to this definition">#</a></dt>
+<dd><p>Advance coupled pedestrians and micro-mobility wheelers by <code class="docutils literal notranslate"><span class="pre">dt</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.routing.SharedSpaceMultimodalSolver.cpa_horizon_s">
+<span class="sig-name descname"><span class="pre">cpa_horizon_s</span></span><a class="headerlink" href="#jupedsim.routing.SharedSpaceMultimodalSolver.cpa_horizon_s" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.routing.SharedSpaceMultimodalSolver.crowd_density_threshold_m2">
+<span class="sig-name descname"><span class="pre">crowd_density_threshold_m2</span></span><a class="headerlink" href="#jupedsim.routing.SharedSpaceMultimodalSolver.crowd_density_threshold_m2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.routing.SharedSpaceMultimodalSolver.dense_speed_cap_kmh">
+<span class="sig-name descname"><span class="pre">dense_speed_cap_kmh</span></span><a class="headerlink" href="#jupedsim.routing.SharedSpaceMultimodalSolver.dense_speed_cap_kmh" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.routing.SharedSpaceMultimodalSolver.dense_speed_cap_mps">
+<span class="sig-name descname"><span class="pre">dense_speed_cap_mps</span></span><a class="headerlink" href="#jupedsim.routing.SharedSpaceMultimodalSolver.dense_speed_cap_mps" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.routing.SharedSpaceMultimodalSolver.n_steer_candidates">
+<span class="sig-name descname"><span class="pre">n_steer_candidates</span></span><a class="headerlink" href="#jupedsim.routing.SharedSpaceMultimodalSolver.n_steer_candidates" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jupedsim.routing.SharedSpaceMultimodalSolver.safe_passing_clearance_m">
+<span class="sig-name descname"><span class="pre">safe_passing_clearance_m</span></span><a class="headerlink" href="#jupedsim.routing.SharedSpaceMultimodalSolver.safe_passing_clearance_m" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jupedsim.routing.compute_anisotropic_social_forces">
+<span class="sig-name descname"><span class="pre">compute_anisotropic_social_forces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desired_directions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desired_speeds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.35</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gaze_directions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distracted_mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dyads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_densities_m2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relaxation_time_s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repulsion_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2.4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repulsion_range_ell</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.45</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_aniso</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.35</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dyad_cohesion_gain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dyad_damping_gain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.65</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dyad_single_file_density_m2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.2</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/jupedsim/routing/anisotropic_shared_space.html#compute_anisotropic_social_forces"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.routing.compute_anisotropic_social_forces" title="Link to this definition">#</a></dt>
+<dd><p>Compute velocity- and gaze-anisotropic pedestrian accelerations with
+density-adaptive dyadic V-formation / single-file transitions (DC1).</p>
+<p>Above <code class="docutils literal notranslate"><span class="pre">dyad_single_file_density_m2</span></code> (<code class="docutils literal notranslate"><span class="pre">1.2</span> <span class="pre">ped/m^2</span></code>), walking dyads
+reconfigure from abreast V-formation (lateral spacing <code class="docutils literal notranslate"><span class="pre">0.75</span> <span class="pre">m</span></code>, slight
+<code class="docutils literal notranslate"><span class="pre">0.12</span> <span class="pre">m</span></code> forward conversational V-cupping) into leader-follower single-file
+alignment (longitudinal spacing <code class="docutils literal notranslate"><span class="pre">0.85</span> <span class="pre">m</span></code>, zero lateral offset).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jupedsim.routing.ellipse_semi_axes">
+<span class="sig-name descname"><span class="pre">ellipse_semi_axes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">speed_mps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">distracted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.42</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau_stride</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.36</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_a_distracted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.22</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.28</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_b_distracted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.16</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/jupedsim/routing/anisotropic_shared_space.html#ellipse_semi_axes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.routing.ellipse_semi_axes" title="Link to this definition">#</a></dt>
+<dd><p>Return longitudinal and lateral elliptical personal-space semi-axes <code class="docutils literal notranslate"><span class="pre">(a_m,</span> <span class="pre">b_m)</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jupedsim.routing.fov_attenuation">
+<span class="sig-name descname"><span class="pre">fov_attenuation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaze_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rel_pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_aniso</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.35</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phone_distracted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../../../_modules/jupedsim/routing/anisotropic_shared_space.html#fov_attenuation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#jupedsim.routing.fov_attenuation" title="Link to this definition">#</a></dt>
+<dd><p>Compute anisotropic visual field-of-view weight <code class="docutils literal notranslate"><span class="pre">w(phi)</span> <span class="pre">in</span> <span class="pre">[lambda_aniso,</span> <span class="pre">1]</span></code>.</p>
+<p>Follows Johansson, Helbing &amp; Shukla (2007) with optional smartphone gaze
+aversion attenuation reducing forward visual anticipation.</p>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+</div>
+<footer class="report-footer">Last updated 2026-11-21</footer>
+</article>
+<nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="../index.html" rel="prev"><small>Previous</small><code class="xref py py-mod docutils literal notranslate"><span class="pre">jupedsim</span></code></a><a class="book-pagenav-next" href="../../../citation/citation.html" rel="next"><small>Next</small>Cite JuPedSim</a>
+</nav>
+</div>
+<aside class="book-toc" id="book-toc">
+<p class="book-toc-title">On this page</p>
+<nav id="TableOfContents">
+<ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">jupedsim.routing</span></code></a><ul>
+<li><a class="reference internal" href="#package-contents">Package Contents</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#functions">Functions</a><ul>
+<li><a class="reference internal" href="#jupedsim.routing.MicroMobilityAgent"><code class="docutils literal notranslate"><span class="pre">MicroMobilityAgent</span></code></a><ul>
+<li><a class="reference internal" href="#jupedsim.routing.MicroMobilityAgent.step_kinematic_bicycle"><code class="docutils literal notranslate"><span class="pre">MicroMobilityAgent.step_kinematic_bicycle()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.MicroMobilityAgent.agent_id"><code class="docutils literal notranslate"><span class="pre">MicroMobilityAgent.agent_id</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.MicroMobilityAgent.desired_speed_mps"><code class="docutils literal notranslate"><span class="pre">MicroMobilityAgent.desired_speed_mps</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.MicroMobilityAgent.goal_xy"><code class="docutils literal notranslate"><span class="pre">MicroMobilityAgent.goal_xy</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.MicroMobilityAgent.max_accel_mps2"><code class="docutils literal notranslate"><span class="pre">MicroMobilityAgent.max_accel_mps2</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.MicroMobilityAgent.max_decel_mps2"><code class="docutils literal notranslate"><span class="pre">MicroMobilityAgent.max_decel_mps2</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.MicroMobilityAgent.max_steer_rad"><code class="docutils literal notranslate"><span class="pre">MicroMobilityAgent.max_steer_rad</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.MicroMobilityAgent.speed"><code class="docutils literal notranslate"><span class="pre">MicroMobilityAgent.speed</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.MicroMobilityAgent.vehicle_type"><code class="docutils literal notranslate"><span class="pre">MicroMobilityAgent.vehicle_type</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.MicroMobilityAgent.velocity"><code class="docutils literal notranslate"><span class="pre">MicroMobilityAgent.velocity</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.MicroMobilityAgent.wheelbase_m"><code class="docutils literal notranslate"><span class="pre">MicroMobilityAgent.wheelbase_m</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.MicroMobilityAgent.x"><code class="docutils literal notranslate"><span class="pre">MicroMobilityAgent.x</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.MicroMobilityAgent.y"><code class="docutils literal notranslate"><span class="pre">MicroMobilityAgent.y</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.MicroMobilityAgent.yaw"><code class="docutils literal notranslate"><span class="pre">MicroMobilityAgent.yaw</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#jupedsim.routing.SharedSpaceMultimodalSolver"><code class="docutils literal notranslate"><span class="pre">SharedSpaceMultimodalSolver</span></code></a><ul>
+<li><a class="reference internal" href="#jupedsim.routing.SharedSpaceMultimodalSolver.compute_effective_speed_cap"><code class="docutils literal notranslate"><span class="pre">SharedSpaceMultimodalSolver.compute_effective_speed_cap()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.SharedSpaceMultimodalSolver.compute_pair_cpa"><code class="docutils literal notranslate"><span class="pre">SharedSpaceMultimodalSolver.compute_pair_cpa()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.SharedSpaceMultimodalSolver.select_wheeler_control"><code class="docutils literal notranslate"><span class="pre">SharedSpaceMultimodalSolver.select_wheeler_control()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.SharedSpaceMultimodalSolver.step"><code class="docutils literal notranslate"><span class="pre">SharedSpaceMultimodalSolver.step()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.SharedSpaceMultimodalSolver.cpa_horizon_s"><code class="docutils literal notranslate"><span class="pre">SharedSpaceMultimodalSolver.cpa_horizon_s</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.SharedSpaceMultimodalSolver.crowd_density_threshold_m2"><code class="docutils literal notranslate"><span class="pre">SharedSpaceMultimodalSolver.crowd_density_threshold_m2</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.SharedSpaceMultimodalSolver.dense_speed_cap_kmh"><code class="docutils literal notranslate"><span class="pre">SharedSpaceMultimodalSolver.dense_speed_cap_kmh</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.SharedSpaceMultimodalSolver.dense_speed_cap_mps"><code class="docutils literal notranslate"><span class="pre">SharedSpaceMultimodalSolver.dense_speed_cap_mps</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.SharedSpaceMultimodalSolver.n_steer_candidates"><code class="docutils literal notranslate"><span class="pre">SharedSpaceMultimodalSolver.n_steer_candidates</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.SharedSpaceMultimodalSolver.safe_passing_clearance_m"><code class="docutils literal notranslate"><span class="pre">SharedSpaceMultimodalSolver.safe_passing_clearance_m</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#jupedsim.routing.compute_anisotropic_social_forces"><code class="docutils literal notranslate"><span class="pre">compute_anisotropic_social_forces()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.ellipse_semi_axes"><code class="docutils literal notranslate"><span class="pre">ellipse_semi_axes()</span></code></a></li>
+<li><a class="reference internal" href="#jupedsim.routing.fov_attenuation"><code class="docutils literal notranslate"><span class="pre">fov_attenuation()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</nav>
+</aside>
+</main><footer class="site-footer"><div class="site-footer-inner">
+<p class="site-footer-text">© JuPedSim contributors · LGPL-3.0</p>
+<ul class="site-footer-links"><li><a href="https://github.com/PedestrianDynamics/jupedsim">GitHub</a></li><li><a href="/pull-requests/1736/notes/feed.xml">RSS</a></li><li><a href="/pull-requests/1736/docs/v1x/v1.4.2/">1.x docs</a></li></ul>
+</div></footer>
+  </body>
+</html>

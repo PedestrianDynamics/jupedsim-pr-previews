@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>jupedsim.routing.anisotropic_shared_space &#8212; JuPedSim  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=29da98fa" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupedsim-style.css?v=df79899f" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/chroma-dark.css?v=9526b014" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/book.css?v=7f8b60bd" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/site.css?v=34df8e08" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx.css?v=164699b4" />
+    <script src="../../../_static/documentation_options.js?v=7f41d439"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer="defer" src="../../../_static/theme.js?v=07cb4702"></script>
+    <script defer="defer" src="../../../_static/search.js?v=322617c8"></script>
+    <script defer="defer" src="../../../_static/switcher.js?v=bc5f7bca"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="canonical" href="https://www.jupedsim.org/docs/stable/_modules/jupedsim/routing/anisotropic_shared_space.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+ 
+<script>(function(){var s=null;try{s=localStorage.getItem('theme')}catch(e){}var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var r=document.documentElement;r.dataset.theme=(s==='light'||s==='dark')?s:(d?'dark':'light');r.dataset.themeMode=(s==='light'||s==='dark')?s:'auto';})();</script>
+  </head><body>
+<input type="checkbox" class="book-control" id="menu-control" aria-label="Toggle navigation" aria-controls="book-menu">
+<input type="checkbox" class="book-control" id="search-control" aria-label="Show search">
+<label for="menu-control" class="book-overlay book-overlay-menu" aria-hidden="true"></label>
+<header class="site-bar">
+<div class="site-bar-inner">
+<label for="menu-control" class="site-bar-btn site-bar-menu" aria-label="Open navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></label>
+<a class="book-brand" href="/pull-requests/1736/" aria-label="JuPedSim"><img class="book-logo book-logo-light" src="../../../_static/jupedsim-mark-light.svg" alt="JuPedSim" width="737" height="200"><img class="book-logo book-logo-dark" src="../../../_static/jupedsim-mark-dark.svg" alt="" aria-hidden="true" width="737" height="200"></a>
+<nav class="site-nav" aria-label="Site">
+<ul>
+<li><a class="bracket-label" href="/pull-requests/1736/articles/">[Articles]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1736/notes/">[Notes]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1736/docs/stable/" aria-current="page">[Docs]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1736/docs/v1x/v1.4.2/">[Docs v1&nbsp;<span aria-hidden="true">↗</span>]</a></li>
+</ul>
+</nav>
+<label for="search-control" class="site-bar-btn site-bar-search-btn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></label>
+<form class="book-search" action="../../../search.html" method="get" role="search">
+<input type="search" id="book-search-input" name="q" data-pagefind="/pull-requests/1736/pagefind/pagefind.js" placeholder="Search  /" aria-label="Search" autocomplete="off" spellcheck="false">
+<ul class="book-search-results" id="book-search-results" hidden></ul>
+</form>
+<button type="button" id="book-theme-toggle" class="book-theme-toggle bracket-label" aria-live="polite">Theme: auto</button>
+</div>
+</header>
+<main class="book">
+<aside class="book-menu" id="book-menu"><nav class="site-nav-drawer" aria-label="Site (menu)">
+<ul>
+<li><a class="bracket-label" href="/pull-requests/1736/articles/">[Articles]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1736/notes/">[Notes]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1736/docs/stable/" aria-current="page">[Docs]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1736/docs/v1x/v1.4.2/">[Docs v1&nbsp;<span aria-hidden="true">↗</span>]</a></li>
+</ul>
+</nav>
+<select id="book-version-switcher" class="book-version-switcher" aria-label="Documentation version" data-json="/pull-requests/1736/docs/versions.json" data-match="v2.0.0" data-page="_modules/jupedsim/routing/anisotropic_shared_space.html" hidden></select>
+<nav class="book-tree" aria-label="Documentation">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../concepts/geometry.html">Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../concepts/routing.html">Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../concepts/custom_serialization.html">Custom Serialization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pedestrian_models/index.html">Pedestrian Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pedestrian_models/collision_free_speed_model_v3.html">CollisionFreeSpeedModelV3 (Rotational Steering)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pedestrian_models/warp_driver_model.html">WarpDriver Model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/index.html">Notebooks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/model-comparison.html">Comparative Analysis of Pedestrian Dynamics Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/corner.html">Movement around Corners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/corner.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/double-bottleneck.html">Movement through Bottlenecks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/double-bottleneck.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/journey.html">How to work with Journeys</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/journey.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/lane-formation.html">Lane formation in bi-directional flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/lane-formation.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/motivation.html">Modelling Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/motivation.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/routing.html">How Route Choice can Impact Evacuation Times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/routing.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/direct_steering.html">Leader–Follower Dynamics with Direct Steering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/single-file.html">Simulating Single-File Movement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/single-file.html#download">Download</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../debugging/index.html">Debugging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../debugging/profiling_and_timing.html">Profiling and Timing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../disclaimer.html">Disclaimer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/jupedsim/index.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/jupedsim/routing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">jupedsim.routing</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citation/citation.html">Cite JuPedSim</a></li>
+</ul>
+
+</nav>
+</aside>
+<div class="book-page">
+<article class="report" data-pagefind-filter="section:Docs" data-pagefind-meta="title:jupedsim.routing.anisotropic_shared_space">
+<header class="report-header">
+<p class="report-kicker">Docs</p>
+<h1 class="report-title">jupedsim.routing.anisotropic_shared_space</h1>
+</header>
+<div class="report-body">
+<h1>Source code for jupedsim.routing.anisotropic_shared_space</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: LGPL-3.0-or-later</span>
+<span class="sd">"""Anisotropic personal-space social forces and multimodal shared-space solver.</span>
+
+<span class="sd">Implements:</span>
+<span class="sd">- STEP-UP DC1: Velocity- and gaze-anisotropic elliptical personal-space</span>
+<span class="sd">  repulsive acceleration with field-of-view attenuation and density-adaptive</span>
+<span class="sd">  dyadic V-formation cohesion transitioning to single-file above ``1.2 ped/m^2``.</span>
+<span class="sd">- STEP-UP DC10: Continuous kinematic-bicycle cyclist / e-scooter shared-space</span>
+<span class="sd">  ``tau_CPA`` predictive avoidance solver with dynamic ``8 km/h`` speed capping</span>
+<span class="sd">  above ``0.35 ped/m^2`` local pedestrian density.</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">replace</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">npt</span>
+
+
+<div class="viewcode-block" id="ellipse_semi_axes">
+<a class="viewcode-back" href="../../../api/jupedsim/routing/index.html#jupedsim.routing.ellipse_semi_axes">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ellipse_semi_axes</span><span class="p">(</span>
+    <span class="n">speed_mps</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">distracted</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">bool</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">a0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.42</span><span class="p">,</span>
+    <span class="n">tau_stride</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.36</span><span class="p">,</span>
+    <span class="n">delta_a_distracted</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.22</span><span class="p">,</span>
+    <span class="n">b0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.28</span><span class="p">,</span>
+    <span class="n">delta_b_distracted</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.16</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Return longitudinal and lateral elliptical personal-space semi-axes ``(a_m, b_m)``."""</span>
+    <span class="k">if</span> <span class="n">a0</span> <span class="o">&lt;=</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">b0</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Baseline semi-axes a0 and b0 must be strictly positive."</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">speed_mps</span><span class="p">))</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">distracted</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+    <span class="n">a_m</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">a0</span><span class="p">)</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">tau_stride</span><span class="p">)</span> <span class="o">*</span> <span class="n">v</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">delta_a_distracted</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span>
+    <span class="n">b_m</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">b0</span><span class="p">)</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">delta_b_distracted</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span>
+    <span class="k">return</span> <span class="n">a_m</span><span class="p">,</span> <span class="n">b_m</span></div>
+
+
+
+<div class="viewcode-block" id="fov_attenuation">
+<a class="viewcode-back" href="../../../api/jupedsim/routing/index.html#jupedsim.routing.fov_attenuation">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fov_attenuation</span><span class="p">(</span>
+    <span class="n">gaze_dir</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="n">rel_pos</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="n">lambda_aniso</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.35</span><span class="p">,</span>
+    <span class="n">phone_distracted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Compute anisotropic visual field-of-view weight ``w(phi) in [lambda_aniso, 1]``.</span>
+
+<span class="sd">    Follows Johansson, Helbing &amp; Shukla (2007) with optional smartphone gaze</span>
+<span class="sd">    aversion attenuation reducing forward visual anticipation.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mf">0.0</span> <span class="o">&lt;=</span> <span class="n">lambda_aniso</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"lambda_aniso must lie in [0, 1]."</span><span class="p">)</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">gaze_dir</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">rel_pos</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">g_norm</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">g</span><span class="p">))</span>
+    <span class="n">r_norm</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">g_norm</span> <span class="o">&lt;</span> <span class="mf">1e-9</span> <span class="ow">or</span> <span class="n">r_norm</span> <span class="o">&lt;</span> <span class="mf">1e-9</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">1.0</span>
+
+    <span class="n">cos_phi</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">g_norm</span> <span class="o">*</span> <span class="n">r_norm</span><span class="p">),</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lambda_aniso</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">lambda_aniso</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">cos_phi</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">phone_distracted</span><span class="p">:</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lambda_aniso</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.35</span> <span class="o">*</span> <span class="p">(</span><span class="n">w</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">lambda_aniso</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">lambda_aniso</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">estimate_local_crowd_density</span><span class="p">(</span>
+    <span class="n">positions</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
+    <span class="n">query_points</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">kernel_radius_m</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">exclude_self</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Estimate smooth local pedestrian density (``ped / m^2``) via 2D Gaussian kernel."""</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">pts</span> <span class="o">=</span> <span class="n">pos</span> <span class="k">if</span> <span class="n">query_points</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">query_points</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pts</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">pts</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+    <span class="n">dist_sq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">diff</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">sigma_sq</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">kernel_radius_m</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">dist_sq</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">sigma_sq</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">sigma_sq</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">exclude_self</span> <span class="ow">and</span> <span class="n">query_points</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="compute_anisotropic_social_forces">
+<a class="viewcode-back" href="../../../api/jupedsim/routing/index.html#jupedsim.routing.compute_anisotropic_social_forces">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_anisotropic_social_forces</span><span class="p">(</span>
+    <span class="n">positions</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="n">velocities</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="n">desired_directions</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="n">desired_speeds</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.35</span><span class="p">,</span>
+    <span class="n">gaze_directions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">distracted_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">dyads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">local_densities_m2</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">relaxation_time_s</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.50</span><span class="p">,</span>
+    <span class="n">repulsion_strength</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.40</span><span class="p">,</span>
+    <span class="n">repulsion_range_ell</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.45</span><span class="p">,</span>
+    <span class="n">lambda_aniso</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.35</span><span class="p">,</span>
+    <span class="n">dyad_cohesion_gain</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.60</span><span class="p">,</span>
+    <span class="n">dyad_damping_gain</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.65</span><span class="p">,</span>
+    <span class="n">dyad_single_file_density_m2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.20</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span> <span class="o">|</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">"""Compute velocity- and gaze-anisotropic pedestrian accelerations with</span>
+<span class="sd">    density-adaptive dyadic V-formation / single-file transitions (DC1).</span>
+
+<span class="sd">    Above ``dyad_single_file_density_m2`` (``1.2 ped/m^2``), walking dyads</span>
+<span class="sd">    reconfigure from abreast V-formation (lateral spacing ``0.75 m``, slight</span>
+<span class="sd">    ``0.12 m`` forward conversational V-cupping) into leader-follower single-file</span>
+<span class="sd">    alignment (longitudinal spacing ``0.85 m``, zero lateral offset).</span>
+<span class="sd">    """</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">velocities</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">e0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desired_directions</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">n_ped</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">vel</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="n">n_ped</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="ow">or</span> <span class="n">e0</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="n">n_ped</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"positions, velocities, and desired_directions must share shape (N, 2)."</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">desired_speeds</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">v0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n_ped</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">desired_speeds</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">v0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desired_speeds</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_ped</span><span class="p">)</span>
+
+    <span class="c1"># Normalize desired direction vectors safely</span>
+    <span class="n">e0_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">e0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">e0_unit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">e0_norm</span> <span class="o">&gt;</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">e0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">e0_norm</span><span class="p">,</span> <span class="mf">1e-9</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]]))</span>
+
+    <span class="n">speeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vel</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">heading_vecs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+        <span class="n">speeds</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">1e-4</span><span class="p">,</span>
+        <span class="n">vel</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">speeds</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="mf">1e-9</span><span class="p">),</span>
+        <span class="n">e0_unit</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">gaze_directions</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">gaze_vecs</span> <span class="o">=</span> <span class="n">heading_vecs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">g_raw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">gaze_directions</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_ped</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">g_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">g_raw</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">gaze_vecs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">g_norm</span> <span class="o">&gt;</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">g_raw</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">g_norm</span><span class="p">,</span> <span class="mf">1e-9</span><span class="p">),</span> <span class="n">heading_vecs</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">distracted_mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">distracted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_ped</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">distracted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">distracted_mask</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_ped</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">local_densities_m2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">densities</span> <span class="o">=</span> <span class="n">estimate_local_crowd_density</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">densities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">local_densities_m2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_ped</span><span class="p">)</span>
+
+    <span class="c1"># 1. Goal-seeking relaxation term</span>
+    <span class="n">acc_drive</span> <span class="o">=</span> <span class="p">(</span><span class="n">e0_unit</span> <span class="o">*</span> <span class="n">v0</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">-</span> <span class="n">vel</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">relaxation_time_s</span><span class="p">),</span> <span class="mf">1e-3</span><span class="p">)</span>
+
+    <span class="c1"># 2. Velocity- &amp; gaze-anisotropic elliptical repulsive acceleration</span>
+    <span class="n">acc_rep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_ped</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">semi_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_ped</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">semi_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_ped</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_ped</span><span class="p">):</span>
+        <span class="n">semi_a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">semi_b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ellipse_semi_axes</span><span class="p">(</span><span class="n">speeds</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">distracted</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_ped</span><span class="p">):</span>
+        <span class="n">hx</span><span class="p">,</span> <span class="n">hy</span> <span class="o">=</span> <span class="n">heading_vecs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span> <span class="o">=</span> <span class="o">-</span><span class="n">hy</span><span class="p">,</span> <span class="n">hx</span>
+        <span class="n">ai</span><span class="p">,</span> <span class="n">bi</span> <span class="o">=</span> <span class="n">semi_a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">semi_b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">is_phone</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">distracted</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_ped</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">rel</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">dist</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">rel</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">dist</span> <span class="o">&lt;</span> <span class="mf">1e-6</span><span class="p">:</span>
+                <span class="n">acc_rep</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-=</span> <span class="n">repulsion_strength</span> <span class="o">*</span> <span class="n">heading_vecs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">continue</span>
+
+            <span class="n">d_par</span> <span class="o">=</span> <span class="n">rel</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">hx</span> <span class="o">+</span> <span class="n">rel</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">hy</span>
+            <span class="n">d_perp</span> <span class="o">=</span> <span class="n">rel</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">nx</span> <span class="o">+</span> <span class="n">rel</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">ny</span>
+            <span class="n">d_eff</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">d_par</span> <span class="o">/</span> <span class="n">ai</span><span class="p">,</span> <span class="n">d_perp</span> <span class="o">/</span> <span class="n">bi</span><span class="p">)</span>
+
+            <span class="c1"># Gradient of d_eff w.r.t. pos[i] points away from neighbor j</span>
+            <span class="n">grad_local_par</span> <span class="o">=</span> <span class="p">(</span><span class="n">d_par</span> <span class="o">/</span> <span class="p">(</span><span class="n">ai</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">d_eff</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">)</span>
+            <span class="n">grad_local_perp</span> <span class="o">=</span> <span class="p">(</span><span class="n">d_perp</span> <span class="o">/</span> <span class="p">(</span><span class="n">bi</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">d_eff</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">)</span>
+            <span class="n">away_vec</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">grad_local_par</span> <span class="o">*</span> <span class="n">hx</span> <span class="o">+</span> <span class="n">grad_local_perp</span> <span class="o">*</span> <span class="n">nx</span><span class="p">,</span>
+                    <span class="n">grad_local_par</span> <span class="o">*</span> <span class="n">hy</span> <span class="o">+</span> <span class="n">grad_local_perp</span> <span class="o">*</span> <span class="n">ny</span><span class="p">,</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">away_norm</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">away_vec</span><span class="p">))</span>
+            <span class="n">away_unit</span> <span class="o">=</span> <span class="n">away_vec</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">away_norm</span><span class="p">,</span> <span class="mf">1e-9</span><span class="p">)</span>
+
+            <span class="n">w_fov</span> <span class="o">=</span> <span class="n">fov_attenuation</span><span class="p">(</span>
+                <span class="n">gaze_vecs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">rel</span><span class="p">,</span> <span class="n">lambda_aniso</span><span class="o">=</span><span class="n">lambda_aniso</span><span class="p">,</span> <span class="n">phone_distracted</span><span class="o">=</span><span class="n">is_phone</span>
+            <span class="p">)</span>
+            <span class="n">mag</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">repulsion_strength</span><span class="p">)</span> <span class="o">*</span> <span class="n">w_fov</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span>
+                <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">d_eff</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">repulsion_range_ell</span><span class="p">),</span> <span class="mf">1e-3</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">acc_rep</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">mag</span> <span class="o">*</span> <span class="n">away_unit</span>
+
+    <span class="c1"># 3. Dyadic V-formation social cohesion -&gt; single-file transition above 1.2 ped/m^2</span>
+    <span class="n">acc_dyad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_ped</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">dyad_formations</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">dyads</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">dyads</span><span class="p">:</span>
+            <span class="n">u_grp</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">e0_unit</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">e0_unit</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+            <span class="n">u_norm</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">u_grp</span><span class="p">))</span>
+            <span class="n">u_hat</span> <span class="o">=</span> <span class="n">u_grp</span> <span class="o">/</span> <span class="n">u_norm</span> <span class="k">if</span> <span class="n">u_norm</span> <span class="o">&gt;</span> <span class="mf">1e-6</span> <span class="k">else</span> <span class="n">e0_unit</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">n_perp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="n">u_hat</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">u_hat</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+
+            <span class="n">rho_pair</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">densities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">densities</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+            <span class="c1"># Smooth transition centered at 1.2 ped/m^2</span>
+            <span class="n">alpha_sf</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span>
+                <span class="mf">1.0</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">10.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">rho_pair</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">dyad_single_file_density_m2</span><span class="p">)))</span>
+            <span class="p">)</span>
+            <span class="n">dyad_formations</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">"single_file"</span>
+                <span class="k">if</span> <span class="n">rho_pair</span> <span class="o">&gt;</span> <span class="nb">float</span><span class="p">(</span><span class="n">dyad_single_file_density_m2</span><span class="p">)</span>
+                <span class="k">else</span> <span class="s2">"v_abreast"</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Determine consistent lateral side / leader sign from current geometry</span>
+            <span class="n">rel_ij</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">lat_sign</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rel_ij</span><span class="p">,</span> <span class="n">n_perp</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="k">else</span> <span class="o">-</span><span class="mf">1.0</span>
+            <span class="n">long_sign</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rel_ij</span><span class="p">,</span> <span class="n">u_hat</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="k">else</span> <span class="o">-</span><span class="mf">1.0</span>
+
+            <span class="n">target_v_abreast</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.12</span> <span class="o">*</span> <span class="n">u_hat</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.75</span> <span class="o">*</span> <span class="n">lat_sign</span><span class="p">)</span> <span class="o">*</span> <span class="n">n_perp</span>
+            <span class="n">target_single_file</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.85</span> <span class="o">*</span> <span class="n">long_sign</span><span class="p">)</span> <span class="o">*</span> <span class="n">u_hat</span>
+            <span class="n">target_rel</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">alpha_sf</span><span class="p">)</span> <span class="o">*</span> <span class="n">target_v_abreast</span> <span class="o">+</span> <span class="n">alpha_sf</span> <span class="o">*</span> <span class="n">target_single_file</span>
+
+            <span class="n">pos_err</span> <span class="o">=</span> <span class="n">rel_ij</span> <span class="o">-</span> <span class="n">target_rel</span>
+            <span class="n">vel_err</span> <span class="o">=</span> <span class="n">vel</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">vel</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">f_cohesion</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">dyad_cohesion_gain</span><span class="p">)</span> <span class="o">*</span> <span class="n">pos_err</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">dyad_damping_gain</span><span class="p">)</span> <span class="o">*</span> <span class="n">vel_err</span>
+            <span class="n">acc_dyad</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">f_cohesion</span>
+            <span class="n">acc_dyad</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-=</span> <span class="n">f_cohesion</span>
+
+    <span class="n">total_acc</span> <span class="o">=</span> <span class="n">acc_drive</span> <span class="o">+</span> <span class="n">acc_rep</span> <span class="o">+</span> <span class="n">acc_dyad</span>
+    <span class="n">diagnostics</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span> <span class="o">|</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"semi_a_m"</span><span class="p">:</span> <span class="n">semi_a</span><span class="p">,</span>
+        <span class="s2">"semi_b_m"</span><span class="p">:</span> <span class="n">semi_b</span><span class="p">,</span>
+        <span class="s2">"local_densities_m2"</span><span class="p">:</span> <span class="n">densities</span><span class="p">,</span>
+        <span class="s2">"acc_drive"</span><span class="p">:</span> <span class="n">acc_drive</span><span class="p">,</span>
+        <span class="s2">"acc_repulsion"</span><span class="p">:</span> <span class="n">acc_rep</span><span class="p">,</span>
+        <span class="s2">"acc_dyad"</span><span class="p">:</span> <span class="n">acc_dyad</span><span class="p">,</span>
+        <span class="s2">"dyad_formations"</span><span class="p">:</span> <span class="n">dyad_formations</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">total_acc</span><span class="p">,</span> <span class="n">diagnostics</span></div>
+
+
+
+<div class="viewcode-block" id="MicroMobilityAgent">
+<a class="viewcode-back" href="../../../api/jupedsim/routing/index.html#jupedsim.routing.MicroMobilityAgent">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MicroMobilityAgent</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Continuous kinematic-bicycle state for a shared-space cyclist or e-scooter (DC10)."""</span>
+
+    <span class="n">agent_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">vehicle_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"cyclist"</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">y</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">yaw</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">speed</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">3.5</span>
+    <span class="n">wheelbase_m</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.05</span>
+    <span class="n">desired_speed_mps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">4.5</span>
+    <span class="n">goal_xy</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">30.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">max_steer_rad</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.52</span>
+    <span class="n">max_accel_mps2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span>
+    <span class="n">max_decel_mps2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">3.8</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yaw</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yaw</span><span class="p">)],</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="MicroMobilityAgent.step_kinematic_bicycle">
+<a class="viewcode-back" href="../../../api/jupedsim/routing/index.html#jupedsim.routing.MicroMobilityAgent.step_kinematic_bicycle">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">step_kinematic_bicycle</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">accel_mps2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">steer_rad</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">speed_cap_mps</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MicroMobilityAgent</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Advance immutable state by ``dt`` under exact kinematic-bicycle kinematics."""</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">steer_rad</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">max_steer_rad</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_steer_rad</span><span class="p">))</span>
+        <span class="n">acc</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">accel_mps2</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">max_decel_mps2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_accel_mps2</span><span class="p">))</span>
+        <span class="n">cap</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">float</span><span class="p">(</span><span class="n">speed_cap_mps</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">speed_cap_mps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">desired_speed_mps</span> <span class="o">*</span> <span class="mf">1.2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">beta</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">delta</span><span class="p">))</span>
+        <span class="n">v_next</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">+</span> <span class="n">acc</span> <span class="o">*</span> <span class="n">dt</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">cap</span><span class="p">))</span>
+        <span class="n">v_mid</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">+</span> <span class="n">v_next</span><span class="p">)</span>
+
+        <span class="n">x_next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">v_mid</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yaw</span> <span class="o">+</span> <span class="n">beta</span><span class="p">)</span> <span class="o">*</span> <span class="n">dt</span>
+        <span class="n">y_next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">v_mid</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yaw</span> <span class="o">+</span> <span class="n">beta</span><span class="p">)</span> <span class="o">*</span> <span class="n">dt</span>
+        <span class="n">yaw_rate</span> <span class="o">=</span> <span class="p">(</span><span class="n">v_mid</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wheelbase_m</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">))</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+        <span class="n">yaw_next</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span>
+            <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yaw</span> <span class="o">+</span> <span class="n">yaw_rate</span> <span class="o">*</span> <span class="n">dt</span><span class="p">),</span>
+            <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yaw</span> <span class="o">+</span> <span class="n">yaw_rate</span> <span class="o">*</span> <span class="n">dt</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x_next</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_next</span><span class="p">,</span> <span class="n">yaw</span><span class="o">=</span><span class="n">yaw_next</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">v_next</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="SharedSpaceMultimodalSolver">
+<a class="viewcode-back" href="../../../api/jupedsim/routing/index.html#jupedsim.routing.SharedSpaceMultimodalSolver">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SharedSpaceMultimodalSolver</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Coupled pedestrian + cyclist/e-scooter shared-space solver (STEP-UP DC1 &amp; DC10).</span>
+
+<span class="sd">    Enforces a dynamic ``8.0 km/h`` (``2.222 m/s``) micro-mobility speed cap</span>
+<span class="sd">    whenever local pedestrian crowd density exceeds ``0.35 ped/m^2`` and selects</span>
+<span class="sd">    predictive ``tau_CPA`` / ``d_CPA`` collision-avoidance steering &amp; braking.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">crowd_density_threshold_m2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.35</span><span class="p">,</span>
+        <span class="n">dense_speed_cap_kmh</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">8.0</span><span class="p">,</span>
+        <span class="n">safe_passing_clearance_m</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.25</span><span class="p">,</span>
+        <span class="n">cpa_horizon_s</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">3.5</span><span class="p">,</span>
+        <span class="n">n_steer_candidates</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">11</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">crowd_density_threshold_m2</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">crowd_density_threshold_m2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dense_speed_cap_kmh</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">dense_speed_cap_kmh</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dense_speed_cap_mps</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">dense_speed_cap_kmh</span><span class="p">)</span> <span class="o">/</span> <span class="mf">3.6</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">safe_passing_clearance_m</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">safe_passing_clearance_m</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpa_horizon_s</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cpa_horizon_s</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_steer_candidates</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_steer_candidates</span><span class="p">))</span>
+
+<div class="viewcode-block" id="SharedSpaceMultimodalSolver.compute_effective_speed_cap">
+<a class="viewcode-back" href="../../../api/jupedsim/routing/index.html#jupedsim.routing.SharedSpaceMultimodalSolver.compute_effective_speed_cap">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_effective_speed_cap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_density_m2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">free_speed_mps</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Apply ``8 km/h`` speed cap when ``local_density_m2 &gt; 0.35 ped/m^2``."""</span>
+        <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">local_density_m2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">crowd_density_threshold_m2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">free_speed_mps</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">dense_speed_cap_mps</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">free_speed_mps</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SharedSpaceMultimodalSolver.compute_pair_cpa">
+<a class="viewcode-back" href="../../../api/jupedsim/routing/index.html#jupedsim.routing.SharedSpaceMultimodalSolver.compute_pair_cpa">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_pair_cpa</span><span class="p">(</span>
+        <span class="n">p_pos</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
+        <span class="n">p_vel</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
+        <span class="n">w_pos</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
+        <span class="n">w_vel</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return ``(tau_cpa_s, d_cpa_m)`` between pedestrian and wheeler."""</span>
+        <span class="n">dr</span> <span class="o">=</span> <span class="n">w_pos</span> <span class="o">-</span> <span class="n">p_pos</span>
+        <span class="n">dv</span> <span class="o">=</span> <span class="n">w_vel</span> <span class="o">-</span> <span class="n">p_vel</span>
+        <span class="n">dv_sq</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">dv</span><span class="p">,</span> <span class="n">dv</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">dv_sq</span> <span class="o">&lt;</span> <span class="mf">1e-12</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">dr</span><span class="p">))</span>
+        <span class="n">tau</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">dr</span><span class="p">,</span> <span class="n">dv</span><span class="p">))</span> <span class="o">/</span> <span class="n">dv_sq</span><span class="p">)</span>
+        <span class="n">d_cpa</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">dr</span> <span class="o">+</span> <span class="n">tau</span> <span class="o">*</span> <span class="n">dv</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">tau</span><span class="p">,</span> <span class="n">d_cpa</span></div>
+
+
+<div class="viewcode-block" id="SharedSpaceMultimodalSolver.select_wheeler_control">
+<a class="viewcode-back" href="../../../api/jupedsim/routing/index.html#jupedsim.routing.SharedSpaceMultimodalSolver.select_wheeler_control">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">select_wheeler_control</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">agent</span><span class="p">:</span> <span class="n">MicroMobilityAgent</span><span class="p">,</span>
+        <span class="n">ped_positions</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
+        <span class="n">ped_velocities</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
+        <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">local_density_m2</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return ``(accel_mps2, steer_rad, speed_cap_mps)`` minimizing goal</span>
+<span class="sd">        heading error plus ``tau_CPA`` pedestrian encroachment risk.</span>
+<span class="sd">        """</span>
+        <span class="n">w_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">agent</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">agent</span><span class="o">.</span><span class="n">y</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">local_density_m2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">rho</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">estimate_local_crowd_density</span><span class="p">(</span><span class="n">ped_positions</span><span class="p">,</span> <span class="n">query_points</span><span class="o">=</span><span class="n">w_pos</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rho</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">local_density_m2</span><span class="p">)</span>
+
+        <span class="n">speed_cap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_effective_speed_cap</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">agent</span><span class="o">.</span><span class="n">desired_speed_mps</span><span class="p">)</span>
+
+        <span class="n">to_goal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">agent</span><span class="o">.</span><span class="n">goal_xy</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">agent</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">agent</span><span class="o">.</span><span class="n">y</span><span class="p">])</span>
+        <span class="n">goal_yaw</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">to_goal</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">to_goal</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">steer_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+            <span class="o">-</span><span class="n">agent</span><span class="o">.</span><span class="n">max_steer_rad</span><span class="p">,</span> <span class="n">agent</span><span class="o">.</span><span class="n">max_steer_rad</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_steer_candidates</span>
+        <span class="p">)</span>
+        <span class="n">nom_acc</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">((</span><span class="n">speed_cap</span> <span class="o">-</span> <span class="n">agent</span><span class="o">.</span><span class="n">speed</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">),</span> <span class="o">-</span><span class="n">agent</span><span class="o">.</span><span class="n">max_decel_mps2</span><span class="p">,</span> <span class="n">agent</span><span class="o">.</span><span class="n">max_accel_mps2</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">acc_candidates</span> <span class="o">=</span> <span class="p">[</span><span class="n">nom_acc</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.6</span> <span class="o">*</span> <span class="n">agent</span><span class="o">.</span><span class="n">max_decel_mps2</span><span class="p">,</span> <span class="o">-</span><span class="n">agent</span><span class="o">.</span><span class="n">max_decel_mps2</span><span class="p">]</span>
+
+        <span class="n">best_cost</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">inf</span>
+        <span class="n">best_acc</span> <span class="o">=</span> <span class="n">nom_acc</span>
+        <span class="n">best_steer</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="k">for</span> <span class="n">steer</span> <span class="ow">in</span> <span class="n">steer_grid</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">acc</span> <span class="ow">in</span> <span class="n">acc_candidates</span><span class="p">:</span>
+                <span class="n">cand</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">step_kinematic_bicycle</span><span class="p">(</span>
+                    <span class="n">accel_mps2</span><span class="o">=</span><span class="n">acc</span><span class="p">,</span> <span class="n">steer_rad</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">steer</span><span class="p">),</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">speed_cap_mps</span><span class="o">=</span><span class="n">speed_cap</span>
+                <span class="p">)</span>
+                <span class="n">yaw_err</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span>
+                    <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">goal_yaw</span> <span class="o">-</span> <span class="n">cand</span><span class="o">.</span><span class="n">yaw</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">goal_yaw</span> <span class="o">-</span> <span class="n">cand</span><span class="o">.</span><span class="n">yaw</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">cost</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="mf">2.2</span> <span class="o">*</span> <span class="p">(</span><span class="n">yaw_err</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="mf">0.35</span> <span class="o">*</span> <span class="p">((</span><span class="n">speed_cap</span> <span class="o">-</span> <span class="n">cand</span><span class="o">.</span><span class="n">speed</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="mf">0.15</span> <span class="o">*</span> <span class="p">(</span><span class="n">steer</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="p">)</span>
+
+                <span class="n">cand_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">cand</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">cand</span><span class="o">.</span><span class="n">y</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+                <span class="n">cand_vel</span> <span class="o">=</span> <span class="n">cand</span><span class="o">.</span><span class="n">velocity</span>
+                <span class="k">for</span> <span class="n">p_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ped_positions</span><span class="p">)):</span>
+                    <span class="n">tau_cpa</span><span class="p">,</span> <span class="n">d_cpa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_pair_cpa</span><span class="p">(</span>
+                        <span class="n">ped_positions</span><span class="p">[</span><span class="n">p_idx</span><span class="p">],</span> <span class="n">ped_velocities</span><span class="p">[</span><span class="n">p_idx</span><span class="p">],</span> <span class="n">cand_pos</span><span class="p">,</span> <span class="n">cand_vel</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="n">tau_cpa</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cpa_horizon_s</span> <span class="ow">and</span> <span class="n">d_cpa</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_passing_clearance_m</span><span class="p">:</span>
+                        <span class="n">urgency</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">0.25</span> <span class="o">+</span> <span class="n">tau_cpa</span><span class="p">)</span>
+                        <span class="n">intrusion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_passing_clearance_m</span> <span class="o">-</span> <span class="n">d_cpa</span>
+                        <span class="n">cost</span> <span class="o">+=</span> <span class="mf">28.0</span> <span class="o">*</span> <span class="n">urgency</span> <span class="o">*</span> <span class="p">(</span><span class="n">intrusion</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">cost</span> <span class="o">&lt;</span> <span class="n">best_cost</span><span class="p">:</span>
+                    <span class="n">best_cost</span> <span class="o">=</span> <span class="n">cost</span>
+                    <span class="n">best_acc</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span>
+                    <span class="n">best_steer</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">steer</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">best_acc</span><span class="p">,</span> <span class="n">best_steer</span><span class="p">,</span> <span class="n">speed_cap</span></div>
+
+
+<div class="viewcode-block" id="SharedSpaceMultimodalSolver.step">
+<a class="viewcode-back" href="../../../api/jupedsim/routing/index.html#jupedsim.routing.SharedSpaceMultimodalSolver.step">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ped_positions</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span>
+        <span class="n">ped_velocities</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span>
+        <span class="n">ped_desired_dirs</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span>
+        <span class="n">wheelers</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">MicroMobilityAgent</span><span class="p">],</span>
+        <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">ped_desired_speeds</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.35</span><span class="p">,</span>
+        <span class="n">distracted_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">dyads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span>
+        <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
+        <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
+        <span class="n">List</span><span class="p">[</span><span class="n">MicroMobilityAgent</span><span class="p">],</span>
+        <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">],</span>
+    <span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Advance coupled pedestrians and micro-mobility wheelers by ``dt``."""</span>
+        <span class="n">p_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ped_positions</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">p_vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ped_velocities</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">ped_acc</span><span class="p">,</span> <span class="n">diag</span> <span class="o">=</span> <span class="n">compute_anisotropic_social_forces</span><span class="p">(</span>
+            <span class="n">positions</span><span class="o">=</span><span class="n">p_pos</span><span class="p">,</span>
+            <span class="n">velocities</span><span class="o">=</span><span class="n">p_vel</span><span class="p">,</span>
+            <span class="n">desired_directions</span><span class="o">=</span><span class="n">ped_desired_dirs</span><span class="p">,</span>
+            <span class="n">desired_speeds</span><span class="o">=</span><span class="n">ped_desired_speeds</span><span class="p">,</span>
+            <span class="n">distracted_mask</span><span class="o">=</span><span class="n">distracted_mask</span><span class="p">,</span>
+            <span class="n">dyads</span><span class="o">=</span><span class="n">dyads</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Add pedestrian evasive repulsion from approaching micro-mobility agents</span>
+        <span class="k">for</span> <span class="n">whl</span> <span class="ow">in</span> <span class="n">wheelers</span><span class="p">:</span>
+            <span class="n">w_xy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">whl</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">whl</span><span class="o">.</span><span class="n">y</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p_pos</span><span class="p">)):</span>
+                <span class="n">away</span> <span class="o">=</span> <span class="n">p_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">w_xy</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">away</span><span class="p">))</span>
+                <span class="k">if</span> <span class="mf">1e-6</span> <span class="o">&lt;</span> <span class="n">d</span> <span class="o">&lt;</span> <span class="mf">3.5</span><span class="p">:</span>
+                    <span class="n">ped_acc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">2.2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="mf">0.9</span> <span class="o">-</span> <span class="n">d</span><span class="p">)</span> <span class="o">/</span> <span class="mf">0.65</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">away</span> <span class="o">/</span> <span class="n">d</span><span class="p">)</span>
+
+        <span class="n">next_wheelers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">MicroMobilityAgent</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">speed_caps</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">min_d_cpa</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">inf</span>
+
+        <span class="k">for</span> <span class="n">whl</span> <span class="ow">in</span> <span class="n">wheelers</span><span class="p">:</span>
+            <span class="n">acc</span><span class="p">,</span> <span class="n">steer</span><span class="p">,</span> <span class="n">cap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_wheeler_control</span><span class="p">(</span>
+                <span class="n">whl</span><span class="p">,</span> <span class="n">p_pos</span><span class="p">,</span> <span class="n">p_vel</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span>
+            <span class="p">)</span>
+            <span class="n">nxt</span> <span class="o">=</span> <span class="n">whl</span><span class="o">.</span><span class="n">step_kinematic_bicycle</span><span class="p">(</span>
+                <span class="n">accel_mps2</span><span class="o">=</span><span class="n">acc</span><span class="p">,</span> <span class="n">steer_rad</span><span class="o">=</span><span class="n">steer</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">speed_cap_mps</span><span class="o">=</span><span class="n">cap</span>
+            <span class="p">)</span>
+            <span class="n">next_wheelers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nxt</span><span class="p">)</span>
+            <span class="n">speed_caps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cap</span><span class="p">)</span>
+            <span class="n">nxt_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">nxt</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">nxt</span><span class="o">.</span><span class="n">y</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p_pos</span><span class="p">)):</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">dcpa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_pair_cpa</span><span class="p">(</span><span class="n">p_pos</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">p_vel</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">nxt_pos</span><span class="p">,</span> <span class="n">nxt</span><span class="o">.</span><span class="n">velocity</span><span class="p">)</span>
+                <span class="n">min_d_cpa</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">min_d_cpa</span><span class="p">,</span> <span class="n">dcpa</span><span class="p">)</span>
+
+        <span class="n">next_p_vel</span> <span class="o">=</span> <span class="n">p_vel</span> <span class="o">+</span> <span class="n">ped_acc</span> <span class="o">*</span> <span class="n">dt</span>
+        <span class="c1"># Cap pedestrian speeds softly at 2.4 m/s</span>
+        <span class="n">p_spds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">next_p_vel</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">next_p_vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">p_spds</span> <span class="o">&gt;</span> <span class="mf">2.4</span><span class="p">,</span> <span class="n">next_p_vel</span> <span class="o">*</span> <span class="p">(</span><span class="mf">2.4</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">p_spds</span><span class="p">,</span> <span class="mf">1e-9</span><span class="p">)),</span> <span class="n">next_p_vel</span><span class="p">)</span>
+        <span class="n">next_p_pos</span> <span class="o">=</span> <span class="n">p_pos</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p_vel</span> <span class="o">+</span> <span class="n">next_p_vel</span><span class="p">)</span> <span class="o">*</span> <span class="n">dt</span>
+
+        <span class="n">step_info</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"ped_diagnostics"</span><span class="p">:</span> <span class="n">diag</span><span class="p">,</span>
+            <span class="s2">"wheeler_speed_caps_mps"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">speed_caps</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span>
+            <span class="s2">"min_d_cpa_m"</span><span class="p">:</span> <span class="n">min_d_cpa</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">next_p_pos</span><span class="p">,</span> <span class="n">next_p_vel</span><span class="p">,</span> <span class="n">next_wheelers</span><span class="p">,</span> <span class="n">step_info</span></div>
+</div>
+
+</pre></div>
+</div>
+<footer class="report-footer">Last updated 2026-11-21</footer>
+</article>
+</div>
+</main><footer class="site-footer"><div class="site-footer-inner">
+<p class="site-footer-text">© JuPedSim contributors · LGPL-3.0</p>
+<ul class="site-footer-links"><li><a href="https://github.com/PedestrianDynamics/jupedsim">GitHub</a></li><li><a href="/pull-requests/1736/notes/feed.xml">RSS</a></li><li><a href="/pull-requests/1736/docs/v1x/v1.4.2/">1.x docs</a></li></ul>
+</div></footer>
+  </body>
+</html>
