@@ -175,7 +175,7 @@ This needs to be uphold when the geometry is changed.</p>
 <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.GeometryBuilder.add_region" title="jupedsim.GeometryBuilder.add_region"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_region()</span></code></a> returned for that region, see <a class="reference internal" href="geometry.html"><span class="doc">Geometry</span></a>.</p>
 <section id="waypoint">
 <h4>Waypoint<a class="headerlink" href="#waypoint" title="Link to this heading">#</a></h4>
-<p>The most fundamental kind of stage is a <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.WaypointStage" title="jupedsim.WaypointStage"><code class="xref py py-class docutils literal notranslate"><span class="pre">Waypoint</span></code></a>. It represents a target the agent needs to reach.
+<p>The most fundamental kind of stage is a <code class="xref py py-class docutils literal notranslate"><span class="pre">Waypoint</span></code>. It represents a target the agent needs to reach.
 For the way finding, the agent always targets the Waypoint directly.
 A Waypoint is considered completed once agents arrive within a designated distance from the defined Waypoint.
 The figure below shows how a Waypoint is used in the simulation. Here the center (colored orange) represents the Waypoint, and the surrounding blue area indicates the zone an agent must enter to complete the stage.</p>
@@ -183,17 +183,17 @@ The figure below shows how a Waypoint is used in the simulation. Here the center
 <a class="reference internal image-reference" href="../_images/waypoint.svg"><img alt="A dot representing the Waypoint, with an circle around it, depicting the area an agent needs to enter to complete the stage." src="../_images/waypoint.svg" style="width: 20%;" />
 </a>
 <figcaption>
-<p><span class="caption-text">Representation of a <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.WaypointStage" title="jupedsim.WaypointStage"><code class="xref py py-class docutils literal notranslate"><span class="pre">Waypoint</span></code></a> (colored orange) with the given distance (orange line).</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+<p><span class="caption-text">Representation of a <code class="xref py py-class docutils literal notranslate"><span class="pre">Waypoint</span></code> (colored orange) with the given distance (orange line).</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>A Waypoint at <span class="math notranslate nohighlight">\((0.6, -1.4)\)</span> with an accepted distance of 2m can be added to the simulation via:</p>
-<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">waypoint_id</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_waypoint_stage</span><span class="p">([(</span><span class="n">jps</span><span class="o">.</span><span class="n">circle_to_polygon</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mf">0.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.4</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">region_id</span><span class="p">)])</span>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">waypoint</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_target</span><span class="p">(</span><span class="n">jps</span><span class="o">.</span><span class="n">Waypoint</span><span class="p">([(</span><span class="n">jps</span><span class="o">.</span><span class="n">circle_to_polygon</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mf">0.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.4</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">region</span><span class="p">)]))</span>
 </pre></div>
 </div>
 </section>
 <section id="exit">
 <h4>Exit<a class="headerlink" href="#exit" title="Link to this heading">#</a></h4>
-<p>An other stage type is the <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.ExitStage" title="jupedsim.ExitStage"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exit</span></code></a>. As the name suggests, this stage models the exits within the simulation.
+<p>An other stage type is the <code class="xref py py-class docutils literal notranslate"><span class="pre">Exit</span></code>. As the name suggests, this stage models the exits within the simulation.
 The <cite>ExitStage</cite> designates an area where agents are marked for removal from the simulation upon their arrival.
 The removal itself is done at the beginning of the next iteration step.
 As a target the agents will aim for the center of the exit polygon.</p>
@@ -205,16 +205,16 @@ As a target the agents will aim for the center of the exit polygon.</p>
 <a class="reference internal image-reference" href="../_images/exit.svg"><img alt="A polygon representing the exit area is shown in blue, with the center highlighted in orange." src="../_images/exit.svg" style="width: 80%;" />
 </a>
 <figcaption>
-<p><span class="caption-text">Representation of an <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.ExitStage" title="jupedsim.ExitStage"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exit</span></code></a> (colored blue). The agents will aim for the center (colored orange).</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+<p><span class="caption-text">Representation of an <code class="xref py py-class docutils literal notranslate"><span class="pre">Exit</span></code> (colored blue). The agents will aim for the center (colored orange).</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>An exit located in the polygon <span class="math notranslate nohighlight">\((-0.2, -1.9), (0.2, -1.9), (0.2, -1.7), (-0.2, -1.7)\)</span> can be added to the simulation via:</p>
 <div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="c1"># create exit from coordinates</span>
-<span class="n">exit_id</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_exit_stage</span><span class="p">([([(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.7</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.7</span><span class="p">)],</span> <span class="n">region_id</span><span class="p">)])</span>
+<span class="n">exit_</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_target</span><span class="p">(</span><span class="n">jps</span><span class="o">.</span><span class="n">Exit</span><span class="p">([([(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.7</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.7</span><span class="p">)],</span> <span class="n">region</span><span class="p">)]))</span>
 
 <span class="c1"># create exit from shapely.Polygon</span>
 <span class="n">exit_polygon</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.7</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.7</span><span class="p">)])</span>
-<span class="n">exit_id</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_exit_stage</span><span class="p">([(</span><span class="n">exit_polygon</span><span class="p">,</span> <span class="n">region_id</span><span class="p">)])</span>
+<span class="n">exit_</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_target</span><span class="p">(</span><span class="n">jps</span><span class="o">.</span><span class="n">Exit</span><span class="p">([(</span><span class="n">exit_polygon</span><span class="p">,</span> <span class="n">region</span><span class="p">)]))</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -238,11 +238,11 @@ But before we can add transitions we have to create Journeys:</p>
 <div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="c1"># create stages</span>
 <span class="o">...</span>
 
-<span class="c1"># define a journey</span>
-<span class="n">journey</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">JourneyDescription</span><span class="p">(</span>
+<span class="c1"># define a route</span>
+<span class="n">route</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span>
     <span class="p">[</span>
-        <span class="n">waypoint_id</span><span class="p">,</span>
-        <span class="n">exit_id</span>
+        <span class="n">jps</span><span class="o">.</span><span class="n">FixedTransition</span><span class="p">(</span><span class="n">jps</span><span class="o">.</span><span class="n">AGENT_LOCATION</span><span class="p">,</span> <span class="n">waypoint</span><span class="p">),</span>
+        <span class="n">jps</span><span class="o">.</span><span class="n">FixedTransition</span><span class="p">(</span><span class="n">waypoint</span><span class="p">,</span> <span class="n">exit_</span><span class="p">),</span>
     <span class="p">]</span>
 <span class="p">)</span>
 </pre></div>
@@ -266,10 +266,7 @@ Otherwise the agents will be removed from the simulation when they reach the exi
 <a class="reference internal image-reference" href="../_images/fixed.svg"><img alt="../_images/fixed.svg" src="../_images/fixed.svg" style="width: 40%;" />
 </a>
 </figure>
-<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">journey</span><span class="o">.</span><span class="n">set_transition_for_stage</span><span class="p">(</span>
-    <span class="n">start_stage_id</span><span class="p">,</span>
-    <span class="n">jps</span><span class="o">.</span><span class="n">Transition</span><span class="o">.</span><span class="n">create_fixed_transition</span><span class="p">(</span><span class="n">next_stage_id</span><span class="p">)</span>
-<span class="p">)</span>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">jps</span><span class="o">.</span><span class="n">FixedTransition</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">next_target</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -285,15 +282,13 @@ The next 5 with the second one, and the next agent will continue with the third 
 </a>
 </figure>
 <p>To create a round-robin transition as described above, you can follow these steps:</p>
-<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">journey</span><span class="o">.</span><span class="n">set_transition_for_stage</span><span class="p">(</span>
-    <span class="n">start_stage_id</span><span class="p">,</span>
-    <span class="n">jps</span><span class="o">.</span><span class="n">Transition</span><span class="o">.</span><span class="n">create_round_robin_transition</span><span class="p">(</span>
-        <span class="p">[</span>
-            <span class="p">(</span><span class="n">first_candidate_stage_id</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
-            <span class="p">(</span><span class="n">second_candidate_stage_id</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
-            <span class="p">(</span><span class="n">third_candidate_stage_id</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-        <span class="p">]</span>
-    <span class="p">)</span>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">jps</span><span class="o">.</span><span class="n">RoundRobinTransition</span><span class="p">(</span>
+    <span class="n">start</span><span class="p">,</span>
+    <span class="p">{</span>
+        <span class="n">first_candidate</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="n">second_candidate</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="n">third_candidate</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">},</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -308,15 +303,13 @@ When multiple stages have the same number of agent targeting the first defined w
 </a>
 </figure>
 <p>A least-targeted transition can be added to a journey with:</p>
-<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">journey</span><span class="o">.</span><span class="n">set_transition_for_stage</span><span class="p">(</span>
-    <span class="n">start_stage_id</span><span class="p">,</span>
-    <span class="n">jps</span><span class="o">.</span><span class="n">Transition</span><span class="o">.</span><span class="n">create_least_targeted_transition</span><span class="p">(</span>
-        <span class="p">[</span>
-            <span class="n">first_candidate_stage_id</span><span class="p">,</span>
-            <span class="n">second_candidate_stage_id</span><span class="p">,</span>
-            <span class="n">third_candidate_stage_id</span><span class="p">,</span>
-        <span class="p">]</span>
-    <span class="p">)</span>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">jps</span><span class="o">.</span><span class="n">LeastTargetedTransition</span><span class="p">(</span>
+    <span class="n">start</span><span class="p">,</span>
+    <span class="p">[</span>
+        <span class="n">first_candidate</span><span class="p">,</span>
+        <span class="n">second_candidate</span><span class="p">,</span>
+        <span class="n">third_candidate</span><span class="p">,</span>
+    <span class="p">],</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -327,24 +320,24 @@ When multiple stages have the same number of agent targeting the first defined w
 <p>In certain scenarios, e.g., developing a specific behavior model, you may want to bypass the decision-making process modeled by the journeys.
 For this purpose, <em>JuPedSim</em> offers a method called “direct steering”, it moves an agent to a specific position in the walkable area on the shortest path (see <a class="reference internal" href="#way-finding"><span class="std std-ref">Way finding</span></a>).
 To use direct steering in your simulation, you need to add a direct steering stage and a journey consisting only of the stage to the simulation:</p>
-<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">direct_steering_stage</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_direct_steering_stage</span><span class="p">()</span>
-<span class="n">direct_steering_journey</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">JourneyDescription</span><span class="p">([</span><span class="n">direct_steering_stage</span><span class="p">])</span>
-<span class="n">direct_steering_journey_id</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_journey</span><span class="p">(</span><span class="n">direct_steering_journey</span><span class="p">)</span>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">agent</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_agent</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="n">steer_to</span><span class="o">=</span><span class="n">region</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">),</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <p>Afterwards, an agent or agents can be added, targeting this journey and stage.
 The agent with the ID <cite>direct_steering_agent_id</cite> is using the direct steering journey.
 We now can directly set the target of this specific agent.
 It will move towards the specified point and if the point is reached, it will come to a halt there:</p>
-<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">agent</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">agent</span><span class="p">(</span><span class="n">direct_steering_agent_id</span><span class="p">)</span>
-<span class="n">agent</span><span class="o">.</span><span class="n">final_target</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">)</span>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">agent</span><span class="o">.</span><span class="n">reroute</span><span class="p">(</span><span class="n">steer_to</span><span class="o">=</span><span class="n">region</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">))</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Remember, as the agents do not walk towards an exit when using direct steering, they will not be removed from the simulation.
 If they should be removed from the simulation if they reached a certain position, you have to do it manually:</p>
-<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">simulation</span><span class="o">.</span><span class="n">mark_agent_for_removal</span><span class="p">(</span><span class="n">direct_steering_agent_id</span><span class="p">)</span>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">simulation</span><span class="o">.</span><span class="n">mark_agent_for_removal</span><span class="p">(</span><span class="n">agent</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Alternatively, the journey of an agent can be switched to some other journey, see <a class="reference internal" href="#switch-journey"><span class="std std-ref">Switch journey</span></a>.</p>
@@ -355,11 +348,7 @@ If they should be removed from the simulation if they reached a certain position
 <p>In complex scenarios it might be necessary to work with multiple journeys to model the movement of the agents.
 At some point or at some time agents might need to switch between these journeys depending on some conditions.
 After the following code, the agent with the ID <cite>agent_id</cite> will continue in the journey <cite>new_journey_id</cite> targeting <cite>new_stage_id</cite>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">simulation</span><span class="o">.</span><span class="n">switch_agent_journey</span><span class="p">(</span>
-    <span class="n">agent_id</span><span class="p">,</span>
-    <span class="n">new_journey_id</span><span class="p">,</span>
-    <span class="n">new_stage_id</span>
-<span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">agent</span><span class="o">.</span><span class="n">reroute</span><span class="p">(</span><span class="n">route</span><span class="o">=</span><span class="n">new_route</span><span class="p">,</span> <span class="n">first_target</span><span class="o">=</span><span class="n">new_target</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -379,7 +368,7 @@ When multiple paths lead to the target, the shortest one will be preferred.</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-11-24</footer>
+<footer class="report-footer">Last updated 2026-11-25</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="geometry.html" rel="prev"><small>Previous</small>Geometry</a><a class="book-pagenav-next" href="custom_serialization.html" rel="next"><small>Next</small>Custom Serialization</a>
 </nav>

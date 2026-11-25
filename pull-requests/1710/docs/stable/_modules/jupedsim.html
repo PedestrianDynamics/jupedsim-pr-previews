@@ -138,7 +138,6 @@
     <span class="n">Hdf5TrajectoryWriter</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.internal.tracing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Timer</span><span class="p">,</span> <span class="n">trace_event</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.journey</span><span class="w"> </span><span class="kn">import</span> <span class="n">JourneyDescription</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.pyjupedsim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AgentStep</span><span class="p">,</span>
     <span class="n">AgentView</span><span class="p">,</span>
@@ -151,8 +150,6 @@
     <span class="n">CollisionFreeSpeedModelV2State</span><span class="p">,</span>
     <span class="n">CollisionFreeSpeedModelV3</span><span class="p">,</span>
     <span class="n">CollisionFreeSpeedModelV3State</span><span class="p">,</span>
-    <span class="n">DirectSteeringStage</span><span class="p">,</span>
-    <span class="n">ExitStage</span><span class="p">,</span>
     <span class="n">FloorfieldOptions</span><span class="p">,</span>
     <span class="n">GeneralizedCentrifugalForceModel</span><span class="p">,</span>
     <span class="n">GeneralizedCentrifugalForceModelState</span><span class="p">,</span>
@@ -160,17 +157,16 @@
     <span class="n">GeometryBuilder</span><span class="p">,</span>
     <span class="n">Location</span><span class="p">,</span>
     <span class="n">NeighborView</span><span class="p">,</span>
+    <span class="n">Region</span><span class="p">,</span>
     <span class="n">SimulationError</span><span class="p">,</span>
     <span class="n">SocialForceModel</span><span class="p">,</span>
     <span class="n">SocialForceModelState</span><span class="p">,</span>
     <span class="n">SpeedGrid</span><span class="p">,</span>
     <span class="n">SurfaceMeshShortestPathRoutingEngine</span><span class="p">,</span>
-    <span class="n">Transition</span><span class="p">,</span>
     <span class="n">TravelTimeGrid</span><span class="p">,</span>
     <span class="n">WallView</span><span class="p">,</span>
     <span class="n">WarpDriverModel</span><span class="p">,</span>
     <span class="n">WarpDriverModelState</span><span class="p">,</span>
-    <span class="n">WaypointStage</span><span class="p">,</span>
     <span class="n">disable_tracing</span><span class="p">,</span>
     <span class="n">dump_traces</span><span class="p">,</span>
     <span class="n">enable_tracing</span><span class="p">,</span>
@@ -184,8 +180,17 @@
     <span class="n">set_warning_callback</span><span class="p">,</span>
     <span class="n">start_trace_event</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.records</span><span class="w"> </span><span class="kn">import</span> <span class="n">RemovalRecord</span><span class="p">,</span> <span class="n">TargetReachedRecord</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.route</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AGENT_LOCATION</span><span class="p">,</span>
+    <span class="n">FixedTransition</span><span class="p">,</span>
+    <span class="n">LeastTargetedTransition</span><span class="p">,</span>
+    <span class="n">RoundRobinTransition</span><span class="p">,</span>
+    <span class="n">Route</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.serialization</span><span class="w"> </span><span class="kn">import</span> <span class="n">TrajectoryWriter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.simulation</span><span class="w"> </span><span class="kn">import</span> <span class="n">Simulation</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.target</span><span class="w"> </span><span class="kn">import</span> <span class="n">Exit</span><span class="p">,</span> <span class="n">RouteTarget</span><span class="p">,</span> <span class="n">Waypoint</span>
 
 <span class="n">__version__</span> <span class="o">=</span> <span class="n">get_build_info</span><span class="p">()</span><span class="o">.</span><span class="n">library_version</span>
 <span class="sd">"""</span>
@@ -206,6 +211,7 @@
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"AGENT_LOCATION"</span><span class="p">,</span>
     <span class="s2">"Agent"</span><span class="p">,</span>
     <span class="s2">"AgentNumberError"</span><span class="p">,</span>
     <span class="s2">"AgentStep"</span><span class="p">,</span>
@@ -220,8 +226,8 @@
     <span class="s2">"CollisionFreeSpeedModelV3"</span><span class="p">,</span>
     <span class="s2">"CollisionFreeSpeedModelV3State"</span><span class="p">,</span>
     <span class="s2">"CustomOperationalModel"</span><span class="p">,</span>
-    <span class="s2">"DirectSteeringStage"</span><span class="p">,</span>
-    <span class="s2">"ExitStage"</span><span class="p">,</span>
+    <span class="s2">"Exit"</span><span class="p">,</span>
+    <span class="s2">"FixedTransition"</span><span class="p">,</span>
     <span class="s2">"FloorfieldOptions"</span><span class="p">,</span>
     <span class="s2">"GeneralizedCentrifugalForceModel"</span><span class="p">,</span>
     <span class="s2">"GeneralizedCentrifugalForceModelState"</span><span class="p">,</span>
@@ -230,25 +236,30 @@
     <span class="s2">"Hdf5TrajectoryLoader"</span><span class="p">,</span>
     <span class="s2">"Hdf5TrajectoryWriter"</span><span class="p">,</span>
     <span class="s2">"IncorrectParameterError"</span><span class="p">,</span>
-    <span class="s2">"JourneyDescription"</span><span class="p">,</span>
+    <span class="s2">"LeastTargetedTransition"</span><span class="p">,</span>
     <span class="s2">"Location"</span><span class="p">,</span>
     <span class="s2">"NegativeValueError"</span><span class="p">,</span>
     <span class="s2">"NeighborView"</span><span class="p">,</span>
     <span class="s2">"OverlappingCirclesError"</span><span class="p">,</span>
+    <span class="s2">"Region"</span><span class="p">,</span>
+    <span class="s2">"RemovalRecord"</span><span class="p">,</span>
+    <span class="s2">"RoundRobinTransition"</span><span class="p">,</span>
+    <span class="s2">"Route"</span><span class="p">,</span>
+    <span class="s2">"RouteTarget"</span><span class="p">,</span>
     <span class="s2">"Simulation"</span><span class="p">,</span>
     <span class="s2">"SimulationError"</span><span class="p">,</span>
     <span class="s2">"SocialForceModel"</span><span class="p">,</span>
     <span class="s2">"SocialForceModelState"</span><span class="p">,</span>
     <span class="s2">"SpeedGrid"</span><span class="p">,</span>
     <span class="s2">"SurfaceMeshShortestPathRoutingEngine"</span><span class="p">,</span>
+    <span class="s2">"TargetReachedRecord"</span><span class="p">,</span>
     <span class="s2">"Timer"</span><span class="p">,</span>
     <span class="s2">"TrajectoryWriter"</span><span class="p">,</span>
-    <span class="s2">"Transition"</span><span class="p">,</span>
     <span class="s2">"TravelTimeGrid"</span><span class="p">,</span>
     <span class="s2">"WallView"</span><span class="p">,</span>
     <span class="s2">"WarpDriverModel"</span><span class="p">,</span>
     <span class="s2">"WarpDriverModelState"</span><span class="p">,</span>
-    <span class="s2">"WaypointStage"</span><span class="p">,</span>
+    <span class="s2">"Waypoint"</span><span class="p">,</span>
     <span class="s2">"__commit__"</span><span class="p">,</span>
     <span class="s2">"__compiler__"</span><span class="p">,</span>
     <span class="s2">"__version__"</span><span class="p">,</span>
@@ -275,7 +286,7 @@
 <span class="p">]</span>
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-11-24</footer>
+<footer class="report-footer">Last updated 2026-11-25</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

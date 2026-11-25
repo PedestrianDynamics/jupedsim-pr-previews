@@ -282,16 +282,14 @@ agent handle (<code class="docutils literal notranslate"><span class="pre">sim.a
 <span class="n">sim</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span>
     <span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModelV3</span><span class="p">(),</span> <span class="n">geometry</span><span class="o">=</span><span class="n">surface</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
 <span class="p">)</span>
-<span class="n">agent_id</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">add_agent</span><span class="p">(</span>
-    <span class="n">journey_id</span><span class="o">=</span><span class="n">journey_id</span><span class="p">,</span>
-    <span class="n">stage_id</span><span class="o">=</span><span class="n">stage_id</span><span class="p">,</span>
-    <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+<span class="n">agent</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">add_agent</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+    <span class="n">route</span><span class="o">=</span><span class="n">route</span><span class="p">,</span>
     <span class="n">state</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModelV3State</span><span class="p">(),</span>
-    <span class="n">region_id</span><span class="o">=</span><span class="n">region_id</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># modify at runtime</span>
-<span class="n">sim</span><span class="o">.</span><span class="n">agent</span><span class="p">(</span><span class="n">agent_id</span><span class="p">)</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">desired_speed</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">agent</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">desired_speed</span> <span class="o">=</span> <span class="mf">1.0</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -496,7 +494,7 @@ agent handle (<code class="docutils literal notranslate"><span class="pre">sim.a
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-11-24</footer>
+<footer class="report-footer">Last updated 2026-11-25</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="index.html" rel="prev"><small>Previous</small>Pedestrian Models</a><a class="book-pagenav-next" href="warp_driver_model.html" rel="next"><small>Next</small>WarpDriver Model</a>
 </nav>

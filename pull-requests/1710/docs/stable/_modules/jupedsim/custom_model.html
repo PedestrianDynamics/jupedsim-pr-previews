@@ -167,8 +167,9 @@
 <span class="sd">        :class:`~jupedsim.SimulationError`. The neighbor objects returned from</span>
 <span class="sd">        neighborhood queries are transient as well; never store them. Calling</span>
 <span class="sd">        mutating methods on the simulation (``add_agent``,</span>
-<span class="sd">        ``mark_agent_for_removal``, journey or stage mutation) from within a</span>
-<span class="sd">        callback raises :class:`~jupedsim.SimulationError`.</span>
+<span class="sd">        ``mark_agent_for_removal``, ``add_target``, ``add_route``,</span>
+<span class="sd">        ``agent.reroute``) from within a callback raises</span>
+<span class="sd">        :class:`~jupedsim.SimulationError`.</span>
 <span class="sd">    """</span>
 
 <div class="viewcode-block" id="CustomOperationalModel.compute_next_state">
@@ -246,7 +247,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-11-24</footer>
+<footer class="report-footer">Last updated 2026-11-25</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

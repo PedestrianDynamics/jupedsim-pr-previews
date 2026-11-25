@@ -269,7 +269,7 @@ of a region.</p></td>
         <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_output_file</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_csv_writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_csv_writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span>
-            <span class="p">[</span><span class="s2">"frame"</span><span class="p">,</span> <span class="s2">"id"</span><span class="p">,</span> <span class="s2">"pos_x"</span><span class="p">,</span> <span class="s2">"pos_y"</span><span class="p">,</span> <span class="s2">"ori_x"</span><span class="p">,</span> <span class="s2">"ori_y"</span><span class="p">]</span>
+            <span class="p">[</span><span class="s2">"frame"</span><span class="p">,</span> <span class="s2">"id"</span><span class="p">,</span> <span class="s2">"x"</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">,</span> <span class="s2">"region_id"</span><span class="p">]</span>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">write_iteration_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simulation</span><span class="p">:</span> <span class="n">Simulation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -282,10 +282,10 @@ of a region.</p></td>
             <span class="bp">self</span><span class="o">.</span><span class="n">_csv_writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span>
                 <span class="n">frame</span><span class="p">,</span>
                 <span class="n">agent</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-                <span class="n">agent</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                <span class="n">agent</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-                <span class="n">agent</span><span class="o">.</span><span class="n">orientation</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                <span class="n">agent</span><span class="o">.</span><span class="n">orientation</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">agent</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+                <span class="n">agent</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+                <span class="n">agent</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">z</span><span class="p">,</span>
+                <span class="n">agent</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">region_id</span><span class="p">,</span>
             <span class="p">])</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">every_nth_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
@@ -402,8 +402,8 @@ closed. The loader returns them per stage in the same form as
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="k">with</span> <span class="n">jps</span><span class="o">.</span><span class="n">Hdf5TrajectoryLoader</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">"traj.h5"</span><span class="p">))</span> <span class="k">as</span> <span class="n">loader</span><span class="p">:</span>
-    <span class="n">stage_id</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_travel_time_stage_ids</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">grids</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_travel_times</span><span class="p">(</span><span class="n">stage_id</span><span class="p">)</span>
+    <span class="n">target_id</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_travel_time_target_ids</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">grids</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_travel_times</span><span class="p">(</span><span class="n">target_id</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">region_id</span><span class="p">,</span> <span class="n">grid</span> <span class="ow">in</span> <span class="n">grids</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
@@ -452,7 +452,7 @@ reading the file with h5py:</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-11-24</footer>
+<footer class="report-footer">Last updated 2026-11-25</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="routing.html" rel="prev"><small>Previous</small>Routing</a><a class="book-pagenav-next" href="../pedestrian_models/index.html" rel="next"><small>Next</small>Pedestrian Models</a>
 </nav>
