@@ -123,6 +123,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.pyjupedsim</span><span class="w"> </span><span class="kn">import</span> <span class="n">Location</span><span class="p">,</span> <span class="n">_CustomModelState</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.route</span><span class="w"> </span><span class="kn">import</span> <span class="n">Route</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.target</span><span class="w"> </span><span class="kn">import</span> <span class="n">RouteTarget</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.simulation</span><span class="w"> </span><span class="kn">import</span> <span class="n">Simulation</span>
@@ -186,125 +188,95 @@
 
 <span class="sd">    .. code:: python</span>
 
-<span class="sd">        # a specific agent</span>
-<span class="sd">        sim.agent(id)</span>
+<span class="sd">        # the agent just added</span>
+<span class="sd">        agent = sim.add_agent(location, route=route)</span>
+
+<span class="sd">        # a specific agent, by id or by name</span>
+<span class="sd">        sim.agent(17)</span>
+<span class="sd">        sim.agent("anna")</span>
 
 <span class="sd">        # all agents as iterator</span>
 <span class="sd">        sim.agents()</span>
-
-<span class="sd">        # agents in a specific distance to a point</span>
-<span class="sd">        sim.agents_in_range(position, distance)</span>
-
-<span class="sd">        # agents in a polygon</span>
-<span class="sd">        sim.agents_in_polygon(polygon)</span>
 
 <span class="sd">    A handle stores only the simulation and the agent id. Every attribute</span>
 <span class="sd">    read or write resolves the agent freshly through the simulation, so</span>
 <span class="sd">    handles remain valid across calls to</span>
 <span class="sd">    :meth:`~jupedsim.simulation.Simulation.iterate`. Accessing a handle whose</span>
-<span class="sd">    agent no longer exists raises :class:`~jupedsim.SimulationError`.</span>
+<span class="sd">    agent no longer exists raises :class:`~jupedsim.SimulationError`. Handles</span>
+<span class="sd">    are equal if they refer to the same agent.</span>
 
-<span class="sd">    Mutation through properties is supported, e.g.:</span>
+<span class="sd">    The model state can be changed through the handle, e.g.:</span>
 
 <span class="sd">    .. code:: python</span>
 
-<span class="sd">        agent.final_target = (1.0, 2.0)</span>
 <span class="sd">        agent.state.desired_speed = 1.5</span>
-
-<span class="sd">    .. note ::</span>
-
-<span class="sd">        You need to be aware that currently there are no checks done when</span>
-<span class="sd">        setting properties on an Agent instance. For example it is possible to</span>
-<span class="sd">        set an Agent position outside the walkable area of the Simulation</span>
-<span class="sd">        resulting in a crash.</span>
 <span class="sd">    """</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"_simulation"</span><span class="p">,</span> <span class="s2">"_id"</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simulation</span><span class="p">:</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Do not use.</span>
 
 <span class="sd">        Retrieve agent handles from the simulation.</span>
 <span class="sd">        """</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__simulation</span> <span class="o">=</span> <span class="n">simulation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__id</span> <span class="o">=</span> <span class="n">agent_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span> <span class="o">=</span> <span class="n">simulation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="n">agent_id</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">__resolve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Transient reference: only valid for the duration of one property</span>
         <span class="c1"># call, never stored.</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__simulation</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">agent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">agent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Numeric id of the agent in this simulation."""</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__resolve</span><span class="p">()</span><span class="o">.</span><span class="n">id</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">journey_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Id of the :class:`~jupedsim.JourneyDescription` the agent is currently following."""</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__resolve</span><span class="p">()</span><span class="o">.</span><span class="n">journey_id</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Name of the agent or ``None``."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">agent_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">stage_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Id of the :class:`Stage` the Agent is currently targeting."""</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__resolve</span><span class="p">()</span><span class="o">.</span><span class="n">stage_id</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">route</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Route</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""The route the agent follows, ``None`` while it is steered to a location."""</span>
+        <span class="n">route_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve</span><span class="p">()</span><span class="o">.</span><span class="n">route_id</span>
+        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">route_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">Route</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span><span class="p">,</span> <span class="n">route_id</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">position</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""Position of the agent."""</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__resolve</span><span class="p">()</span><span class="o">.</span><span class="n">position</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">current_target</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RouteTarget</span> <span class="o">|</span> <span class="n">Location</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""What the agent heads for now.</span>
+
+<span class="sd">        The target on its route, or the location it is steered to, see</span>
+<span class="sd">        :meth:`reroute`.</span>
+<span class="sd">        """</span>
+        <span class="n">agent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">agent</span><span class="o">.</span><span class="n">target_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">RouteTarget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span><span class="p">,</span> <span class="n">agent</span><span class="o">.</span><span class="n">target_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">agent</span><span class="o">.</span><span class="n">current_target</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Location</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Current location of the agent.</span>
+<span class="w">        </span><span class="sd">"""Where the agent stands, with its region and height; a snapshot.</span>
 
-<span class="sd">        Same as :attr:`position`, plus the region and the height of the surface.</span>
-<span class="sd">        Can be used wherever the simulation accepts a location, e.g. to set</span>
-<span class="sd">        another agent's :attr:`final_target`.</span>
+<span class="sd">        Read it again to get the agent's current location.</span>
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__resolve</span><span class="p">()</span><span class="o">.</span><span class="n">location</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve</span><span class="p">()</span><span class="o">.</span><span class="n">location</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">final_target</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Location</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Current final target of the agent.</span>
-
-<span class="sd">        Can be used to directly steer an agent towards the given coordinate.</span>
-<span class="sd">        This will bypass the strategical and tactical level, but the</span>
-<span class="sd">        operational level will still be active.</span>
-
-<span class="sd">        .. important::</span>
-
-<span class="sd">            If the agent is not in a Journey with a DirectSteering stage, any</span>
-<span class="sd">            change will be ignored.</span>
-
-<span class="sd">        .. important::</span>
-
-<span class="sd">            When setting the target, the given coordinates must lie within the</span>
-<span class="sd">            walkable area. Otherwise, an error will be thrown immediately.</span>
-
-<span class="sd">        Accepts a :class:`~jupedsim.Location` or an ``(x, y)`` tuple. A</span>
-<span class="sd">        tuple is placed on the surface closest to the agent's own height; to</span>
-<span class="sd">        target another floor, pass a location from</span>
-<span class="sd">        :meth:`~jupedsim.simulation.Simulation.get_location`.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Current final target of the agent, or ``None`` while it heads</span>
-<span class="sd">            for an area such as an exit.</span>
-<span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__resolve</span><span class="p">()</span><span class="o">.</span><span class="n">final_target</span>
-
-    <span class="nd">@final_target</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">final_target</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">final_target</span><span class="p">:</span> <span class="n">Location</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__simulation</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">set_agent_target</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__id</span><span class="p">,</span> <span class="n">final_target</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">leaving</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Whether the agent leaves the simulation at the beginning of the next</span>
+<span class="sd">        iteration: it reached an exit, or was marked for removal."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve</span><span class="p">()</span><span class="o">.</span><span class="n">leaving</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">route_orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""Unit vector along the route to the agent's final target.</span>
+<span class="w">        </span><span class="sd">"""Unit vector towards the current target.</span>
 
 <span class="sd">        It is used by the operational model to compute the next state of the agent.</span>
-<span class="sd">        Zero when the agent has already reached its final target.</span>
+<span class="sd">        ``(0, 0)`` inside the area of the target.</span>
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__resolve</span><span class="p">()</span><span class="o">.</span><span class="n">route_orientation</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve</span><span class="p">()</span><span class="o">.</span><span class="n">route_orientation</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
@@ -315,17 +287,86 @@
 <span class="sd">        ``agent.state.desired_speed = 1.5``. For custom Python models this</span>
 <span class="sd">        returns the user supplied state object.</span>
 <span class="sd">        """</span>
-        <span class="n">raw_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__resolve</span><span class="p">()</span><span class="o">.</span><span class="n">state</span>
+        <span class="n">raw_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve</span><span class="p">()</span><span class="o">.</span><span class="n">state</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_state</span><span class="p">,</span> <span class="n">_CustomModelState</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">raw_state</span><span class="o">.</span><span class="n">model</span>
-        <span class="k">return</span> <span class="n">_ModelStateHandle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__simulation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_ModelStateHandle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Agent.reroute">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Agent.reroute">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reroute</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">route</span><span class="p">:</span> <span class="n">Route</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">first_target</span><span class="p">:</span> <span class="n">RouteTarget</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">steer_to</span><span class="p">:</span> <span class="n">Location</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Change where the agent goes, with the parameters of</span>
+<span class="sd">        :meth:`~jupedsim.simulation.Simulation.add_agent`.</span>
+
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">            agent.reroute(route=r)                  # join r, AGENT_LOCATION decides</span>
+<span class="sd">            agent.reroute(route=r, first_target=t)  # join r at t</span>
+<span class="sd">            agent.reroute(first_target=t)           # jump to t in the current route</span>
+<span class="sd">            agent.reroute(steer_to=location)        # direct steering</span>
+
+<span class="sd">        It takes effect in the next iteration and cannot be called while the</span>
+<span class="sd">        simulation iterates. :attr:`current_target` returns the new target at once.</span>
+<span class="sd">        The agent reaches it after the next step at the earliest, even if it stands</span>
+<span class="sd">        in it already.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: if the arguments do not form one of the calls above, or a</span>
+<span class="sd">                handle belongs to another simulation.</span>
+<span class="sd">            SimulationError: if ``first_target`` is not part of the route, the agent</span>
+<span class="sd">                has no route to jump in, the location belongs to another geometry, or</span>
+<span class="sd">                the agent is :attr:`leaving`.</span>
+<span class="sd">        """</span>
+        <span class="n">sim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span>
+        <span class="k">if</span> <span class="n">steer_to</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">route</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">first_target</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">"use route= and first_target=, or steer_to=, not both"</span>
+                <span class="p">)</span>
+            <span class="n">sim</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">steer</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">,</span> <span class="n">sim</span><span class="o">.</span><span class="n">_checked_location</span><span class="p">(</span><span class="n">steer_to</span><span class="p">,</span> <span class="s2">"steer_to"</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">route</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">sim</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">reroute</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">,</span>
+                <span class="n">sim</span><span class="o">.</span><span class="n">_own</span><span class="p">(</span><span class="n">route</span><span class="p">,</span> <span class="n">Route</span><span class="p">,</span> <span class="s2">"route"</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="kc">None</span>
+                <span class="k">if</span> <span class="n">first_target</span> <span class="ow">is</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="n">sim</span><span class="o">.</span><span class="n">_own</span><span class="p">(</span><span class="n">first_target</span><span class="p">,</span> <span class="n">RouteTarget</span><span class="p">,</span> <span class="s2">"first_target"</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">first_target</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">sim</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">reroute_within_route</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">,</span> <span class="n">sim</span><span class="o">.</span><span class="n">_own</span><span class="p">(</span><span class="n">first_target</span><span class="p">,</span> <span class="n">RouteTarget</span><span class="p">,</span> <span class="s2">"first_target"</span><span class="p">)</span><span class="o">.</span><span class="n">id</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"give route=, first_target= or steer_to="</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Agent</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">_simulation</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span>
+            <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_simulation</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">))</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">"Agent(id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__id</span><span class="si">}</span><span class="s2">)"</span></div>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">"Agent(id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="si">}</span><span class="s2">)"</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"Agent(id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="si">}</span><span class="s2">, name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">)"</span></div>
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-11-18</footer>
+<footer class="report-footer">Last updated 2026-11-26</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

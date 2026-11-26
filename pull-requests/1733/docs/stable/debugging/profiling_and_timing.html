@@ -171,7 +171,7 @@ log level are recorded.</p>
 <div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">jupedsim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jps</span>
 
 <span class="n">sim</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span>
-    <span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModelTordeux2016</span><span class="p">(),</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModel</span><span class="p">(),</span>
     <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">,</span>
     <span class="n">timer_log_level</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>   <span class="c1"># record everything including debug probes</span>
 <span class="p">)</span>
@@ -433,7 +433,7 @@ the profiler gives you a visual timeline with the same event boundaries.</p>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="n">sim</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span>
-    <span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModelTordeux2016</span><span class="p">(),</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModel</span><span class="p">(),</span>
     <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">,</span>
     <span class="n">timer_log_level</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
 <span class="p">)</span>
@@ -474,7 +474,7 @@ the profiler gives you a visual timeline with the same event boundaries.</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-11-18</footer>
+<footer class="report-footer">Last updated 2026-11-26</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="index.html" rel="prev"><small>Previous</small>Tools for Debugging</a><a class="book-pagenav-next" href="../history.html" rel="next"><small>Next</small>JuPedSim</a>
 </nav>

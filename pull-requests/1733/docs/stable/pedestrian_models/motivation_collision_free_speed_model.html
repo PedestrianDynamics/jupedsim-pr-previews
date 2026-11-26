@@ -131,7 +131,7 @@
 <a class="reference external" href="https://arxiv.org/abs/2604.26858">Üsten et al. (2026)</a>. It is a variant of
 the collision-free speed model
 (<a class="reference external" href="https://doi.org/10.1007/978-3-319-33482-0_29">Tordeux et al., 2016</a>),
-available as <code class="docutils literal notranslate"><span class="pre">CollisionFreeSpeedModel</span></code>, in which the steering and the speed selection are explicitly
+available as <code class="docutils literal notranslate"><span class="pre">CollisionFreeSpeedModelTordeux2016</span></code>, in which the steering and the speed selection are explicitly
 decoupled. The walking direction is
 obtained by rotating a reference direction toward the side opposite the
 most relevant forward neighbor, and the walking speed is computed from
@@ -284,16 +284,14 @@ agent handle (<code class="docutils literal notranslate"><span class="pre">sim.a
 <span class="n">sim</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span>
     <span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">MotivationCollisionFreeSpeedModel</span><span class="p">(),</span> <span class="n">geometry</span><span class="o">=</span><span class="n">surface</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
 <span class="p">)</span>
-<span class="n">agent_id</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">add_agent</span><span class="p">(</span>
-    <span class="n">journey_id</span><span class="o">=</span><span class="n">journey_id</span><span class="p">,</span>
-    <span class="n">stage_id</span><span class="o">=</span><span class="n">stage_id</span><span class="p">,</span>
-    <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+<span class="n">agent</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">add_agent</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+    <span class="n">route</span><span class="o">=</span><span class="n">route</span><span class="p">,</span>
     <span class="n">state</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">MotivationCollisionFreeSpeedModelState</span><span class="p">(),</span>
-    <span class="n">region_id</span><span class="o">=</span><span class="n">region_id</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># modify at runtime</span>
-<span class="n">sim</span><span class="o">.</span><span class="n">agent</span><span class="p">(</span><span class="n">agent_id</span><span class="p">)</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">desired_speed</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">agent</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">desired_speed</span> <span class="o">=</span> <span class="mf">1.0</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -485,7 +483,7 @@ agent handle (<code class="docutils literal notranslate"><span class="pre">sim.a
 <td><p><span class="math notranslate nohighlight">\(v_{\min} = -0.01\)</span> m/s for deadlock release</p></td>
 </tr>
 <tr class="row-odd"><td><p>Anisotropy</p></td>
-<td><p>Equal weighting of distances</p></td>
+<td><p>Vision factor on the summed repulsion (<code class="docutils literal notranslate"><span class="pre">neighbor_repulsion_anisotropy</span></code>)</p></td>
 <td><p>Asymmetric perception field via <span class="math notranslate nohighlight">\(\sigma_x \ne \sigma_y\)</span></p></td>
 </tr>
 <tr class="row-even"><td><p>Neighbor visibility</p></td>
@@ -498,7 +496,7 @@ agent handle (<code class="docutils literal notranslate"><span class="pre">sim.a
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-11-18</footer>
+<footer class="report-footer">Last updated 2026-11-26</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="index.html" rel="prev"><small>Previous</small>Pedestrian Models</a><a class="book-pagenav-next" href="warp_driver_model.html" rel="next"><small>Next</small>WarpDriver Model</a>
 </nav>

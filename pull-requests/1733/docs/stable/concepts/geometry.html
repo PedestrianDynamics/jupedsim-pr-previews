@@ -290,7 +290,7 @@ This can be done with:</p>
 <span class="n">room</span> <span class="o">=</span> <span class="n">geo_builder</span><span class="o">.</span><span class="n">add_region</span><span class="p">(</span><span class="n">polygon</span><span class="o">=...</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
 
 <span class="n">simulation</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span>
-    <span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModelTordeux2016</span><span class="p">(),</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModel</span><span class="p">(),</span>
     <span class="n">geometry</span><span class="o">=</span><span class="n">geo_builder</span><span class="o">.</span><span class="n">build</span><span class="p">(),</span>
     <span class="n">trajectory_writer</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">Hdf5TrajectoryWriter</span><span class="p">(</span>
         <span class="n">output_file</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">"traj.h5"</span><span class="p">)</span>
@@ -302,7 +302,7 @@ This can be done with:</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-11-18</footer>
+<footer class="report-footer">Last updated 2026-11-26</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="index.html" rel="prev"><small>Previous</small>Concepts</a><a class="book-pagenav-next" href="routing.html" rel="next"><small>Next</small>Routing</a>
 </nav>

@@ -119,16 +119,16 @@
 <span></span><span class="c1"># SPDX-License-Identifier: LGPL-3.0-or-later</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">types</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Self</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Self</span><span class="p">,</span> <span class="n">TypeVar</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">npt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.agent</span><span class="w"> </span><span class="kn">import</span> <span class="n">Agent</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.custom_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">CustomOperationalModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.internal.messages</span><span class="w"> </span><span class="kn">import</span> <span class="n">id_and_name</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.internal.tracing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Timer</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.journey</span><span class="w"> </span><span class="kn">import</span> <span class="n">JourneyDescription</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.pyjupedsim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AnticipationVelocityModel</span><span class="p">,</span>
     <span class="n">AnticipationVelocityModelState</span><span class="p">,</span>
@@ -136,8 +136,6 @@
     <span class="n">CollisionFreeSpeedModelState</span><span class="p">,</span>
     <span class="n">CollisionFreeSpeedModelTordeux2016</span><span class="p">,</span>
     <span class="n">CollisionFreeSpeedModelTordeux2016State</span><span class="p">,</span>
-    <span class="n">DirectSteeringStage</span><span class="p">,</span>
-    <span class="n">ExitStage</span><span class="p">,</span>
     <span class="n">FloorfieldOptions</span><span class="p">,</span>
     <span class="n">GeneralizedCentrifugalForceModel</span><span class="p">,</span>
     <span class="n">GeneralizedCentrifugalForceModelState</span><span class="p">,</span>
@@ -146,28 +144,35 @@
     <span class="n">MotivationCollisionFreeSpeedModel</span><span class="p">,</span>
     <span class="n">MotivationCollisionFreeSpeedModelState</span><span class="p">,</span>
     <span class="n">OperationalModel</span><span class="p">,</span>
+    <span class="n">Region</span><span class="p">,</span>
+    <span class="n">SimulationError</span><span class="p">,</span>
     <span class="n">SocialForceModel</span><span class="p">,</span>
     <span class="n">SocialForceModelState</span><span class="p">,</span>
     <span class="n">SpeedGrid</span><span class="p">,</span>
     <span class="n">TravelTimeGrid</span><span class="p">,</span>
     <span class="n">WarpDriverModel</span><span class="p">,</span>
     <span class="n">WarpDriverModelState</span><span class="p">,</span>
-    <span class="n">WaypointStage</span><span class="p">,</span>
     <span class="n">_CustomModelState</span><span class="p">,</span>
     <span class="n">_PythonModel</span><span class="p">,</span>
     <span class="n">_Simulation</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.records</span><span class="w"> </span><span class="kn">import</span> <span class="n">RemovalRecord</span><span class="p">,</span> <span class="n">TargetReachedRecord</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.route</span><span class="w"> </span><span class="kn">import</span> <span class="n">AGENT_LOCATION</span><span class="p">,</span> <span class="n">Route</span><span class="p">,</span> <span class="n">Transition</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.serialization</span><span class="w"> </span><span class="kn">import</span> <span class="n">TrajectoryWriter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jupedsim.target</span><span class="w"> </span><span class="kn">import</span> <span class="n">Exit</span><span class="p">,</span> <span class="n">RouteTarget</span><span class="p">,</span> <span class="n">Waypoint</span>
 
-<span class="n">_STATE_TYPES</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">GeneralizedCentrifugalForceModelState</span><span class="p">,</span>
-    <span class="n">CollisionFreeSpeedModelTordeux2016State</span><span class="p">,</span>
-    <span class="n">CollisionFreeSpeedModelState</span><span class="p">,</span>
-    <span class="n">MotivationCollisionFreeSpeedModelState</span><span class="p">,</span>
-    <span class="n">AnticipationVelocityModelState</span><span class="p">,</span>
-    <span class="n">SocialForceModelState</span><span class="p">,</span>
-    <span class="n">WarpDriverModelState</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="n">_STATE_TYPES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">GeneralizedCentrifugalForceModel</span><span class="p">:</span> <span class="n">GeneralizedCentrifugalForceModelState</span><span class="p">,</span>
+    <span class="n">CollisionFreeSpeedModelTordeux2016</span><span class="p">:</span> <span class="n">CollisionFreeSpeedModelTordeux2016State</span><span class="p">,</span>
+    <span class="n">CollisionFreeSpeedModel</span><span class="p">:</span> <span class="n">CollisionFreeSpeedModelState</span><span class="p">,</span>
+    <span class="n">MotivationCollisionFreeSpeedModel</span><span class="p">:</span> <span class="n">MotivationCollisionFreeSpeedModelState</span><span class="p">,</span>
+    <span class="n">AnticipationVelocityModel</span><span class="p">:</span> <span class="n">AnticipationVelocityModelState</span><span class="p">,</span>
+    <span class="n">SocialForceModel</span><span class="p">:</span> <span class="n">SocialForceModelState</span><span class="p">,</span>
+    <span class="n">WarpDriverModel</span><span class="p">:</span> <span class="n">WarpDriverModelState</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">_Handle</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">"_Handle"</span><span class="p">,</span> <span class="n">RouteTarget</span><span class="p">,</span> <span class="n">Route</span><span class="p">,</span> <span class="n">Agent</span><span class="p">)</span>
+<span class="n">_Value</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">"_Value"</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Simulation">
@@ -175,7 +180,7 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">Simulation</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Defines a simulation of pedestrian movement over a continuous walkable area.</span>
 
-<span class="sd">    Movement of agents is described with Journeys, Stages and Transitions. Agents can be added and</span>
+<span class="sd">    Agents walk along routes of targets, or are steered to a location. Agents can be added and</span>
 <span class="sd">    removed at will. The simulation processes one step at a time. No automatic stop condition</span>
 <span class="sd">    exists. You can simulate multiple disconnected walkable areas by instantiating multiple</span>
 <span class="sd">    instances of simulation.</span>
@@ -205,8 +210,9 @@
 <span class="sd">        Args:</span>
 <span class="sd">            model:</span>
 <span class="sd">                Defines the operational model used in the simulation. Every built-in model is passed</span>
-<span class="sd">                as a configured instance carrying its model-level parameters, e.g.</span>
-<span class="sd">                :class:`~jupedsim.CollisionFreeSpeedModelTordeux2016` or :class:`~jupedsim.SocialForceModel`.</span>
+<span class="sd">                as a configured instance, e.g. :class:`~jupedsim.CollisionFreeSpeedModel` or</span>
+<span class="sd">                :class:`~jupedsim.SocialForceModel`. A model with model-level parameters carries</span>
+<span class="sd">                them in this instance.</span>
 <span class="sd">                Custom Python models are passed as instances of a</span>
 <span class="sd">                :class:`~jupedsim.CustomOperationalModel` subclass.</span>
 
@@ -224,7 +230,7 @@
 <span class="sd">            dt: Iteration step size in seconds. It is recommended to leave this at its default</span>
 <span class="sd">                value.</span>
 <span class="sd">            floorfield_options: Parameters of the floor fields used to route agents to their</span>
-<span class="sd">                stage areas. Defaults to :class:`~jupedsim.FloorfieldOptions` with its default</span>
+<span class="sd">                target areas. Defaults to :class:`~jupedsim.FloorfieldOptions` with its default</span>
 <span class="sd">                values.</span>
 <span class="sd">            trajectory_writer: Any object implementing the TrajectoryWriter interface. JuPedSim</span>
 <span class="sd">                provides :class:`~jupedsim.Hdf5TrajectoryWriter`, which writes HDF5 files. If</span>
@@ -242,6 +248,7 @@
                 <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="o">=</span> <span class="n">trajectory_writer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_default_state</span> <span class="o">=</span> <span class="n">_STATE_TYPES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">floorfield_options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">floorfield_options</span> <span class="o">=</span> <span class="n">FloorfieldOptions</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">_Simulation</span><span class="p">(</span>
@@ -251,109 +258,119 @@
             <span class="n">floorfield_options</span><span class="o">=</span><span class="n">floorfield_options</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_timer</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="n">timer_log_level</span><span class="o">=</span><span class="n">timer_log_level</span><span class="p">)</span>
-        <span class="c1"># Stages with a floor field: a default speed field change reaches those</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_target_descriptions</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Waypoint</span> <span class="o">|</span> <span class="n">Exit</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reached_targets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TargetReachedRecord</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># How many of the native records, which cover its most recent iteration and</span>
+        <span class="c1"># the agents added since, are in _reached_targets.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_native_reached_seen</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_removals</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">RemovalRecord</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Targets with a floor field: a default speed field change reaches those</span>
         <span class="c1"># without a speed field of their own in its region.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_routed_stages</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="c1"># Stage id -&gt; iteration from which on its travel times may differ from</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_routed_targets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Target id -&gt; iteration from which on its travel times may differ from</span>
         <span class="c1"># the last ones handed out by _take_travel_time_changes.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_changes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
-<div class="viewcode-block" id="Simulation.add_waypoint_stage">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.add_waypoint_stage">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_waypoint_stage</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">areas</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span>
-            <span class="nb">tuple</span><span class="p">[</span><span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span> <span class="nb">int</span><span class="p">]</span>
-        <span class="p">],</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Add a waypoint stage to the simulation.</span>
+<div class="viewcode-block" id="Simulation.add_target">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.add_target">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_target</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="n">Waypoint</span> <span class="o">|</span> <span class="n">Exit</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RouteTarget</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Add a waypoint or an exit.</span>
+
+<span class="sd">        Agents move towards the areas of a target along paths of least travel time on</span>
+<span class="sd">        the floor field, see :meth:`travel_times`. A target is reached on the floor</span>
+<span class="sd">        field grid, not on its polygon: arrival is off by up to half a cell.</span>
+
+<span class="sd">        Floor fields are solved when first needed and cost memory per target and</span>
+<span class="sd">        region, so create a target once and share it between routes.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            areas: Pairs of an area and the region it lies in. An area is a</span>
-<span class="sd">                :class:`~shapely.Polygon` without holes or a list of 2D points</span>
-<span class="sd">                describing its boundary. Only the part of an area inside its</span>
-<span class="sd">                region belongs to the waypoint.</span>
+<span class="sd">            description: The :class:`~jupedsim.Waypoint` or :class:`~jupedsim.Exit`.</span>
+<span class="sd">            name: Unique among the targets of this simulation, if given. Used in</span>
+<span class="sd">                reprs, error messages and :meth:`target`.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Id of the new stage.</span>
+<span class="sd">            Handle to the new target.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            ValueError: If an area has holes.</span>
+<span class="sd">            ValueError: if an area has holes, or a region belongs to another geometry.</span>
+<span class="sd">            SimulationError: if an area does not overlap its region, or the name is</span>
+<span class="sd">                already used.</span>
 <span class="sd">        """</span>
-        <span class="n">stage_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_waypoint_stage</span><span class="p">(</span><span class="n">areas</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_routed_stage_added</span><span class="p">(</span><span class="n">stage_id</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">stage_id</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="n">Waypoint</span> <span class="o">|</span> <span class="n">Exit</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">"description must be a jupedsim.Waypoint or jupedsim.Exit, got "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">description</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+        <span class="n">areas</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">area</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_region_id</span><span class="p">(</span><span class="n">region</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">area</span><span class="p">,</span> <span class="n">region</span> <span class="ow">in</span> <span class="n">description</span><span class="o">.</span><span class="n">areas</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="n">Waypoint</span><span class="p">):</span>
+            <span class="n">target_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_waypoint</span><span class="p">(</span><span class="n">areas</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">target_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_exit</span><span class="p">(</span><span class="n">areas</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_target_descriptions</span><span class="p">[</span><span class="n">target_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_routed_target_added</span><span class="p">(</span><span class="n">target_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RouteTarget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_id</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Simulation.add_exit_stage">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.add_exit_stage">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_exit_stage</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">areas</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span>
-            <span class="nb">tuple</span><span class="p">[</span><span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span> <span class="nb">int</span><span class="p">]</span>
-        <span class="p">],</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Add an exit stage to the simulation.</span>
+<div class="viewcode-block" id="Simulation.add_route">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.add_route">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_route</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">transitions</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Transition</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Route</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Add a route: a directed graph of targets, given by its transitions.</span>
+
+<span class="sd">        The targets of the route are those in its transitions. The transition leaving</span>
+<span class="sd">        :data:`~jupedsim.AGENT_LOCATION` chooses an agent's first target, once, when</span>
+<span class="sd">        it joins the route. An agent reaching a target goes on to what the</span>
+<span class="sd">        transition leaving that target chooses. A target without an outgoing</span>
+<span class="sd">        transition ends the route; the agent stays in its area. Loops are allowed.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            areas: Pairs of an area and the region it lies in. An area is a</span>
-<span class="sd">                :class:`~shapely.Polygon` without holes or a list of 2D points</span>
-<span class="sd">                describing its boundary. Only the part of an area inside its</span>
-<span class="sd">                region belongs to the exit.</span>
+<span class="sd">            transitions: Exactly one leaves :data:`~jupedsim.AGENT_LOCATION`, at most</span>
+<span class="sd">                one leaves each target, and all of them form one graph when their</span>
+<span class="sd">                directions are ignored. A target that cannot be reached from</span>
+<span class="sd">                :data:`~jupedsim.AGENT_LOCATION` but leads into the route is a side</span>
+<span class="sd">                entry, see ``first_target`` of :meth:`add_agent`.</span>
+<span class="sd">            name: Unique among the routes of this simulation, if given. Used in</span>
+<span class="sd">                reprs, error messages and :meth:`route`.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Id of the added exit stage.</span>
+<span class="sd">            Handle to the new route.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            ValueError: If an area has holes.</span>
+<span class="sd">            ValueError: if a target belongs to another simulation.</span>
+<span class="sd">            SimulationError: if the transitions do not form a route as described,</span>
+<span class="sd">                or the name is already used.</span>
 <span class="sd">        """</span>
-        <span class="n">stage_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_exit_stage</span><span class="p">(</span><span class="n">areas</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_routed_stage_added</span><span class="p">(</span><span class="n">stage_id</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">stage_id</span></div>
-
-
-<div class="viewcode-block" id="Simulation.add_direct_steering_stage">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.add_direct_steering_stage">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_direct_steering_stage</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Add an direct steering stage to the simulation.</span>
-
-<span class="sd">        This stage allows a direct control of the target the agent is walking to. Thus, it will</span>
-<span class="sd">        bypass the tactical and stragecial level of the simulation, but the operational level will</span>
-<span class="sd">        still be active.</span>
-
-<span class="sd">        .. important::</span>
-
-<span class="sd">            A direct steering stage can only be used if it is the only stage in a Journey.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Id of the added direct steering stage.</span>
-<span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_direct_steering_stage</span><span class="p">()</span></div>
-
-
-<div class="viewcode-block" id="Simulation.add_journey">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.add_journey">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_journey</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">journey</span><span class="p">:</span> <span class="n">JourneyDescription</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Add a journey to the simulation.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            journey: Description of the journey.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Id of the added Journey.</span>
-
-<span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_journey</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">journey</span><span class="o">.</span><span class="n">_transitions</span><span class="p">))</span></div>
+        <span class="n">native</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">transition</span> <span class="ow">in</span> <span class="n">transitions</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">transition</span><span class="o">.</span><span class="n">_targets</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_own</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">RouteTarget</span><span class="p">,</span> <span class="s2">"target"</span><span class="p">)</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="n">transition</span><span class="o">.</span><span class="n">source</span>
+            <span class="n">native</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="kc">None</span>
+                    <span class="k">if</span> <span class="n">source</span> <span class="ow">is</span> <span class="n">AGENT_LOCATION</span>
+                    <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_own</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">RouteTarget</span><span class="p">,</span> <span class="s2">"source"</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                    <span class="n">transition</span><span class="o">.</span><span class="n">_description</span><span class="p">(),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">Route</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="n">native</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="Simulation.add_agent">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.add_agent">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_agent</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
+        <span class="n">location</span><span class="p">:</span> <span class="n">Location</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">journey_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">stage_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">position</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">route</span><span class="p">:</span> <span class="n">Route</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">first_target</span><span class="p">:</span> <span class="n">RouteTarget</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">steer_to</span><span class="p">:</span> <span class="n">Location</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">state</span><span class="p">:</span> <span class="p">(</span>
             <span class="n">GeneralizedCentrifugalForceModelState</span>
             <span class="o">|</span> <span class="n">CollisionFreeSpeedModelTordeux2016State</span>
@@ -363,166 +380,199 @@
             <span class="o">|</span> <span class="n">SocialForceModelState</span>
             <span class="o">|</span> <span class="n">WarpDriverModelState</span>
             <span class="o">|</span> <span class="n">Any</span>
-        <span class="p">),</span>
-        <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="p">)</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Agent</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Add an agent to the simulation.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            journey_id: Id of the journey the agent follows.</span>
-<span class="sd">            stage_id: Id of the stage the agent initially targets.</span>
-<span class="sd">            position: Position to spawn the agent at, as ``(x, y)`` in metres.</span>
-<span class="sd">            region_id: Region the agent stands in, as returned by</span>
-<span class="sd">                :meth:`~jupedsim.GeometryBuilder.add_region` or</span>
-<span class="sd">                :meth:`~jupedsim.GeometryBuilder.connect_regions`.</span>
-<span class="sd">            state: Initial per-agent model state. For built-in models this is the matching</span>
-<span class="sd">                ``XModelState`` instance, e.g. :class:`~jupedsim.CollisionFreeSpeedModelTordeux2016State`. For</span>
-<span class="sd">                custom models this is your own object, of whatever type your</span>
-<span class="sd">                :class:`~jupedsim.CustomOperationalModel` expects. The state type has to match the</span>
-<span class="sd">                model used in this simulation. When adding agents with invalid parameters, or too</span>
-<span class="sd">                close to the boundary or other agents, this will cause an error.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Id of the added agent.</span>
-<span class="sd">        """</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">_STATE_TYPES</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_agent</span><span class="p">(</span>
-                <span class="n">journey_id</span><span class="o">=</span><span class="n">journey_id</span><span class="p">,</span>
-                <span class="n">stage_id</span><span class="o">=</span><span class="n">stage_id</span><span class="p">,</span>
-                <span class="n">position</span><span class="o">=</span><span class="n">position</span><span class="p">,</span>
-                <span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">,</span>
-                <span class="n">region_id</span><span class="o">=</span><span class="n">region_id</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_agent</span><span class="p">(</span>
-            <span class="n">journey_id</span><span class="o">=</span><span class="n">journey_id</span><span class="p">,</span>
-            <span class="n">stage_id</span><span class="o">=</span><span class="n">stage_id</span><span class="p">,</span>
-            <span class="n">position</span><span class="o">=</span><span class="n">position</span><span class="p">,</span>
-            <span class="n">state</span><span class="o">=</span><span class="n">_CustomModelState</span><span class="p">(</span><span class="n">state</span><span class="p">),</span>
-            <span class="n">region_id</span><span class="o">=</span><span class="n">region_id</span><span class="p">,</span>
-        <span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="Simulation.get_location">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.get_location">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Location</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Get the location at ``(x, y)`` in region ``region_id``.</span>
-
-<span class="sd">        The location stays valid as long as this simulation exists.</span>
+<span class="sd">        Give either ``route`` or ``steer_to``. An agent placed inside its first target</span>
+<span class="sd">        has reached it, see :meth:`reached_targets`, and moves on in the next</span>
+<span class="sd">        iteration; inside an exit, it leaves at the beginning of the next iteration.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            x: x coordinate in metres.</span>
-<span class="sd">            y: y coordinate in metres.</span>
-<span class="sd">            region_id: Region the place lies in, see :func:`add_agent`.</span>
+<span class="sd">            location: Where the agent stands, e.g. ``region.at(x, y)``.</span>
+<span class="sd">            route: The route the agent follows.</span>
+<span class="sd">            first_target: The first target the agent walks to, instead of the one the</span>
+<span class="sd">                transition leaving :data:`~jupedsim.AGENT_LOCATION` chooses; the</span>
+<span class="sd">                agent then takes no turn in that transition. Any target of the route.</span>
+<span class="sd">                Later targets follow the route's transitions.</span>
+<span class="sd">            steer_to: Steers the agent to this location instead of a route. The way</span>
+<span class="sd">                there follows the walkable surface (the shortest path, not the floor</span>
+<span class="sd">                field), so speed fields do not apply. Its arrival is reported once by</span>
+<span class="sd">                :meth:`reached_targets`.</span>
+<span class="sd">            state: Initial per-agent model state. For built-in models the matching</span>
+<span class="sd">                ``XModelState``, e.g. :class:`~jupedsim.CollisionFreeSpeedModelState`;</span>
+<span class="sd">                its defaults if not given. For custom models your own object, of</span>
+<span class="sd">                whatever type your :class:`~jupedsim.CustomOperationalModel` expects;</span>
+<span class="sd">                required. When adding agents with invalid parameters, or too close to</span>
+<span class="sd">                the boundary or other agents, this will cause an error.</span>
+<span class="sd">            name: Unique among the agents of this simulation, if given; free again</span>
+<span class="sd">                once its agent has left. Used in :meth:`agent`.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            The location.</span>
+<span class="sd">            Handle to the new agent.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            SimulationError: if ``region_id`` does not exist or ``(x, y)`` is not in it.</span>
+<span class="sd">            TypeError: if ``location`` is not a :class:`~jupedsim.Location`.</span>
+<span class="sd">            ValueError: if neither or both of ``route`` and ``steer_to`` are given,</span>
+<span class="sd">                or a handle belongs to another simulation.</span>
+<span class="sd">            SimulationError: if ``first_target`` is not part of the route, a location</span>
+<span class="sd">                belongs to another geometry, or the name is already used.</span>
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">get_location</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">region_id</span><span class="p">)</span></div>
+        <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_checked_location</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="s2">"location"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">"custom models need state=; pass your model's agent state"</span>
+                <span class="p">)</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_state</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">_STATE_TYPES</span><span class="o">.</span><span class="n">values</span><span class="p">())):</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">_CustomModelState</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">route</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">steer_to</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"use route= or steer_to=, one of them"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">steer_to</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">first_target</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">"first_target= selects a target of route=; it does not apply "</span>
+                    <span class="s2">"to steer_to="</span>
+                <span class="p">)</span>
+            <span class="n">agent_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_steered_agent</span><span class="p">(</span>
+                <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
+                <span class="n">steer_to</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_checked_location</span><span class="p">(</span><span class="n">steer_to</span><span class="p">,</span> <span class="s2">"steer_to"</span><span class="p">),</span>
+                <span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">agent_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">add_agent</span><span class="p">(</span>
+                <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
+                <span class="n">route_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_own</span><span class="p">(</span><span class="n">route</span><span class="p">,</span> <span class="n">Route</span><span class="p">,</span> <span class="s2">"route"</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="n">first_target_id</span><span class="o">=</span><span class="kc">None</span>
+                <span class="k">if</span> <span class="n">first_target</span> <span class="ow">is</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_own</span><span class="p">(</span><span class="n">first_target</span><span class="p">,</span> <span class="n">RouteTarget</span><span class="p">,</span> <span class="s2">"first_target"</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_collect_reached_targets</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">Agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Simulation.travel_times">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.travel_times">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">travel_times</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stage_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">TravelTimeGrid</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""Get the travel times to a stage's area over the floor field grid of every region.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">travel_times</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">RouteTarget</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Region</span><span class="p">,</span> <span class="n">TravelTimeGrid</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Get the travel times to a target's areas over the floor field grid of every region.</span>
 
-<span class="sd">        Every region has its own grid. Solves the stage's floor field if no agent has</span>
+<span class="sd">        Every region has its own grid. Solves the target's floor field if no agent has</span>
 <span class="sd">        needed it yet.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            stage_id: Id of the stage.</span>
+<span class="sd">            target: The target.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            The grid of every region by region id, in ascending order, each with its</span>
-<span class="sd">            placement, travel times in seconds and walking directions. Empty for a</span>
-<span class="sd">            stage without an area to route to, such as a direct steering stage.</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            SimulationError: if the stage does not exist.</span>
+<span class="sd">            The grid of every region, in ascending order of region ids, each with its</span>
+<span class="sd">            placement, travel times in seconds and walking directions.</span>
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">travel_times</span><span class="p">(</span><span class="n">stage_id</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_by_region</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">travel_times</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_own</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">RouteTarget</span><span class="p">,</span> <span class="s2">"target"</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Simulation.travel_time">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.travel_time">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">travel_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">RouteTarget</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">Location</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Travel time in seconds from a location to a target.</span>
+
+<span class="sd">        The value of the floor field cell nearest to ``location``, see</span>
+<span class="sd">        :meth:`travel_times`: 0 inside the target, ``inf`` if it cannot be reached.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            target: The target.</span>
+<span class="sd">            location: Where to start, e.g. ``region.at(x, y)``.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">travel_time</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_own</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">RouteTarget</span><span class="p">,</span> <span class="s2">"target"</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_checked_location</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="s2">"location"</span><span class="p">),</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Simulation.custom_speed_fields">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.custom_speed_fields">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">custom_speed_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stage_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">SpeedGrid</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""Get the speed fields a stage has of its own, for every region.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">custom_speed_fields</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">RouteTarget</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Region</span><span class="p">,</span> <span class="n">SpeedGrid</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Get the speed fields a target has of its own, for every region.</span>
 
-<span class="sd">        A stage can have its own speed field in a region instead of the default, see</span>
+<span class="sd">        A target can have its own speed field in a region instead of the default, see</span>
 <span class="sd">        :func:`set_custom_speed_field`.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            stage_id: Id of the stage whose speed fields to get.</span>
+<span class="sd">            target: The target whose speed fields to get.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            The grid of every region by region id, in ascending order: ``None`` where</span>
-<span class="sd">            the stage has no speed field of its own and uses the default, see</span>
-<span class="sd">            :func:`default_speed_fields`. Empty for a stage without an area to route</span>
-<span class="sd">            to, such as a direct steering stage.</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            SimulationError: if the stage does not exist.</span>
+<span class="sd">            The grid of every region, in ascending order of region ids: ``None``</span>
+<span class="sd">            where the target has no speed field of its own and uses the default, see</span>
+<span class="sd">            :func:`default_speed_fields`.</span>
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">custom_speed_fields</span><span class="p">(</span><span class="n">stage_id</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_by_region</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">custom_speed_fields</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_own</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">RouteTarget</span><span class="p">,</span> <span class="s2">"target"</span><span class="p">)</span><span class="o">.</span><span class="n">id</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Simulation.has_custom_speed_field">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.has_custom_speed_field">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">has_custom_speed_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stage_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Whether a stage has a speed field of its own in a region.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_custom_speed_field</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">RouteTarget</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="n">Region</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Whether a target has a speed field of its own in a region.</span>
 
 <span class="sd">        Unlike :func:`custom_speed_fields`, this does not copy the speed fields.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            stage_id: Id of the stage.</span>
-<span class="sd">            region_id: Id of the region.</span>
+<span class="sd">            target: The target.</span>
+<span class="sd">            region: The region.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            ``True`` if the stage uses its own speed field in this region, ``False`` if</span>
-<span class="sd">            it uses the default. ``False`` for a stage without an area to route to, such</span>
-<span class="sd">            as a direct steering stage, whatever ``region_id`` is.</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            SimulationError: if the stage does not exist, or if it has an area to route</span>
-<span class="sd">                to and the region does not exist.</span>
+<span class="sd">            ``True`` if the target uses its own speed field in this region, ``False`` if</span>
+<span class="sd">            it uses the default.</span>
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">has_custom_speed_field</span><span class="p">(</span><span class="n">stage_id</span><span class="p">,</span> <span class="n">region_id</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">has_custom_speed_field</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_own</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">RouteTarget</span><span class="p">,</span> <span class="s2">"target"</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_region_id</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Simulation.default_speed_fields">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.default_speed_fields">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">default_speed_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">SpeedGrid</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">default_speed_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Region</span><span class="p">,</span> <span class="n">SpeedGrid</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Get the default walking speeds the floor fields are computed with, for every region.</span>
 
 <span class="sd">        Every region has a default speed field, which starts out slowing agents down</span>
-<span class="sd">        near walls (see :class:`~jupedsim.FloorfieldOptions`). Every stage uses it in</span>
+<span class="sd">        near walls (see :class:`~jupedsim.FloorfieldOptions`). Every target uses it in</span>
 <span class="sd">        a region where it has no speed field of its own, see</span>
 <span class="sd">        :func:`custom_speed_fields`.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            The grid of every region by region id, in ascending order.</span>
+<span class="sd">            The grid of every region, in ascending order of region ids.</span>
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">default_speed_fields</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_by_region</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">default_speed_fields</span><span class="p">())</span></div>
 
 
 <div class="viewcode-block" id="Simulation.set_default_speed_field">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.set_default_speed_field">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_default_speed_field</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="n">Region</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Set the default walking speeds a region's floor fields are computed with.</span>
 
 <span class="sd">        Use this to make agents route around slow areas, for example smoke: start</span>
 <span class="sd">        from :func:`default_speed_fields`, change the values and set them again.</span>
-<span class="sd">        Every stage without a speed field of its own in this region is affected; its</span>
+<span class="sd">        Every target without a speed field of its own in this region is affected; its</span>
 <span class="sd">        floor field is computed again when next needed.</span>
 
 <span class="sd">        The speeds only change the routes, not how fast agents walk.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            region_id: Region whose default speed field to set.</span>
+<span class="sd">            region: Region whose default speed field to set.</span>
 <span class="sd">            values: Speeds in m/s in an array of shape ``(height, width)`` of the</span>
 <span class="sd">                region's grid, see :class:`~jupedsim.SpeedGrid`. Finite and at least</span>
 <span class="sd">                0.01 m/s on every walkable cell: slower cells would make travel times</span>
@@ -531,108 +581,125 @@
 
 <span class="sd">        Raises:</span>
 <span class="sd">            ValueError: if ``values`` has the wrong shape.</span>
-<span class="sd">            SimulationError: if a value is not allowed or the region does not exist.</span>
+<span class="sd">            SimulationError: if a value is not allowed.</span>
 <span class="sd">        """</span>
+        <span class="n">region_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_region_id</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">set_default_speed_field</span><span class="p">(</span><span class="n">region_id</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">stage_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_routed_stages</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_custom_speed_field</span><span class="p">(</span><span class="n">stage_id</span><span class="p">,</span> <span class="n">region_id</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_travel_times_changed</span><span class="p">(</span><span class="n">stage_id</span><span class="p">)</span></div>
+        <span class="k">for</span> <span class="n">target_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_routed_targets</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">has_custom_speed_field</span><span class="p">(</span><span class="n">target_id</span><span class="p">,</span> <span class="n">region_id</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_travel_times_changed</span><span class="p">(</span><span class="n">target_id</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Simulation.set_custom_speed_field">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.set_custom_speed_field">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_custom_speed_field</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">stage_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">RouteTarget</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="n">Region</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Set the walking speeds one stage's floor field is computed with in a region.</span>
+<span class="w">        </span><span class="sd">"""Set the walking speeds one target's floor field is computed with in a region.</span>
 
-<span class="sd">        The stage then uses these speeds instead of the default in this region, for</span>
-<span class="sd">        example where smoke only matters on the way to one exit. Other stages are not</span>
-<span class="sd">        affected; the stage's floor field is computed again when next needed. Use</span>
+<span class="sd">        The target then uses these speeds instead of the default in this region, for</span>
+<span class="sd">        example where smoke only matters on the way to one exit. Other targets are not</span>
+<span class="sd">        affected; the target's floor field is computed again when next needed. Use</span>
 <span class="sd">        :func:`clear_custom_speed_field` to go back to the default.</span>
 
 <span class="sd">        The speeds only change the routes, not how fast agents walk.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            stage_id: Stage whose speed field to set.</span>
-<span class="sd">            region_id: Region whose speed field to set.</span>
+<span class="sd">            target: Target whose speed field to set.</span>
+<span class="sd">            region: Region whose speed field to set.</span>
 <span class="sd">            values: Speeds in m/s, with the same rules as for</span>
 <span class="sd">                :func:`set_default_speed_field`.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            ValueError: if ``values`` has the wrong shape.</span>
-<span class="sd">            SimulationError: if a value is not allowed, the region or stage does not</span>
-<span class="sd">                exist, or the stage has no area to route to.</span>
+<span class="sd">            SimulationError: if a value is not allowed.</span>
 <span class="sd">        """</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">set_custom_speed_field</span><span class="p">(</span><span class="n">stage_id</span><span class="p">,</span> <span class="n">region_id</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_travel_times_changed</span><span class="p">(</span><span class="n">stage_id</span><span class="p">)</span></div>
+        <span class="n">target_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_own</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">RouteTarget</span><span class="p">,</span> <span class="s2">"target"</span><span class="p">)</span><span class="o">.</span><span class="n">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">set_custom_speed_field</span><span class="p">(</span>
+            <span class="n">target_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_region_id</span><span class="p">(</span><span class="n">region</span><span class="p">),</span> <span class="n">values</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_travel_times_changed</span><span class="p">(</span><span class="n">target_id</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Simulation.clear_custom_speed_field">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.clear_custom_speed_field">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">clear_custom_speed_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stage_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">region_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Remove a stage's own speed field in a region, so it uses the default again.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clear_custom_speed_field</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">RouteTarget</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="n">Region</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Remove a target's own speed field in a region, so it uses the default again.</span>
 
-<span class="sd">        The stage's floor field is computed again when next needed. Nothing changes</span>
-<span class="sd">        if the stage has no speed field of its own in this region.</span>
+<span class="sd">        The target's floor field is computed again when next needed. Nothing changes</span>
+<span class="sd">        if the target has no speed field of its own in this region.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            stage_id: Stage whose speed field to remove.</span>
-<span class="sd">            region_id: Region whose speed field to remove.</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            SimulationError: if the region or stage does not exist, or the stage has</span>
-<span class="sd">                no area to route to.</span>
+<span class="sd">            target: Target whose speed field to remove.</span>
+<span class="sd">            region: Region whose speed field to remove.</span>
 <span class="sd">        """</span>
-        <span class="n">had_one</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_custom_speed_field</span><span class="p">(</span><span class="n">stage_id</span><span class="p">,</span> <span class="n">region_id</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">clear_custom_speed_field</span><span class="p">(</span><span class="n">stage_id</span><span class="p">,</span> <span class="n">region_id</span><span class="p">)</span>
+        <span class="n">target_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_own</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">RouteTarget</span><span class="p">,</span> <span class="s2">"target"</span><span class="p">)</span><span class="o">.</span><span class="n">id</span>
+        <span class="n">region_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_region_id</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
+        <span class="n">had_one</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">has_custom_speed_field</span><span class="p">(</span><span class="n">target_id</span><span class="p">,</span> <span class="n">region_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">clear_custom_speed_field</span><span class="p">(</span><span class="n">target_id</span><span class="p">,</span> <span class="n">region_id</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">had_one</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_travel_times_changed</span><span class="p">(</span><span class="n">stage_id</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_travel_times_changed</span><span class="p">(</span><span class="n">target_id</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_routed_stage_added</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stage_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_routed_stages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stage_id</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_travel_times_changed</span><span class="p">(</span><span class="n">stage_id</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_routed_target_added</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_routed_targets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_travel_times_changed</span><span class="p">(</span><span class="n">target_id</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_travel_times_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stage_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_changes</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">stage_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">iteration_count</span><span class="p">())</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_travel_times_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_changes</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">target_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">iteration_count</span><span class="p">())</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_take_travel_time_changes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""The stages whose travel times may have changed since the last call, each</span>
+<span class="w">        </span><span class="sd">"""The targets whose travel times may have changed since the last call, each</span>
 <span class="sd">        with the iteration from which on agents are routed with the new ones, by</span>
-<span class="sd">        ascending stage id. For :class:`~jupedsim.Hdf5TrajectoryWriter`."""</span>
+<span class="sd">        ascending target id. For :class:`~jupedsim.Hdf5TrajectoryWriter`."""</span>
         <span class="n">changes</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_changes</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_travel_time_changes</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">changes</span>
 
 <div class="viewcode-block" id="Simulation.mark_agent_for_removal">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.mark_agent_for_removal">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">mark_agent_for_removal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Marks an agent for removal.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mark_agent_for_removal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">:</span> <span class="n">Agent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Remove an agent at the beginning of the next :meth:`iterate`.</span>
 
-<span class="sd">        Marks the given agent for removal in the simulation. The agent will be removed from the</span>
-<span class="sd">        simulation in the start of the next :func:`iterate` call. The removal will take place before</span>
-<span class="sd">        any interaction between agents will be computed.</span>
+<span class="sd">        The removal takes place before agents interact. Nothing changes for an agent</span>
+<span class="sd">        that is about to leave already.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            agent_id: Id of the agent marked for removal</span>
+<span class="sd">            agent: The agent to remove.</span>
 <span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">mark_agent_for_removal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_own</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">Agent</span><span class="p">,</span> <span class="s2">"agent"</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">mark_agent_for_removal</span><span class="p">(</span><span class="n">agent_id</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Simulation.reached_targets">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.reached_targets">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reached_targets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">TargetReachedRecord</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""The targets reached in the most recent :meth:`iterate` call, and by the agents</span>
+<span class="sd">        added since.</span>
+
+<span class="sd">        An agent reaches its target when it stands in it after a step or is added there;</span>
+<span class="sd">        in direct steering, when it is close to its target location. Each target an agent</span>
+<span class="sd">        is sent to is reported once. The agent moves on at the beginning of the next</span>
+<span class="sd">        iteration.</span>
+
+<span class="sd">        Records cover all iterations of one ``iterate(count)`` call; the next</span>
+<span class="sd">        :meth:`iterate` replaces them.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reached_targets</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Simulation.removed_agents">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.removed_agents">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">removed_agents</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""All agents (given by Id) removed in the last iteration.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">removed_agents</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">RemovalRecord</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""The agents removed in the most recent :meth:`iterate` call.</span>
 
-<span class="sd">        All agents removed from the simulation since the last call of :func:`iterate`. These agents</span>
-<span class="sd">        are can no longer be accessed.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Ids of all removed agents since the last call of :func:`iterate`.</span>
+<span class="sd">        An agent that reaches an exit, or is marked by :meth:`mark_agent_for_removal`,</span>
+<span class="sd">        is removed at the beginning of the next iteration; until then</span>
+<span class="sd">        :attr:`Agent.leaving &lt;jupedsim.Agent.leaving&gt;` is true. Covers the same</span>
+<span class="sd">        iterations as :meth:`reached_targets`.</span>
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">removed_agents</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_removals</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Simulation.iterate">
@@ -647,11 +714,34 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="o">.</span><span class="n">begin_writing</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="o">.</span><span class="n">write_iteration_state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reached_targets</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_removals</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">iterate</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_native_reached_seen</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_collect_reached_targets</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">agent_id</span><span class="p">,</span> <span class="n">exit_id</span><span class="p">,</span> <span class="n">time</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">removed_agents</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_removals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">RemovalRecord</span><span class="p">(</span>
+                        <span class="n">agent_id</span><span class="p">,</span>
+                        <span class="kc">None</span> <span class="k">if</span> <span class="n">exit_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">RouteTarget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exit_id</span><span class="p">),</span>
+                        <span class="n">time</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="o">.</span><span class="n">write_iteration_state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_collect_reached_targets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">agent_id</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">location</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">reached_targets</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_native_reached_seen</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="n">target</span> <span class="o">=</span> <span class="n">RouteTarget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reached_targets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">TargetReachedRecord</span><span class="p">(</span><span class="n">agent_id</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">location</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_native_reached_seen</span> <span class="o">+=</span> <span class="mi">1</span>
 
 <div class="viewcode-block" id="Simulation.close">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.close">[docs]</a>
@@ -682,23 +772,6 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="o">.</span><span class="n">close_after_error</span><span class="p">()</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-
-<div class="viewcode-block" id="Simulation.switch_agent_journey">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.switch_agent_journey">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">switch_agent_journey</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">journey_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">stage_id</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Switch agent to the given journey at the given stage.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            agent_id: Id of the agent to switch</span>
-<span class="sd">            journey_id: Id of the new journey to follow</span>
-<span class="sd">            stage_id: Id of the stage in the new journey the agent continues with</span>
-<span class="sd">        """</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">switch_agent_journey</span><span class="p">(</span>
-            <span class="n">agent_id</span><span class="o">=</span><span class="n">agent_id</span><span class="p">,</span> <span class="n">journey_id</span><span class="o">=</span><span class="n">journey_id</span><span class="p">,</span> <span class="n">stage_id</span><span class="o">=</span><span class="n">stage_id</span>
-        <span class="p">)</span></div>
-
 
 <div class="viewcode-block" id="Simulation.agent_count">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.agent_count">[docs]</a>
@@ -746,58 +819,184 @@
 
 <div class="viewcode-block" id="Simulation.agents">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.agents">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">agents</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Agent</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">agents</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Agent</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Agent</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Agents in the simulation.</span>
 
 <span class="sd">        The set of agents is snapshot when this method is called; agents added or removed afterwards</span>
 <span class="sd">        are not reflected by the returned iterator.</span>
 
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">            for agent in sim.agents(</span>
+<span class="sd">                filter=lambda a: a.route == route_c and a.current_target == wp2</span>
+<span class="sd">            ):</span>
+<span class="sd">                agent.reroute(first_target=wp3)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filter: Selects the agents for which it returns ``True``; all agents if not</span>
+<span class="sd">                given.</span>
+
 <span class="sd">        Returns:</span>
-<span class="sd">            Iterator over handles to all agents in the simulation. The handles resolve the agent on</span>
-<span class="sd">            every attribute access and stay valid across :func:`iterate` as long as the agent</span>
+<span class="sd">            Iterator over handles to the agents. The handles resolve the agent on every</span>
+<span class="sd">            attribute access and stay valid across :func:`iterate` as long as the agent</span>
 <span class="sd">            exists.</span>
 <span class="sd">        """</span>
         <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">agent</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">agent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">agents</span><span class="p">()]</span>
-        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="n">Agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">)</span> <span class="k">for</span> <span class="n">agent_id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">)</span></div>
+        <span class="n">handles</span> <span class="o">=</span> <span class="p">(</span><span class="n">Agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">)</span> <span class="k">for</span> <span class="n">agent_id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">filter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">handles</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">agent</span> <span class="k">for</span> <span class="n">agent</span> <span class="ow">in</span> <span class="n">handles</span> <span class="k">if</span> <span class="nb">filter</span><span class="p">(</span><span class="n">agent</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="Simulation.agent">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.agent">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Agent</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Access specific agent in the simulation.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            agent_id: Id of the agent to access</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Agent</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Look an agent up by id or by name.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Handle to the agent. The handle resolves the agent on every attribute access and stays</span>
-<span class="sd">            valid across :func:`iterate` as long as the agent exists.</span>
+<span class="sd">            Handle to the agent. The handle resolves the agent on every attribute</span>
+<span class="sd">            access and stays valid across :func:`iterate` as long as the agent exists.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            SimulationError: if no agent with this id exists.</span>
+<span class="sd">            KeyError: if there is no such agent.</span>
 <span class="sd">        """</span>
-        <span class="c1"># Resolve once to fail fast on unknown ids.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">agent</span><span class="p">(</span><span class="n">agent_id</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">agent_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">agent_named</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">agent_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"no agent named </span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">)</span>
+        <span class="c1"># The native lookup crashes on anything but an int.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"key must be an agent id or name, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+        <span class="c1"># Fails on a closed simulation with its own error, unlike the lookup below.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">agent_count</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">agent</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">SimulationError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"no agent with id </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
+        <span class="k">return</span> <span class="n">Agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="Simulation.target">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.target">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RouteTarget</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Look a target up by id or by name.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            KeyError: if there is no such target.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lookup</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">(),</span> <span class="s2">"target"</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Simulation.targets">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.targets">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">targets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">RouteTarget</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""All targets, in the order they were added."""</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">RouteTarget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">target_ids</span><span class="p">()]</span></div>
+
+
+<div class="viewcode-block" id="Simulation.route">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.route">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">route</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Route</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Look a route up by id or by name.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            KeyError: if there is no such route.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lookup</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">routes</span><span class="p">(),</span> <span class="s2">"route"</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Simulation.routes">
+<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.routes">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">routes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Route</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""All routes, in the order they were added."""</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">Route</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">route_ids</span><span class="p">()]</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_lookup</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="n">handles</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">_Handle</span><span class="p">],</span> <span class="n">kind</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_Handle</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">handle</span> <span class="ow">in</span> <span class="n">handles</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">handle</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">key</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">handle</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"no </span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2"> named </span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"key must be a </span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2"> id or name, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+        <span class="k">for</span> <span class="n">handle</span> <span class="ow">in</span> <span class="n">handles</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">handle</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">key</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">handle</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"no </span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2"> with id </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_own</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handle</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">kind</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">_Handle</span><span class="p">],</span> <span class="n">what</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_Handle</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""``handle``, checked to be a ``kind`` of this simulation."""</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">kind</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">what</span><span class="si">}</span><span class="s2"> must be a </span><span class="si">{</span><span class="n">kind</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">handle</span><span class="o">.</span><span class="n">_simulation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="n">word</span> <span class="o">=</span> <span class="s2">"Target"</span> <span class="k">if</span> <span class="n">kind</span> <span class="ow">is</span> <span class="n">RouteTarget</span> <span class="k">else</span> <span class="n">kind</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">word</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">id_and_name</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span><span class="si">}</span><span class="s2"> belongs to another simulation"</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">handle</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_region_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Id of ``region``, checked to be a :class:`~jupedsim.Region` of this</span>
+<span class="sd">        simulation's geometry."""</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">Region</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"region must be a Region, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">region</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">own</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">region</span><span class="p">(</span><span class="n">region</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">own</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">own</span> <span class="o">!=</span> <span class="n">region</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Region </span><span class="si">{</span><span class="n">id_and_name</span><span class="p">(</span><span class="n">region</span><span class="p">)</span><span class="si">}</span><span class="s2"> belongs to another geometry"</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">region</span><span class="o">.</span><span class="n">id</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_by_region</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">by_id</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">_Value</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Region</span><span class="p">,</span> <span class="n">_Value</span><span class="p">]:</span>
+        <span class="n">geometry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">geometry</span><span class="o">.</span><span class="n">region</span><span class="p">(</span><span class="n">region_id</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">region_id</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">by_id</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_checked_location</span><span class="p">(</span><span class="n">location</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">what</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Location</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">Location</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">what</span><span class="si">}</span><span class="s2"> must be a Location, e.g. region.at(x, y), got "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">location</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">location</span>
 
 <div class="viewcode-block" id="Simulation.agents_in_range">
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.agents_in_range">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">agents_in_range</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">distance</span><span class="p">:</span> <span class="nb">float</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">Location</span><span class="p">,</span> <span class="n">distance</span><span class="p">:</span> <span class="nb">float</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Agent</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""Handles to all agents within the given distance to the given position.</span>
+<span class="w">        </span><span class="sd">"""Handles to the agents near a location.</span>
+
+<span class="sd">        The agents within ``distance`` of ``location`` that are its neighbors in the</span>
+<span class="sd">        sense of the operational models: in plain sight over the walkable surface.</span>
+<span class="sd">        Agents on a floor above or below, or behind a wall, are not.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">             pos:  point around which to search for agents</span>
-<span class="sd">             distance: search radius</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            List of handles to all agents within the given distance to the given position.</span>
+<span class="sd">            location: Where to search around, e.g. ``region.at(x, y)``.</span>
+<span class="sd">            distance: Search radius in metres.</span>
 <span class="sd">        """</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="n">Agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">agent_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">agents_in_range</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">distance</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">agent_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">agents_in_range</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_checked_location</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="s2">"location"</span><span class="p">),</span> <span class="n">distance</span>
+            <span class="p">)</span>
         <span class="p">]</span></div>
 
 
@@ -805,70 +1004,41 @@
 <a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.agents_in_polygon">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">agents_in_polygon</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">poly</span><span class="p">:</span> <span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
+        <span class="n">polygon</span><span class="p">:</span> <span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">region</span><span class="p">:</span> <span class="n">Region</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Agent</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""Handles to all agents inside the given polygon.</span>
+<span class="w">        </span><span class="sd">"""Handles to the agents inside a polygon in one region.</span>
+
+<span class="sd">        Only the part of the polygon inside its region counts, as for the areas of a</span>
+<span class="sd">        :class:`~jupedsim.Waypoint`, so agents on a floor above or below are not</span>
+<span class="sd">        included.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            poly: Convex polygon in which to look for agents, as a</span>
-<span class="sd">                :class:`~shapely.Polygon` without holes or as a list of 2D</span>
-<span class="sd">                points describing its boundary.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            List of handles to all agents inside the given polygon.</span>
+<span class="sd">            polygon: A :class:`~shapely.Polygon` without holes or a sequence of at</span>
+<span class="sd">                least three ``(x, y)`` points.</span>
+<span class="sd">            region: The region the polygon lies in.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            ValueError: If the polygon has holes.</span>
+<span class="sd">            ValueError: If the polygon has holes, or the region belongs to another</span>
+<span class="sd">                geometry.</span>
+<span class="sd">            SimulationError: If the polygon does not overlap the region.</span>
 <span class="sd">        """</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="n">Agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">agent_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">agents_in_polygon</span><span class="p">(</span><span class="n">poly</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">agent_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">agents_in_polygon</span><span class="p">(</span>
+                <span class="n">polygon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_region_id</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="p">]</span></div>
-
-
-<div class="viewcode-block" id="Simulation.stage_ids">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.stage_ids">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">stage_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""Get the ids of all stages.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            The ids of all stages in ascending order.</span>
-<span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">stage_ids</span><span class="p">()</span></div>
-
-
-<div class="viewcode-block" id="Simulation.get_stage">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.get_stage">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_stage</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">stage_id</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WaypointStage</span> <span class="o">|</span> <span class="n">ExitStage</span> <span class="o">|</span> <span class="n">DirectSteeringStage</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Get the stage with the given id.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            stage_id: Id of the stage to retrieve.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            The stage object. It keeps the simulation alive.</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            SimulationError: If no stage with this id exists.</span>
-<span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">get_stage</span><span class="p">(</span><span class="n">stage_id</span><span class="p">)</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">set_tracing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">set_tracing</span><span class="p">(</span><span class="n">status</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Simulation.get_geometry">
-<a class="viewcode-back" href="../../api/jupedsim/index.html#jupedsim.Simulation.get_geometry">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Geometry</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Current geometry of the simulation.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            The geometry of the simulation.</span>
-<span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span></div>
-
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Geometry</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""The geometry of the simulation."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">timer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Timer</span><span class="p">:</span>
@@ -881,7 +1051,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-11-18</footer>
+<footer class="report-footer">Last updated 2026-11-26</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">
