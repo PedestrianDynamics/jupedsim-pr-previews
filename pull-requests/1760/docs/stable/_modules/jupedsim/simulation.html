@@ -843,7 +843,7 @@
 <span class="sd">            attribute access and stay valid across :func:`iterate` as long as the agent</span>
 <span class="sd">            exists.</span>
 <span class="sd">        """</span>
-        <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">agent</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">agent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">agents</span><span class="p">()]</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">agent_ids</span><span class="p">()</span>
         <span class="n">handles</span> <span class="o">=</span> <span class="p">(</span><span class="n">Agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">)</span> <span class="k">for</span> <span class="n">agent_id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">filter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">handles</span>
@@ -1051,7 +1051,7 @@
 
 </pre></div>
 </div>
-<footer class="report-footer">Last updated 2026-11-26</footer>
+<footer class="report-footer">Last updated 2026-11-27</footer>
 </article>
 </div>
 </main><footer class="site-footer"><div class="site-footer-inner">

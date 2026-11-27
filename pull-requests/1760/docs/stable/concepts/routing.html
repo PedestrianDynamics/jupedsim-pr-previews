@@ -274,7 +274,7 @@ Otherwise the agents will be removed from the simulation when they reach the exi
 <h4>Round-robin transition<a class="headerlink" href="#round-robin-transition" title="Link to this heading">#</a></h4>
 <p>It is also possible to model a decision making process and split the agents at a stage, with a round-robin transition.
 The agents choosing here are split over the stages in proportion to their weights.
-The stages take turns, mixed as evenly as possible, so no stage receives a long run of agents while the others wait.
+The stages alternate as evenly as the weights allow.
 E.g., with two outgoing stages and the weights 3 and 2, out of every 5 agents 3 continue with the first stage and 2 with the second, in the order first, second, first, second, first.
 After this, the cycle repeats.</p>
 <p>Only the ratio of the weights matters: 60 and 40 give the same split as 3 and 2.
@@ -370,7 +370,7 @@ When multiple paths lead to the target, the shortest one will be preferred.</p>
 </section>
 
 </div>
-<footer class="report-footer">Last updated 2026-11-26</footer>
+<footer class="report-footer">Last updated 2026-11-27</footer>
 </article>
 <nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="geometry.html" rel="prev"><small>Previous</small>Geometry</a><a class="book-pagenav-next" href="custom_serialization.html" rel="next"><small>Next</small>Custom Serialization</a>
 </nav>
