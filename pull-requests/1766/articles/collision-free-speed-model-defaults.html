@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../_static/logo.png" sizes="482x536" rel="icon" type="image/png">
+    <title>How the CollisionFreeSpeedModel defaults were calibrated &#8212; JuPedSim  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=29da98fa" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupedsim-style.css?v=df79899f" />
+    <link rel="stylesheet" type="text/css" href="../_static/chroma-dark.css?v=9526b014" />
+    <link rel="stylesheet" type="text/css" href="../_static/book.css?v=7f8b60bd" />
+    <link rel="stylesheet" type="text/css" href="../_static/site.css?v=34df8e08" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx.css?v=164699b4" />
+    <script src="../_static/documentation_options.js?v=7f41d439"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer="defer" src="../_static/theme.js?v=07cb4702"></script>
+    <script defer="defer" src="../_static/search.js?v=322617c8"></script>
+    <script defer="defer" src="../_static/switcher.js?v=bc5f7bca"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <link rel="canonical" href="https://www.jupedsim.org/articles/collision-free-speed-model-defaults.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Writing for jupedsim.org" href="writing-guide.html" />
+    <link rel="prev" title="Articles" href="index.html" />
+ 
+<script>(function(){var s=null;try{s=localStorage.getItem('theme')}catch(e){}var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var r=document.documentElement;r.dataset.theme=(s==='light'||s==='dark')?s:(d?'dark':'light');r.dataset.themeMode=(s==='light'||s==='dark')?s:'auto';})();</script>
+<link rel="alternate" type="application/rss+xml" href="/pull-requests/1766/notes/feed.xml" title="JuPedSim">
+  </head><body>
+<input type="checkbox" class="book-control" id="menu-control" aria-label="Toggle navigation" aria-controls="book-menu">
+<input type="checkbox" class="book-control" id="search-control" aria-label="Show search">
+<input type="checkbox" class="book-control" id="toc-control" aria-label="Toggle table of contents" aria-controls="book-toc">
+<label for="menu-control" class="book-overlay book-overlay-menu" aria-hidden="true"></label>
+<label for="toc-control" class="book-overlay book-overlay-toc" aria-hidden="true"></label>
+<header class="site-bar">
+<div class="site-bar-inner">
+<label for="menu-control" class="site-bar-btn site-bar-menu" aria-label="Open navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></label>
+<a class="book-brand" href="/pull-requests/1766/" aria-label="JuPedSim"><img class="book-logo book-logo-light" src="../_static/jupedsim-mark-light.svg" alt="JuPedSim" width="737" height="200"><img class="book-logo book-logo-dark" src="../_static/jupedsim-mark-dark.svg" alt="" aria-hidden="true" width="737" height="200"></a>
+<nav class="site-nav" aria-label="Site">
+<ul>
+<li><a class="bracket-label" href="/pull-requests/1766/articles/" aria-current="page">[Articles]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1766/notes/">[Notes]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1766/docs/stable/">[Docs]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1766/docs/v1x/v1.4.2/">[Docs v1&nbsp;<span aria-hidden="true">↗</span>]</a></li>
+</ul>
+</nav>
+<label for="search-control" class="site-bar-btn site-bar-search-btn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></label>
+<form class="book-search" action="../search.html" method="get" role="search">
+<input type="search" id="book-search-input" name="q" data-pagefind="/pull-requests/1766/pagefind/pagefind.js" placeholder="Search  /" aria-label="Search" autocomplete="off" spellcheck="false">
+<ul class="book-search-results" id="book-search-results" hidden></ul>
+</form>
+<button type="button" id="book-theme-toggle" class="book-theme-toggle bracket-label" aria-live="polite">Theme: auto</button>
+<label for="toc-control" class="site-bar-btn site-bar-toc" aria-label="On this page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></label>
+</div>
+</header>
+<main class="book book--no-tree">
+<aside class="book-menu" id="book-menu"><nav class="site-nav-drawer" aria-label="Site (menu)">
+<ul>
+<li><a class="bracket-label" href="/pull-requests/1766/articles/" aria-current="page">[Articles]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1766/notes/">[Notes]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1766/docs/stable/">[Docs]</a></li>
+<li><a class="bracket-label" href="/pull-requests/1766/docs/v1x/v1.4.2/">[Docs v1&nbsp;<span aria-hidden="true">↗</span>]</a></li>
+</ul>
+</nav>
+</aside>
+<div class="book-page">
+<article class="report" data-pagefind-filter="section:Article" data-pagefind-meta="title:How the CollisionFreeSpeedModel defaults were calibrated">
+<header class="report-header">
+<p class="report-kicker">Article</p>
+<h1 class="report-title">How the CollisionFreeSpeedModel defaults were calibrated</h1>
+<p class="report-subtitle">Where the default parameters of the CollisionFreeSpeedModel come from, what they reproduce and where they do not, and what that means for your simulations.</p>
+<p class="report-meta"><span class="meta-item">Mohcine Chraibi</span><span class="meta-item"><time datetime="2026-11-18" data-pagefind-meta="date[datetime]">2026-11-18</time></span><span class="meta-item">1667 words</span><span class="meta-item">8 min read</span>
+</p>
+</header>
+<div class="report-body" data-pagefind-body>
+<!-- SPDX-License-Identifier: LGPL-3.0-or-later -->
+<section class="tex2jax_ignore mathjax_ignore" id="how-the-collisionfreespeedmodel-defaults-were-calibrated">
+<h1>How the CollisionFreeSpeedModel defaults were calibrated<a class="headerlink" href="#how-the-collisionfreespeedmodel-defaults-were-calibrated" title="Link to this heading">#</a></h1>
+<p>A default parameter set is what you get when you set nothing. In this article, we
+explain where the defaults of the <code class="docutils literal notranslate"><span class="pre">CollisionFreeSpeedModel</span></code> in JuPedSim 2.0 come
+from, what they reproduce, and where they do not. The full calibration, with all
+intermediate results, is described in a series of three notes on
+pedestriandynamics.org, listed at the end of this article.</p>
+<section id="the-defaults">
+<h2>The defaults<a class="headerlink" href="#the-defaults" title="Link to this heading">#</a></h2>
+<p>Until JuPedSim 1.4, the parameters of the collision-free speed model (there
+<code class="docutils literal notranslate"><span class="pre">CollisionFreeSpeedModelV2</span></code>) were chosen by hand. In 2.0, they come from a calibration against two open experiments, and
+the model has one more parameter, the vision factor described below.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>parameter</p></th>
+<th class="head"><p>until 1.4</p></th>
+<th class="head"><p>2.0</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">radius</span></code> [m]</p></td>
+<td><p>0.2</p></td>
+<td><p>0.155</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">time_gap</span></code> [s]</p></td>
+<td><p>1.0</p></td>
+<td><p>0.956</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">strength_neighbor_repulsion</span></code></p></td>
+<td><p>8.0</p></td>
+<td><p>2.83</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">range_neighbor_repulsion</span></code> [m]</p></td>
+<td><p>0.1</p></td>
+<td><p>0.15</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">strength_geometry_repulsion</span></code></p></td>
+<td><p>5.0</p></td>
+<td><p>5.95</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">range_geometry_repulsion</span></code> [m]</p></td>
+<td><p>0.02</p></td>
+<td><p>0.021</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">neighbor_repulsion_anisotropy</span></code></p></td>
+<td><p>(not available)</p></td>
+<td><p>0.5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">desired_speed</span></code> [m/s]</p></td>
+<td><p>1.2</p></td>
+<td><p>1.2</p></td>
+</tr>
+</tbody>
+</table>
+<p>All of them are per-agent parameters of <code class="docutils literal notranslate"><span class="pre">CollisionFreeSpeedModelState</span></code>. Any value
+you pass replaces the default for that agent.</p>
+</section>
+<section id="the-model">
+<h2>The model<a class="headerlink" href="#the-model" title="Link to this heading">#</a></h2>
+<p>In each time step, agent <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>i</mi>
+</math> first chooses a direction <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>𝐞</mi>
+    <mi>i</mi>
+  </msub>
+</math> and then a
+speed along it. The direction is the normalised sum of the desired direction
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>𝐞</mi>
+    <mn>0</mn>
+  </msub>
+</math>, given by the route, and the repulsion from neighbors and walls:</p>
+<div class="math" id="equation-cfsm-direction"><span class="eqno">(1)<a class="headerlink" href="#equation-cfsm-direction" title="">#</a></span><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msub>
+    <mi>𝐞</mi>
+    <mi>i</mi>
+  </msub>
+  <mo>=</mo>
+  <mfrac>
+    <msub>
+      <mi>𝐮</mi>
+      <mi>i</mi>
+    </msub>
+    <mrow>
+      <mo class="mathopen">‖</mo>
+      <msub>
+        <mi>𝐮</mi>
+        <mi>i</mi>
+      </msub>
+      <mo>‖</mo>
+    </mrow>
+  </mfrac>
+  <mo>,</mo>
+  <mspace width="2em"></mspace>
+  <msub>
+    <mi>𝐮</mi>
+    <mi>i</mi>
+  </msub>
+  <mo>=</mo>
+  <msub>
+    <mi>𝐞</mi>
+    <mn>0</mn>
+  </msub>
+  <mo>+</mo>
+  <munder>
+    <mo movablelimits="true">∑</mo>
+    <mi>j</mi>
+  </munder>
+  <msub>
+    <mi>w</mi>
+    <mrow>
+      <mi>i</mi>
+      <mi>j</mi>
+    </mrow>
+  </msub>
+  <mspace width="0.1667em"></mspace>
+  <msub>
+    <mi>𝐑</mi>
+    <mrow>
+      <mi>i</mi>
+      <mi>j</mi>
+    </mrow>
+  </msub>
+  <mo>+</mo>
+  <munder>
+    <mo movablelimits="true">∑</mo>
+    <mi>w</mi>
+  </munder>
+  <msub>
+    <mi>𝐑</mi>
+    <mrow>
+      <mi>i</mi>
+      <mi>w</mi>
+    </mrow>
+  </msub>
+  <mo>.</mo>
+</math></div>
+<p>The repulsion of neighbor <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>j</mi>
+</math> and of wall <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>w</mi>
+</math> decays exponentially with the
+distance:</p>
+<div class="math" id="equation-cfsm-repulsion"><span class="eqno">(2)<a class="headerlink" href="#equation-cfsm-repulsion" title="">#</a></span><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msub>
+    <mi>𝐑</mi>
+    <mrow>
+      <mi>i</mi>
+      <mi>j</mi>
+    </mrow>
+  </msub>
+  <mo>=</mo>
+  <mo form="prefix">−</mo>
+  <mi>k</mi>
+  <mi>exp</mi>
+  <mo>&ApplyFunction;</mo>
+  <mrow>
+    <mo>(</mo>
+    <mfrac>
+      <mrow>
+        <msub>
+          <mi>ℓ</mi>
+          <mrow>
+            <mi>i</mi>
+            <mi>j</mi>
+          </mrow>
+        </msub>
+        <mo>−</mo>
+        <msub>
+          <mi>d</mi>
+          <mrow>
+            <mi>i</mi>
+            <mi>j</mi>
+          </mrow>
+        </msub>
+      </mrow>
+      <mi>D</mi>
+    </mfrac>
+    <mo>)</mo>
+  </mrow>
+  <msub>
+    <mi>𝐞</mi>
+    <mrow>
+      <mi>i</mi>
+      <mi>j</mi>
+    </mrow>
+  </msub>
+  <mo>,</mo>
+  <mspace width="2em"></mspace>
+  <msub>
+    <mi>𝐑</mi>
+    <mrow>
+      <mi>i</mi>
+      <mi>w</mi>
+    </mrow>
+  </msub>
+  <mo>=</mo>
+  <msub>
+    <mi>k</mi>
+    <mi>w</mi>
+  </msub>
+  <mi>exp</mi>
+  <mo>&ApplyFunction;</mo>
+  <mrow>
+    <mo>(</mo>
+    <mfrac>
+      <mrow>
+        <msub>
+          <mi>r</mi>
+          <mi>i</mi>
+        </msub>
+        <mo>−</mo>
+        <msub>
+          <mi>d</mi>
+          <mrow>
+            <mi>i</mi>
+            <mi>w</mi>
+          </mrow>
+        </msub>
+      </mrow>
+      <msub>
+        <mi>D</mi>
+        <mi>w</mi>
+      </msub>
+    </mfrac>
+    <mo>)</mo>
+  </mrow>
+  <msub>
+    <mi>𝐧</mi>
+    <mrow>
+      <mi>i</mi>
+      <mi>w</mi>
+    </mrow>
+  </msub>
+  <mo>,</mo>
+</math></div>
+<p>where <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>d</mi>
+    <mrow>
+      <mi>i</mi>
+      <mi>j</mi>
+    </mrow>
+  </msub>
+</math> is the distance between the centres of <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>i</mi>
+</math> and <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>j</mi>
+</math>,
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>𝐞</mi>
+    <mrow>
+      <mi>i</mi>
+      <mi>j</mi>
+    </mrow>
+  </msub>
+</math> the unit vector from <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>i</mi>
+</math> to <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>j</mi>
+</math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>ℓ</mi>
+    <mrow>
+      <mi>i</mi>
+      <mi>j</mi>
+    </mrow>
+  </msub>
+  <mo>=</mo>
+  <msub>
+    <mi>r</mi>
+    <mi>i</mi>
+  </msub>
+  <mo>+</mo>
+  <msub>
+    <mi>r</mi>
+    <mi>j</mi>
+  </msub>
+</math> the
+sum of the radii, <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>d</mi>
+    <mrow>
+      <mi>i</mi>
+      <mi>w</mi>
+    </mrow>
+  </msub>
+</math> the distance from <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>i</mi>
+</math> to wall <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>w</mi>
+</math>, and
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>𝐧</mi>
+    <mrow>
+      <mi>i</mi>
+      <mi>w</mi>
+    </mrow>
+  </msub>
+</math> the unit vector from the wall to the agent. Neighbors count
+within 3 m if no wall lies between them, walls within 4 m.</p>
+<p>The speed is the optimal velocity function of the spacing <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>s</mi>
+    <mi>i</mi>
+  </msub>
+</math> to the closest
+neighbor in front:</p>
+<div class="math" id="equation-cfsm-speed"><span class="eqno">(3)<a class="headerlink" href="#equation-cfsm-speed" title="">#</a></span><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msub>
+    <mi>𝐯</mi>
+    <mi>i</mi>
+  </msub>
+  <mo>=</mo>
+  <mi>V</mi>
+  <mo stretchy="false">(</mo>
+  <msub>
+    <mi>s</mi>
+    <mi>i</mi>
+  </msub>
+  <mo stretchy="false">)</mo>
+  <mspace width="0.1667em"></mspace>
+  <msub>
+    <mi>𝐞</mi>
+    <mi>i</mi>
+  </msub>
+  <mo>,</mo>
+  <mspace width="2em"></mspace>
+  <mi>V</mi>
+  <mo stretchy="false">(</mo>
+  <mi>s</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mo>min</mo>
+  <mrow>
+    <mo>(</mo>
+    <mo>max</mo>
+    <mrow>
+      <mo>(</mo>
+      <mfrac>
+        <mi>s</mi>
+        <mi>T</mi>
+      </mfrac>
+      <mo>,</mo>
+      <mspace width="0.1667em"></mspace>
+      <mn>0</mn>
+      <mo>)</mo>
+    </mrow>
+    <mo>,</mo>
+    <mspace width="0.1667em"></mspace>
+    <msub>
+      <mi>v</mi>
+      <mn>0</mn>
+    </msub>
+    <mo>)</mo>
+  </mrow>
+  <mo>,</mo>
+  <mspace width="2em"></mspace>
+  <msub>
+    <mi>s</mi>
+    <mi>i</mi>
+  </msub>
+  <mo>=</mo>
+  <munder>
+    <mo movablelimits="true">min</mo>
+    <mrow>
+      <mi>j</mi>
+      <mo>∈</mo>
+      <msub>
+        <mi>J</mi>
+        <mi>i</mi>
+      </msub>
+    </mrow>
+  </munder>
+  <mrow>
+    <mo>(</mo>
+    <msub>
+      <mi>d</mi>
+      <mrow>
+        <mi>i</mi>
+        <mi>j</mi>
+      </mrow>
+    </msub>
+    <mo>−</mo>
+    <msub>
+      <mi>ℓ</mi>
+      <mrow>
+        <mi>i</mi>
+        <mi>j</mi>
+      </mrow>
+    </msub>
+    <mo>)</mo>
+  </mrow>
+  <mo>.</mo>
+</math></div>
+<p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>J</mi>
+    <mi>i</mi>
+  </msub>
+</math> contains the neighbors in front of <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>i</mi>
+</math> (with
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>𝐞</mi>
+    <mi>i</mi>
+  </msub>
+  <mo>⋅</mo>
+  <msub>
+    <mi>𝐞</mi>
+    <mrow>
+      <mi>i</mi>
+      <mi>j</mi>
+    </mrow>
+  </msub>
+  <mo>≥</mo>
+  <mn>0</mn>
+</math>) whose centre lies at most
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>ℓ</mi>
+    <mrow>
+      <mi>i</mi>
+      <mi>j</mi>
+    </mrow>
+  </msub>
+</math> to the side of the line through <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>i</mi>
+</math> in direction <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>𝐞</mi>
+    <mi>i</mi>
+  </msub>
+</math>.
+Without such a neighbor, the agent walks at <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>v</mi>
+    <mn>0</mn>
+  </msub>
+</math>. Since the speed is never
+larger than <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>s</mi>
+    <mi>i</mi>
+  </msub>
+  <mo stretchy="false">/</mo>
+  <mi>T</mi>
+</math>, an agent never steps into the neighbor in front.</p>
+<p>The symbols map to the per-agent parameters of <code class="docutils literal notranslate"><span class="pre">CollisionFreeSpeedModelState</span></code>
+as follows:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>symbol</p></th>
+<th class="head"><p>parameter</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>r</mi>
+    <mi>i</mi>
+  </msub>
+</math></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">radius</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>T</mi>
+</math></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">time_gap</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>v</mi>
+    <mn>0</mn>
+  </msub>
+</math></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">desired_speed</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>k</mi>
+</math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>D</mi>
+</math></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">strength_neighbor_repulsion</span></code>, <code class="docutils literal notranslate"><span class="pre">range_neighbor_repulsion</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>k</mi>
+    <mi>w</mi>
+  </msub>
+</math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>D</mi>
+    <mi>w</mi>
+  </msub>
+</math></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">strength_geometry_repulsion</span></code>, <code class="docutils literal notranslate"><span class="pre">range_geometry_repulsion</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>λ</mi>
+</math></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">neighbor_repulsion_anisotropy</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>Equations <a class="reference internal" href="#equation-cfsm-direction">(1)</a> to <a class="reference internal" href="#equation-cfsm-speed">(3)</a> are the model of Tordeux et
+al. (2016) with per-agent parameters, except for the weight <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>w</mi>
+    <mrow>
+      <mi>i</mi>
+      <mi>j</mi>
+    </mrow>
+  </msub>
+</math>, which is
+new in JuPedSim 2.0.</p>
+</section>
+<section id="the-vision-factor">
+<h2>The vision factor<a class="headerlink" href="#the-vision-factor" title="Link to this heading">#</a></h2>
+<p>In the published model, every neighbor within range repels the agent, i.e.
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>w</mi>
+    <mrow>
+      <mi>i</mi>
+      <mi>j</mi>
+    </mrow>
+  </msub>
+  <mo>=</mo>
+  <mn>1</mn>
+</math>, whether the neighbor is in front or behind. In front of a narrow
+bottleneck, this can block the flow: the crowd behind pushes the agents of the
+front row sideways against the wall next to the opening. They turn away from
+the exit, find a neighbor or a wall in their path, and stop. Since the speed
+depends only on the spacing in the walking direction, nothing restarts them.</p>
+<p>The Generalized Centrifugal Force Model (Chraibi et al. 2010) weights the force
+of a neighbor by the cosine of its angle to the desired direction and ignores
+neighbors behind. The <code class="docutils literal notranslate"><span class="pre">CollisionFreeSpeedModel</span></code> adopts this vision factor with
+a weight <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>λ</mi>
+</math>:</p>
+<div class="math" id="equation-cfsm-vision"><span class="eqno">(4)<a class="headerlink" href="#equation-cfsm-vision" title="">#</a></span><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msub>
+    <mi>w</mi>
+    <mrow>
+      <mi>i</mi>
+      <mi>j</mi>
+    </mrow>
+  </msub>
+  <mo>=</mo>
+  <mn>1</mn>
+  <mo>−</mo>
+  <mi>λ</mi>
+  <mo>+</mo>
+  <mi>λ</mi>
+  <mo>max</mo>
+  <mrow>
+    <mo>(</mo>
+    <mn>0</mn>
+    <mo>,</mo>
+    <mspace width="0.1667em"></mspace>
+    <msub>
+      <mi>𝐞</mi>
+      <mn>0</mn>
+    </msub>
+    <mo>⋅</mo>
+    <msub>
+      <mi>𝐞</mi>
+      <mrow>
+        <mi>i</mi>
+        <mi>j</mi>
+      </mrow>
+    </msub>
+    <mo>)</mo>
+  </mrow>
+  <mo>.</mo>
+</math></div>
+<p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>λ</mi>
+  <mo>=</mo>
+  <mn>0</mn>
+</math> is the isotropic model of the paper, and <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>λ</mi>
+  <mo>=</mo>
+  <mn>1</mn>
+</math> is the full
+vision factor. With the default <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>λ</mi>
+  <mo>=</mo>
+  <mn>0.5</mn>
+</math>, a neighbor in front counts
+fully, and a neighbor beside or behind counts half, see Fig. 1.</p>
+<figure class="align-default" id="id1">
+<a class="reference internal image-reference" href="../_images/cfsm_vision_weight.png"><img alt="Polar plot of the weight of a neighbor's repulsion against its angle to the desired direction, for lambda 0, 0.5 and 1" src="../_images/cfsm_vision_weight.png" style="width: 420px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Weight <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>w</mi>
+    <mrow>
+      <mi>i</mi>
+      <mi>j</mi>
+    </mrow>
+  </msub>
+</math> of a neighbor’s repulsion, Eq. <a class="reference internal" href="#equation-cfsm-vision">(4)</a>, against the
+angle <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>θ</mi>
+</math> between the desired direction and the direction to the neighbor.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="how-the-values-were-found">
+<h2>How the values were found<a class="headerlink" href="#how-the-values-were-found" title="Link to this heading">#</a></h2>
+<p>We calibrated the model with <a class="reference external" href="https://dakota.sandia.gov">Dakota</a> against two
+experiments from the Pedestrian Dynamics Data Archive (see the references):</p>
+<ul class="simple">
+<li><p>the Hermes bottleneck experiment (Düsseldorf 2009), widths 2.4, 3.6 and 5.0 m,
+about 350 participants per run;</p></li>
+<li><p>the CrowdQueue experiment (Wuppertal 2018), a 0.5 m gate in corridors of
+1.2 to 5.6 m, seven runs with normal motivation.</p></li>
+</ul>
+<p>Experiment and simulation are analysed with the same code
+(<a class="reference external" href="https://pedpy.readthedocs.io">PedPy</a>). The objective is the sum of the squared
+differences of flow, density and speed, each divided by a tolerance of 6 % (flow)
+or 10 % (density, speed) of the measured value. A run in which nobody passes for
+20 s counts as stalled and adds a penalty. Without this penalty, the optimizer
+selected sets that fit well on average but clogged in some runs.</p>
+<p>The desired speed was fixed at 1.55 m/s, the free speed measured on the Hermes
+participants, so that the other parameters could not absorb a wrong walking
+speed. The default stays at 1.2 m/s, the usual value for normal walking.</p>
+<p>We compared three values of the vision factor. With <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>λ</mi>
+  <mo>=</mo>
+  <mn>0</mn>
+</math>, the best set
+stalled in 13 of 50 runs. With <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>λ</mi>
+  <mo>=</mo>
+  <mn>1</mn>
+</math>, the fit at the gate was about
+twice as bad. With <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>λ</mi>
+  <mo>=</mo>
+  <mn>0.5</mn>
+</math>, the selected set stalled in none of 50 runs
+and fitted the data slightly better than the best set found earlier for
+JuPedSim 1.4, see Fig. 2. Its parameters are the defaults in the table above.</p>
+<figure class="align-default" id="id2">
+<img alt="Four panels with the flow in a narrow bottleneck, the calibration objective of all candidate sets, the flow in the Hermes bottleneck and the relative errors at the CrowdQueue gate" src="../_images/cfsm_calibration_results.png" />
+<figcaption>
+<p><span class="caption-text">Calibration results. (a) Flow in the bottleneck of Xu et al. (2019), not used in
+the calibration, desired speeds as in that paper. (b) Calibration objective of
+the candidate sets, each re-evaluated with 5 seeds (50 runs); red is the stall
+penalty, the default set is “C, anisotropy 0.5”. (c) Hermes flow; open markers
+are widths not used in the calibration. (d) Relative error of flow, density and
+speed at the seven CrowdQueue runs.</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="what-the-defaults-reproduce">
+<h2>What the defaults reproduce<a class="headerlink" href="#what-the-defaults-reproduce" title="Link to this heading">#</a></h2>
+<p>The following results come from data that were not used in the calibration.</p>
+<p><strong>Narrow bottleneck.</strong> Fig. 3 shows the bottleneck of Xu et al. (2019), 1.0 to
+2.5 m wide, with all agents at the default desired speed of 1.2 m/s. With the
+former defaults, the flow is 39 to 56 % below the experiment, and in 2 of 10
+runs at 1.0 m nobody passes for 60 s. With the 2.0 defaults, no run stalls, and
+the flow is 4 to 26 % below the experiment.</p>
+<figure class="align-default" id="id3">
+<img alt="Flow through a bottleneck of 1.0 to 2.5 m and snapshots of one run at 1.0 m, for the former and the 2.0 defaults" src="../_images/cfsm_defaults_comparison.png" />
+<figcaption>
+<p><span class="caption-text">Former and 2.0 defaults in the bottleneck of Xu et al. (2019), all agents at
+1.2 m/s. (a) Flow of the runs that emptied the room, 10 seeds per width. (b)
+Agents in the room at w = 1.0 m for one seed. Right: snapshots of the same two
+runs.</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Wide bottleneck.</strong> At the Hermes widths 3.0 and 4.4 m, the flow is about 20 %
+too low.</p>
+<p><strong>Both changes are needed.</strong> Fig. 4 separates the two changes at w = 1.0 m. The
+vision factor alone does not change the former defaults. The calibrated
+parameters alone, with <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>λ</mi>
+  <mo>=</mo>
+  <mn>0</mn>
+</math>, clog after about 34 s: a dense arch closes
+over the entrance. Only the combination empties the room. The calibrated
+parameters make the crowd denser and faster, and the vision factor keeps such a
+crowd from blocking the opening. Fig. 4 shows one seed. However, it agrees with
+the stalls of the five-seed tests above.</p>
+<figure class="align-default" id="id4">
+<img alt="Agents in the room over time for four parameter variants, and snapshots of the gap region at 40 s" src="../_images/cfsm_defaults_variants.png" />
+<figcaption>
+<p><span class="caption-text">The two changes separately, w = 1.0 m, one seed, all agents at 1.2 m/s. Top:
+agents in the room over time. Bottom: the region around the gap at 40 s,
+coloured by speed, with velocity arrows.</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="what-this-means-for-your-simulations">
+<h2>What this means for your simulations<a class="headerlink" href="#what-this-means-for-your-simulations" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>The defaults are a compromise.</strong> No parameter set we found matches both
+experiments within the tolerances. The defaults do not clog in any of our
+tests, but they underestimate the flow through bottlenecks by about 5 to
+30 %, and in front of the 0.5 m gate the speed is 27 to 53 % too high in six
+of seven runs.</p></li>
+<li><p><strong>Calibrate for your question.</strong> If your results depend on the flow through
+a door or on the density in front of it, compare with data from a similar
+geometry and calibrate the parameters for it. A calibration holds for the
+regime it was fitted to; part 2 of the series shows how far that regime
+reaches.</p></li>
+<li><p><strong>Keep the vision factor when you change the repulsion.</strong> In our tests, the
+calibrated parameters with <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>λ</mi>
+  <mo>=</mo>
+  <mn>0</mn>
+</math> clogged in narrow bottlenecks. If
+you need the isotropic model of the paper, use
+<code class="docutils literal notranslate"><span class="pre">CollisionFreeSpeedModelTordeux2016</span></code>, which is kept unchanged.</p></li>
+<li><p><strong>Use a small time step.</strong> The calibration used <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi class="capital-greek">Δ</mi>
+  <mi>t</mi>
+  <mo>=</mo>
+  <mn>0.01</mn>
+</math> s. With
+0.05 s, a single agent in a 0.6 m wide curved corridor walked at two thirds of
+its desired speed, since the walls turned its direction back and forth.</p></li>
+<li><p><strong>The desired speed is yours to set.</strong> The default of 1.2 m/s is a common
+value for normal walking. Set it per agent if you know the population.</p></li>
+</ul>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<p>The calibration is described step by step in three notes on
+pedestriandynamics.org:</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://pedestriandynamics.org/notes/dakota-calibration/">Part 1</a>: calibrating
+the model with Dakota on the Hermes bottleneck.</p></li>
+<li><p><a class="reference external" href="https://pedestriandynamics.org/notes/dakota-validation/">Part 2</a>: where the
+calibrated parameters stop working.</p></li>
+<li><p><a class="reference external" href="https://pedestriandynamics.org/notes/dakota-defaults/">Part 3</a>: the
+recalibration for JuPedSim 2.0 that produced these defaults.</p></li>
+</ol>
+<p>The scripts, Dakota input files and results are in the
+<a class="reference external" href="https://github.com/PedestrianDynamics/jupedsim-dakota-calibration/tree/1d7fc4e/joint2">jupedsim-dakota-calibration</a>
+repository.</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Chraibi, M., Seyfried, A., Schadschneider, A. (2010). Generalized
+centrifugal-force model for pedestrian dynamics. Physical Review E 82, 046111.
+<a class="reference external" href="https://doi.org/10.1103/PhysRevE.82.046111">doi:10.1103/PhysRevE.82.046111</a>.</p></li>
+<li><p>Tordeux, A., Chraibi, M., Seyfried, A. (2016). Collision-free speed model for
+pedestrian dynamics. In: Traffic and Granular Flow ‘15, Springer, 225–232.
+<a class="reference external" href="https://doi.org/10.1007/978-3-319-33482-0_29">doi:10.1007/978-3-319-33482-0_29</a>.</p></li>
+<li><p>Xu, Q., Chraibi, M., Tordeux, A., Zhang, J. (2019). Generalized collision-free
+velocity model for pedestrian dynamics. Physica A 535, 122521.
+<a class="reference external" href="https://doi.org/10.1016/j.physa.2019.122521">doi:10.1016/j.physa.2019.122521</a>.</p></li>
+<li><p>Experiment data: Hermes bottleneck experiment, Düsseldorf 2009,
+<a class="reference external" href="https://doi.org/10.34735/ped.2009.6">doi:10.34735/ped.2009.6</a>; CrowdQueue
+experiment, Wuppertal 2018,
+<a class="reference external" href="https://doi.org/10.34735/ped.2018.1">doi:10.34735/ped.2018.1</a>.</p></li>
+</ul>
+</section>
+</section>
+
+</div>
+</article>
+<nav class="book-pagenav" aria-label="Previous and next page"><a class="book-pagenav-prev" href="index.html" rel="prev"><small>Previous</small>Articles</a><a class="book-pagenav-next" href="writing-guide.html" rel="next"><small>Next</small>Writing for jupedsim.org</a>
+</nav>
+</div>
+<aside class="book-toc" id="book-toc">
+<p class="book-toc-title">On this page</p>
+<nav id="TableOfContents">
+<ul>
+<li><a class="reference internal" href="#">How the CollisionFreeSpeedModel defaults were calibrated</a><ul>
+<li><a class="reference internal" href="#the-defaults">The defaults</a></li>
+<li><a class="reference internal" href="#the-model">The model</a></li>
+<li><a class="reference internal" href="#the-vision-factor">The vision factor</a></li>
+<li><a class="reference internal" href="#how-the-values-were-found">How the values were found</a></li>
+<li><a class="reference internal" href="#what-the-defaults-reproduce">What the defaults reproduce</a></li>
+<li><a class="reference internal" href="#what-this-means-for-your-simulations">What this means for your simulations</a></li>
+<li><a class="reference internal" href="#further-reading">Further reading</a></li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+
+</nav>
+</aside>
+</main><footer class="site-footer"><div class="site-footer-inner">
+<p class="site-footer-text">© JuPedSim contributors · LGPL-3.0</p>
+<ul class="site-footer-links"><li><a href="https://github.com/PedestrianDynamics/jupedsim">GitHub</a></li><li><a href="/pull-requests/1766/notes/feed.xml">RSS</a></li><li><a href="/pull-requests/1766/docs/v1x/v1.4.2/">1.x docs</a></li></ul>
+</div></footer>
+  </body>
+</html>
