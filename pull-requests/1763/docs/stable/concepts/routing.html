@@ -146,9 +146,9 @@ This process typically considers factors like the agent’s goal (target), the l
 <section id="route-planning">
 <h2>Route planning<a class="headerlink" href="#route-planning" title="Link to this heading">#</a></h2>
 <p>For modeling complex scenarios in which the agents will move through different specific targets on their way, it is possible to define routes.
-These routes are modeled as a network (so called <a class="reference internal" href="#journeys"><span class="std std-ref">Journeys</span></a>), consisting of:</p>
+These routes are modeled as a network (see <a class="reference internal" href="#routes"><span class="std std-ref">Routes</span></a>), consisting of:</p>
 <ul class="simple">
-<li><p>targets as nodes (so called <a class="reference internal" href="#stages"><span class="std std-ref">Stages</span></a>) ,</p></li>
+<li><p>targets as nodes (see <a class="reference internal" href="#targets"><span class="std std-ref">Targets</span></a>),</p></li>
 <li><p>directed connections between these targets, indicating the next target, as edges (so called <a class="reference internal" href="#transitions"><span class="std std-ref">Transitions</span></a>),</p></li>
 </ul>
 <p>The illustration of such a network can be seen below:</p>
@@ -157,46 +157,45 @@ These routes are modeled as a network (so called <a class="reference internal" h
 </a>
 <figcaption>
 <p><span class="caption-text">Graphical representation of the underlying routing network of a more complex simulation.
-Each circle represents an intermediate stage, while the arrows the corresponding transitions.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+Each circle represents an intermediate target, while the arrows the corresponding transitions.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>In the following sections, we will explain how to set-up such Journeys in <em>JuPedSim</em>.</p>
-<section id="stages">
-<h3>Stages<a class="headerlink" href="#stages" title="Link to this heading">#</a></h3>
-<p>In <em>JuPedSim</em>, a stage refers to an interim target that the agent aims to reach.
-A stage counts as completed when the agent reaches it; the agent then continues to the next stage.
-The various types of stages will be explained below.</p>
+<p>In the following sections, we will explain how to set up such routes in <em>JuPedSim</em>.</p>
+<section id="targets">
+<h3>Targets<a class="headerlink" href="#targets" title="Link to this heading">#</a></h3>
+<p>In <em>JuPedSim</em>, a target is an area that the agent aims to reach.
+A target counts as reached when the agent stands in it; the agent then continues to the next target.
+The various types of targets will be explained below.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>All stages added to the simulation need to be inside the walkable area.
+<p>All targets added to the simulation need to be inside the walkable area.
 This needs to be uphold when the geometry is changed.</p>
 </div>
-<p>Each stage lies in one region of the walkable area. Its <code class="docutils literal notranslate"><span class="pre">region_id</span></code> is the id
-<a class="reference internal" href="../api/jupedsim/index.html#jupedsim.GeometryBuilder.add_region" title="jupedsim.GeometryBuilder.add_region"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_region()</span></code></a> returned for that region, see <a class="reference internal" href="geometry.html"><span class="doc">Geometry</span></a>.</p>
+<p>A target consists of one or more areas, each given together with the region of the walkable area it lies in.
+The region is the handle <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.GeometryBuilder.add_region" title="jupedsim.GeometryBuilder.add_region"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_region()</span></code></a> returned for it, see <a class="reference internal" href="geometry.html"><span class="doc">Geometry</span></a>.</p>
 <section id="waypoint">
 <h4>Waypoint<a class="headerlink" href="#waypoint" title="Link to this heading">#</a></h4>
-<p>The most fundamental kind of stage is a <code class="xref py py-class docutils literal notranslate"><span class="pre">Waypoint</span></code>. It represents a target the agent needs to reach.
-For the way finding, the agent always targets the Waypoint directly.
-A Waypoint is considered completed once agents arrive within a designated distance from the defined Waypoint.
-The figure below shows how a Waypoint is used in the simulation. Here the center (colored orange) represents the Waypoint, and the surrounding blue area indicates the zone an agent must enter to complete the stage.</p>
+<p>The most fundamental kind of target is a <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.Waypoint" title="jupedsim.Waypoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Waypoint</span></code></a>. It represents an area the agent needs to reach.
+A Waypoint is reached once the agent stands in its area.
+The figure below shows a circular Waypoint. The blue area around the center (colored orange) is the zone an agent must enter to reach it.</p>
 <figure class="align-center" id="id2">
-<a class="reference internal image-reference" href="../_images/waypoint.svg"><img alt="A dot representing the Waypoint, with an circle around it, depicting the area an agent needs to enter to complete the stage." src="../_images/waypoint.svg" style="width: 20%;" />
+<a class="reference internal image-reference" href="../_images/waypoint.svg"><img alt="A dot representing the center of the Waypoint, with a circle around it, depicting the area an agent needs to enter to reach it." src="../_images/waypoint.svg" style="width: 20%;" />
 </a>
 <figcaption>
-<p><span class="caption-text">Representation of a <code class="xref py py-class docutils literal notranslate"><span class="pre">Waypoint</span></code> (colored orange) with the given distance (orange line).</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+<p><span class="caption-text">Representation of a circular <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.Waypoint" title="jupedsim.Waypoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Waypoint</span></code></a> with its center (colored orange) and its radius (orange line).</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>A Waypoint at <span class="math notranslate nohighlight">\((0.6, -1.4)\)</span> with an accepted distance of 2m can be added to the simulation via:</p>
+<p>A circular Waypoint around <span class="math notranslate nohighlight">\((0.6, -1.4)\)</span> with a radius of 2m can be added to the simulation via:</p>
 <div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">waypoint</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_target</span><span class="p">(</span><span class="n">jps</span><span class="o">.</span><span class="n">Waypoint</span><span class="p">([(</span><span class="n">jps</span><span class="o">.</span><span class="n">circle_to_polygon</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mf">0.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.4</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">region</span><span class="p">)]))</span>
 </pre></div>
 </div>
 </section>
 <section id="exit">
 <h4>Exit<a class="headerlink" href="#exit" title="Link to this heading">#</a></h4>
-<p>An other stage type is the <code class="xref py py-class docutils literal notranslate"><span class="pre">Exit</span></code>. As the name suggests, this stage models the exits within the simulation.
-The <cite>ExitStage</cite> designates an area where agents are marked for removal from the simulation upon their arrival.
+<p>An other type of target is the <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.Exit" title="jupedsim.Exit"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exit</span></code></a>. As the name suggests, this target models the exits within the simulation.
+An <cite>Exit</cite> designates an area where agents are marked for removal from the simulation upon their arrival.
 The removal itself is done at the beginning of the next iteration step.
-As a target the agents will aim for the center of the exit polygon.</p>
+The agents head for the part of the exit area they reach soonest, which need not be its center.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Agents will be removed from the simulation when they reach the designated exit area.</p>
@@ -205,7 +204,7 @@ As a target the agents will aim for the center of the exit polygon.</p>
 <a class="reference internal image-reference" href="../_images/exit.svg"><img alt="A polygon representing the exit area is shown in blue, with the center highlighted in orange." src="../_images/exit.svg" style="width: 80%;" />
 </a>
 <figcaption>
-<p><span class="caption-text">Representation of an <code class="xref py py-class docutils literal notranslate"><span class="pre">Exit</span></code> (colored blue). The agents will aim for the center (colored orange).</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+<p><span class="caption-text">Representation of an <a class="reference internal" href="../api/jupedsim/index.html#jupedsim.Exit" title="jupedsim.Exit"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exit</span></code></a> (colored blue) with its center (colored orange).</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>An exit located in the polygon <span class="math notranslate nohighlight">\((-0.2, -1.9), (0.2, -1.9), (0.2, -1.7), (-0.2, -1.7)\)</span> can be added to the simulation via:</p>
@@ -222,20 +221,14 @@ As a target the agents will aim for the center of the exit polygon.</p>
 <p>When adding exits close to the boundary of the walkable area make sure that there is enough room for the agents to enter the exit polygon.
 Otherwise they will not be able to reach the exit at all.</p>
 </div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Currently, pedestrians in the simulation are programmed to target the center of the exit area.
-Therefore, creating wide exits could potentially lead to unpredictable behavior.
-In certain situations, it may be more appropriate to establish multiple exits rather than a single wide one.</p>
-</div>
 </section>
 </section>
-<section id="journeys">
-<h3>Journeys<a class="headerlink" href="#journeys" title="Link to this heading">#</a></h3>
-<p>Now that we have added the nodes in the network, we need to combine them to a so called Journey in <em>JuPedSim</em>.
-An agent will always continue to move along the transitions of a journey after completing its current stage.
-But before we can add transitions we have to create Journeys:</p>
-<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="c1"># create stages</span>
+<section id="routes">
+<h3>Routes<a class="headerlink" href="#routes" title="Link to this heading">#</a></h3>
+<p>Now that we have added the nodes in the network, we need to combine them to a so called route in <em>JuPedSim</em>.
+An agent will always continue to move along the transitions of its route after reaching its current target.
+A route is created from its transitions:</p>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="c1"># create targets</span>
 <span class="o">...</span>
 
 <span class="c1"># define a route</span>
@@ -250,18 +243,18 @@ But before we can add transitions we have to create Journeys:</p>
 </section>
 <section id="transitions">
 <h3>Transitions<a class="headerlink" href="#transitions" title="Link to this heading">#</a></h3>
-<p>We currently have a Journey composed of various stages that are not interconnected.
-To establish a comprehensive routing setup, we need to define the connections between these stages, known as Transitions.</p>
-<p>Transitions specify which stage an agent will target next after completing its current stage.
+<p>A route is defined by the connections between its targets, known as Transitions.</p>
+<p>Transitions specify which target an agent will head for next after reaching its current one.
+The transition from <code class="docutils literal notranslate"><span class="pre">jps.AGENT_LOCATION</span></code> decides which target an agent that joins the route heads for first.
 <em>JuPedSim</em> offers different types of connections to directly model certain decision making processes.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>When adding the transitions to your journeys make sure, that <a class="reference internal" href="#exit"><span class="std std-ref">Exits</span></a> are only added at the end of a trip.
-Otherwise the agents will be removed from the simulation when they reach the exit and will not advance to the next stage.</p>
+<p>When adding the transitions to your routes make sure, that <a class="reference internal" href="#exit"><span class="std std-ref">Exits</span></a> are only added at the end of a trip.
+Otherwise the agents will be removed from the simulation when they reach the exit and will not advance to the next target.</p>
 </div>
 <section id="fixed-transition">
 <h4>Fixed transition<a class="headerlink" href="#fixed-transition" title="Link to this heading">#</a></h4>
-<p>The most basic form of transition is to define that the agent will proceed on its journey with one specific subsequent stage.</p>
+<p>The most basic form of transition is to define that the agent will proceed on its route with one specific subsequent target.</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../_images/fixed.svg"><img alt="../_images/fixed.svg" src="../_images/fixed.svg" style="width: 40%;" />
 </a>
@@ -272,11 +265,11 @@ Otherwise the agents will be removed from the simulation when they reach the exi
 </section>
 <section id="round-robin-transition">
 <h4>Round-robin transition<a class="headerlink" href="#round-robin-transition" title="Link to this heading">#</a></h4>
-<p>It is also possible to model a decision making process and split the agents at a stage, with a round-robin transition.
+<p>It is also possible to model a decision making process and split the agents at a target, with a round-robin transition.
 Here, the agents will proceed in a weighted round-robin manner.
-E.g., when defining a round-robin transition with three outgoing stages and the corresponding weights 10, 5, 1, the first 10 agents to make a choice will continue with the first given stage.
-The next 5 with the second one, and the next agent will continue with the third stage.</p>
-<p>After this, the cycle restarts with the first stage.</p>
+E.g., when defining a round-robin transition with three outgoing targets and the corresponding weights 10, 5, 1, the first 10 agents to make a choice will continue with the first given target.
+The next 5 with the second one, and the next agent will continue with the third target.</p>
+<p>After this, the cycle restarts with the first target.</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../_images/round_robin.svg"><img alt="../_images/round_robin.svg" src="../_images/round_robin.svg" style="width: 40%;" />
 </a>
@@ -296,13 +289,13 @@ The next 5 with the second one, and the next agent will continue with the third 
 <section id="least-targeted-transition">
 <h4>Least-targeted transition<a class="headerlink" href="#least-targeted-transition" title="Link to this heading">#</a></h4>
 <p>An other option to model decision making processes, is the least-targeted transition.
-The next stage is determined from a list of candidates by checking which of the candidates has the least number of agents targeting it already.
-When multiple stages have the same number of agent targeting the first defined will be chosen.</p>
+The next target is determined from a list of candidates by checking which of the candidates has the least number of agents targeting it already.
+When multiple targets have the same number of agent targeting the first defined will be chosen.</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../_images/least_targeted.svg"><img alt="../_images/least_targeted.svg" src="../_images/least_targeted.svg" style="width: 40%;" />
 </a>
 </figure>
-<p>A least-targeted transition can be added to a journey with:</p>
+<p>A least-targeted transition can be added to a route with:</p>
 <div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">jps</span><span class="o">.</span><span class="n">LeastTargetedTransition</span><span class="p">(</span>
     <span class="n">start</span><span class="p">,</span>
     <span class="p">[</span>
@@ -317,20 +310,18 @@ When multiple stages have the same number of agent targeting the first defined w
 </section>
 <section id="direct-steering">
 <h3>Direct Steering<a class="headerlink" href="#direct-steering" title="Link to this heading">#</a></h3>
-<p>In certain scenarios, e.g., developing a specific behavior model, you may want to bypass the decision-making process modeled by the journeys.
+<p>In certain scenarios, e.g., developing a specific behavior model, you may want to bypass the decision-making process modeled by the routes.
 For this purpose, <em>JuPedSim</em> offers a method called “direct steering”, it moves an agent to a specific position in the walkable area on the shortest path (see <a class="reference internal" href="#way-finding"><span class="std std-ref">Way finding</span></a>).
-To use direct steering in your simulation, you need to add a direct steering stage and a journey consisting only of the stage to the simulation:</p>
+To use direct steering in your simulation, add the agent with a location to steer to instead of a route:</p>
 <div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">agent</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_agent</span><span class="p">(</span>
     <span class="n">region</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
     <span class="n">steer_to</span><span class="o">=</span><span class="n">region</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">),</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>Afterwards, an agent or agents can be added, targeting this journey and stage.
-The agent with the ID <cite>direct_steering_agent_id</cite> is using the direct steering journey.
-We now can directly set the target of this specific agent.
-It will move towards the specified point and if the point is reached, it will come to a halt there:</p>
-<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">agent</span><span class="o">.</span><span class="n">reroute</span><span class="p">(</span><span class="n">steer_to</span><span class="o">=</span><span class="n">region</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">))</span>
+<p>The agent will move towards the specified point and if the point is reached, it will come to a halt there.
+We can set a new target for this specific agent at any time:</p>
+<div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">agent</span><span class="o">.</span><span class="n">reroute</span><span class="p">(</span><span class="n">steer_to</span><span class="o">=</span><span class="n">region</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">))</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -340,14 +331,14 @@ If they should be removed from the simulation if they reached a certain position
 <div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="n">simulation</span><span class="o">.</span><span class="n">mark_agent_for_removal</span><span class="p">(</span><span class="n">agent</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Alternatively, the journey of an agent can be switched to some other journey, see <a class="reference internal" href="#switch-journey"><span class="std std-ref">Switch journey</span></a>.</p>
+<p>Alternatively, the agent can be put on a route, see <a class="reference internal" href="#switch-route"><span class="std std-ref">Switch route</span></a>.</p>
 </div>
 </section>
-<section id="switch-journey">
-<h3>Switch journey<a class="headerlink" href="#switch-journey" title="Link to this heading">#</a></h3>
-<p>In complex scenarios it might be necessary to work with multiple journeys to model the movement of the agents.
-At some point or at some time agents might need to switch between these journeys depending on some conditions.
-After the following code, the agent with the ID <cite>agent_id</cite> will continue in the journey <cite>new_journey_id</cite> targeting <cite>new_stage_id</cite>:</p>
+<section id="switch-route">
+<h3>Switch route<a class="headerlink" href="#switch-route" title="Link to this heading">#</a></h3>
+<p>In complex scenarios it might be necessary to work with multiple routes to model the movement of the agents.
+At some point or at some time agents might need to switch between these routes depending on some conditions.
+After the following code, the agent will continue on the route <cite>new_route</cite>, heading for <cite>new_target</cite> first:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">agent</span><span class="o">.</span><span class="n">reroute</span><span class="p">(</span><span class="n">route</span><span class="o">=</span><span class="n">new_route</span><span class="p">,</span> <span class="n">first_target</span><span class="o">=</span><span class="n">new_target</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -358,10 +349,12 @@ After the following code, the agent with the ID <cite>agent_id</cite> will conti
 <p>Each agent in the simulation is assigned a specific target destination towards which they will head.
 The next crucial step is to determine the route that these agents will take to reach their assigned goals.
 This involves calculating the most efficient or desired paths from their current locations to their targets within the simulation environment.</p>
-<p>To determine the route, <em>JuPedSim</em> triangulates the geometry and computes the distance between two points through the triangulation.
-Here, it will compute the distance between the centers of two neighboring triangles.
-When multiple paths lead to the target, the shortest one will be preferred.</p>
-<p>How the path is distinguished for different target points, you can see in the animation below:</p>
+<p>Agents on a route are led by floor fields.
+For every target, <em>JuPedSim</em> computes the estimated travel time to it from every place of the walkable area, around obstacles, through the openings between regions and across stairs.
+An agent follows decreasing travel times towards its target.</p>
+<p>Agents under <a class="reference internal" href="#direct-steering"><span class="std std-ref">direct steering</span></a> walk the shortest path to their point instead.
+To determine it, <em>JuPedSim</em> triangulates the geometry and computes the path through the triangulation.</p>
+<p>How the shortest path is distinguished for different target points, you can see in the animation below:</p>
 <a class="reference internal image-reference" href="../_images/shortest_path.gif"><img alt="../_images/shortest_path.gif" class="align-center" src="../_images/shortest_path.gif" style="width: 60%;" />
 </a>
 </section>
@@ -379,12 +372,12 @@ When multiple paths lead to the target, the shortest one will be preferred.</p>
 <ul>
 <li><a class="reference internal" href="#">Routing</a><ul>
 <li><a class="reference internal" href="#route-planning">Route planning</a><ul>
-<li><a class="reference internal" href="#stages">Stages</a><ul>
+<li><a class="reference internal" href="#targets">Targets</a><ul>
 <li><a class="reference internal" href="#waypoint">Waypoint</a></li>
 <li><a class="reference internal" href="#exit">Exit</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#journeys">Journeys</a></li>
+<li><a class="reference internal" href="#routes">Routes</a></li>
 <li><a class="reference internal" href="#transitions">Transitions</a><ul>
 <li><a class="reference internal" href="#fixed-transition">Fixed transition</a></li>
 <li><a class="reference internal" href="#round-robin-transition">Round-robin transition</a></li>
@@ -392,7 +385,7 @@ When multiple paths lead to the target, the shortest one will be preferred.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#direct-steering">Direct Steering</a></li>
-<li><a class="reference internal" href="#switch-journey">Switch journey</a></li>
+<li><a class="reference internal" href="#switch-route">Switch route</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#way-finding">Way finding</a></li>
