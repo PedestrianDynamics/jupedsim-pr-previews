@@ -91,8 +91,8 @@ around congestion. It ends with what we chose not to do (yet) and what comes nex
 </div>
 <section id="what-a-floor-field-is">
 <h2>What a floor field is<a class="headerlink" href="#what-a-floor-field-is" title="Link to this heading">#</a></h2>
-<p>A destination is the area of a waypoint or an exit; in the API it is identified by
-the id of its stage (<code class="docutils literal notranslate"><span class="pre">stage_id</span></code>). For every destination, JuPedSim covers each region of
+<p>A destination is the area of a waypoint or an exit; in the API it is the target
+<code class="docutils literal notranslate"><span class="pre">add_target</span></code> returned. For every destination, JuPedSim covers each region of
 your walkable surface with a grid of square cells and computes, for every cell, the
 travel time to the destination. The computation follows a wave that starts in the
 destination’s area and spreads out at the local walking speed: around obstacles, through
@@ -141,7 +141,7 @@ two cells wide.</p>
 </section>
 <section id="looking-at-the-fields">
 <h2>Looking at the fields<a class="headerlink" href="#looking-at-the-fields" title="Link to this heading">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">Simulation.travel_times(stage_id)</span></code> returns one grid per region, keyed by region id.
+<p><code class="docutils literal notranslate"><span class="pre">Simulation.travel_times(target)</span></code> returns one grid per region, keyed by region.
 Each grid has its travel times in seconds and the walking direction an agent would
 get in every cell, and plots directly with matplotlib:</p>
 <div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
@@ -149,10 +149,12 @@ get in every cell, and plots directly with matplotlib:</p>
 <span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
 
 <span class="n">geo</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">GeometryBuilder</span><span class="p">()</span>
-<span class="n">room</span> <span class="o">=</span> <span class="n">geo</span><span class="o">.</span><span class="n">add_region</span><span class="p">(</span><span class="n">polygon</span><span class="o">=</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
-<span class="n">simulation</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModel</span><span class="p">(),</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geo</span><span class="p">)</span>
-<span class="n">north</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_exit_stage</span><span class="p">([(</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">room</span><span class="p">)])</span>
-<span class="n">south</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_exit_stage</span><span class="p">([(</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">room</span><span class="p">)])</span>
+<span class="n">room</span> <span class="o">=</span> <span class="n">geo</span><span class="o">.</span><span class="n">add_region</span><span class="p">(</span><span class="n">polygon</span><span class="o">=</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">height</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">simulation</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModel</span><span class="p">(),</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geo</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">north</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_target</span><span class="p">(</span><span class="n">jps</span><span class="o">.</span><span class="n">Exit</span><span class="p">([(</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">room</span><span class="p">)]))</span>
+<span class="n">south</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_target</span><span class="p">(</span><span class="n">jps</span><span class="o">.</span><span class="n">Exit</span><span class="p">([(</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">room</span><span class="p">)]))</span>
 
 <span class="n">grid</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">travel_times</span><span class="p">(</span><span class="n">north</span><span class="p">)[</span><span class="n">room</span><span class="p">]</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
@@ -191,8 +193,8 @@ trajectory, and the loader reads them back in the same form as <code class="docu
 <span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
 <span class="k">with</span> <span class="n">jps</span><span class="o">.</span><span class="n">Hdf5TrajectoryLoader</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">loader</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">stage_id</span> <span class="ow">in</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_travel_time_stage_ids</span><span class="p">():</span>
-        <span class="n">grids</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_travel_times</span><span class="p">(</span><span class="n">stage_id</span><span class="p">)</span>  <span class="c1"># {region_id: grid}</span>
+    <span class="k">for</span> <span class="n">target_id</span> <span class="ow">in</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_travel_time_target_ids</span><span class="p">():</span>
+        <span class="n">grids</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_travel_times</span><span class="p">(</span><span class="n">target_id</span><span class="p">)</span>  <span class="c1"># {region_id: grid}</span>
 </pre></div>
 </div>
 <p>The travel times are written when the writer is closed, so destinations added during the
@@ -210,20 +212,22 @@ cell (agents within 1 m) is turned into a speed with Weidmann’s fundamental di
 <span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
 
 <span class="n">geo</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">GeometryBuilder</span><span class="p">()</span>
-<span class="n">room</span> <span class="o">=</span> <span class="n">geo</span><span class="o">.</span><span class="n">add_region</span><span class="p">(</span><span class="n">polygon</span><span class="o">=</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
-<span class="n">simulation</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModel</span><span class="p">(),</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geo</span><span class="p">)</span>
-<span class="n">exit_id</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_exit_stage</span><span class="p">(</span>
-    <span class="p">[(</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">room</span><span class="p">),</span> <span class="p">(</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">room</span><span class="p">)]</span>
+<span class="n">room</span> <span class="o">=</span> <span class="n">geo</span><span class="o">.</span><span class="n">add_region</span><span class="p">(</span><span class="n">polygon</span><span class="o">=</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">height</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">simulation</span> <span class="o">=</span> <span class="n">jps</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModel</span><span class="p">(),</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geo</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
 <span class="p">)</span>
-<span class="n">journey</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_journey</span><span class="p">(</span><span class="n">jps</span><span class="o">.</span><span class="n">JourneyDescription</span><span class="p">([</span><span class="n">exit_id</span><span class="p">]))</span>
+<span class="n">exit_</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_target</span><span class="p">(</span>
+    <span class="n">jps</span><span class="o">.</span><span class="n">Exit</span><span class="p">(</span>
+        <span class="p">[(</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">room</span><span class="p">),</span> <span class="p">(</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">room</span><span class="p">)]</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">route</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">add_route</span><span class="p">([</span><span class="n">jps</span><span class="o">.</span><span class="n">FixedTransition</span><span class="p">(</span><span class="n">jps</span><span class="o">.</span><span class="n">AGENT_LOCATION</span><span class="p">,</span> <span class="n">exit_</span><span class="p">)])</span>
 <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">10.5</span><span class="p">,</span> <span class="mf">16.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">6.25</span><span class="p">,</span> <span class="mf">9.8</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">):</span>
         <span class="n">simulation</span><span class="o">.</span><span class="n">add_agent</span><span class="p">(</span>
-            <span class="n">journey_id</span><span class="o">=</span><span class="n">journey</span><span class="p">,</span>
-            <span class="n">stage_id</span><span class="o">=</span><span class="n">exit_id</span><span class="p">,</span>
-            <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
+            <span class="n">room</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
+            <span class="n">route</span><span class="o">=</span><span class="n">route</span><span class="p">,</span>
             <span class="n">state</span><span class="o">=</span><span class="n">jps</span><span class="o">.</span><span class="n">CollisionFreeSpeedModelState</span><span class="p">(),</span>
-            <span class="n">region_id</span><span class="o">=</span><span class="n">room</span><span class="p">,</span>
         <span class="p">)</span>
 
 
@@ -281,10 +285,10 @@ Agents in the room over time.</span><a class="headerlink" href="#id3" title="Lin
 </figure>
 <ul class="simple">
 <li><p><strong>The default speed field</strong> of a region is used by every destination. Use
-<code class="docutils literal notranslate"><span class="pre">set_default_speed_field(region_id,</span> <span class="pre">values)</span></code> to change it for all of them.</p></li>
+<code class="docutils literal notranslate"><span class="pre">set_default_speed_field(region,</span> <span class="pre">values)</span></code> to change it for all of them.</p></li>
 <li><p><strong>A destination can have its own</strong> speed field in a region, for example when only
-the agents heading for one destination should react to the congestion: <code class="docutils literal notranslate"><span class="pre">set_custom_speed_field(stage_id,</span> <span class="pre">region_id,</span> <span class="pre">values)</span></code>. <code class="docutils literal notranslate"><span class="pre">custom_speed_fields(stage_id)</span></code> shows which regions have one, and
-<code class="docutils literal notranslate"><span class="pre">clear_custom_speed_field(stage_id,</span> <span class="pre">region_id)</span></code> goes back to the default.</p></li>
+the agents heading for one destination should react to the congestion: <code class="docutils literal notranslate"><span class="pre">set_custom_speed_field(target,</span> <span class="pre">region,</span> <span class="pre">values)</span></code>. <code class="docutils literal notranslate"><span class="pre">custom_speed_fields(target)</span></code> shows which regions have one, and
+<code class="docutils literal notranslate"><span class="pre">clear_custom_speed_field(target,</span> <span class="pre">region)</span></code> goes back to the default.</p></li>
 <li><p><strong>Values</strong> are an array of shape <code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">width)</span></code> on the region’s grid, in m/s.
 On walkable cells they must be finite and at least 0.01 m/s; whether a cell is
 walkable is decided by the geometry, not by the speed field, so values on cells

@@ -1097,7 +1097,7 @@ to move by; the simulation applies it as given.</p>
 added. A model delegating to a built-in one that draws random numbers
 (e.g. <a class="reference internal" href="#jupedsim.AnticipationVelocityModel" title="jupedsim.AnticipationVelocityModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnticipationVelocityModel</span></code></a> or
 <a class="reference internal" href="#jupedsim.WarpDriverModel" title="jupedsim.WarpDriverModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">WarpDriverModel</span></code></a>) has to seed the delegated state
-here with <code class="xref py py-meth docutils literal notranslate"><span class="pre">seed_state()</span></code>; otherwise the
+here with that model’s <code class="docutils literal notranslate"><span class="pre">seed_state</span></code>; otherwise the
 built-in model raises on its first step.</p>
 <div class="highlight-python notranslate" data-lang="python"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">seed_agent_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">replace</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">sub</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_inner</span><span class="o">.</span><span class="n">seed_state</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">sub</span><span class="p">))</span>
